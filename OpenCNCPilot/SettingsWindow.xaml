@@ -1,0 +1,67 @@
+﻿<Window x:Class="OpenCNCPilot.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OpenCNCPilot"
+        xmlns:util="clr-namespace:OpenCNCPilot.Util"
+        mc:Ignorable="d"
+        Title="SettingsWindow" Height="300" Width="392.161">
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Right"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Height" Value="23"/>
+            <Setter Property="Width" Value="120"/>
+        </Style>
+    </Window.Resources>
+    <TabControl>
+        <TabItem Header="Connection">
+            <Grid>
+                <ComboBox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0" Width="120" SelectedValue="{util:SettingBinding SerialPortName}" DropDownOpened="ComboBox_DropDownOpened"/>
+                <Label Content="Serial Port" HorizontalAlignment="Left" Margin="135,10,0,0" VerticalAlignment="Top"/>
+
+                <TextBox Margin="10,37,0,0" Text="{util:SettingBinding SerialPortBaud}"/>
+                <Label Content="BaudRate" HorizontalAlignment="Left" Margin="135,36,0,0" VerticalAlignment="Top"/>
+
+                <TextBox Margin="10,88,0,0" Text="{util:SettingBinding ControllerBufferSize}"/>
+                <Label Content="Controller Buffer" HorizontalAlignment="Left" Margin="135,87,0,0" VerticalAlignment="Top"/>
+
+                <TextBox Margin="10,116,0,0" Text="{util:SettingBinding StatusPollInterval}"/>
+                <Label Content="Status Poll Interval (ms)" HorizontalAlignment="Left" Margin="135,115,0,0" VerticalAlignment="Top"/>
+
+                <TextBox Margin="10,144,0,0" Text="{util:SettingBinding OutputDecimalDigits}"/>
+                <Label Content="Decimal places" HorizontalAlignment="Left" Margin="135,143,0,0" VerticalAlignment="Top"/>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Viewport">
+            <Grid>
+                <TextBox Margin="10,10,0,0" Text="{util:SettingBinding ViewportArcSplit}"/>
+                <Label Content="preview arc segment length (mm)" HorizontalAlignment="Left" Margin="135,9,0,0" VerticalAlignment="Top"/>
+
+                <CheckBox Content="Preview Toolpath" HorizontalAlignment="Left" Margin="116,40,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding EnableCodePreview}"/>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Probing">
+            <Grid>
+                <TextBox Margin="10,10,0,0" Text="{util:SettingBinding ProbeFeed}"/>
+                <Label Content="Probe Plunge Feedrate (mm/min)" HorizontalAlignment="Left" Margin="135,9,0,0" VerticalAlignment="Top"/>
+
+                <CheckBox Content="Abort on Probe Fail" HorizontalAlignment="Left" Margin="116,40,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding AbortOnProbeFail}"/>
+
+                <TextBox Margin="10,61,0,0" Text="{util:SettingBinding ProbeSafeHeight}"/>
+                <Label Content="Safe Height (mm)" HorizontalAlignment="Left" Margin="135,60,0,0" VerticalAlignment="Top"/>
+
+                <TextBox Margin="10,89,0,0" Text="{util:SettingBinding ProbeMinimumHeight}" ToolTip="This height will be added to the height of the last probe point to prevent crashes on highly tilted surfaces"/>
+                <Label Content="Minimum Height (mm)" HorizontalAlignment="Left" Margin="135,88,0,0" VerticalAlignment="Top"/>
+
+                <TextBox Margin="10,117,0,0" Text="{util:SettingBinding ProbeMaxDepth}"/>
+                <Label Content="Max Depth (mm)" HorizontalAlignment="Left" Margin="135,116,0,0" VerticalAlignment="Top"/>
+            </Grid>
+        </TabItem>
+    </TabControl>
+</Window>
