@@ -190,7 +190,7 @@ namespace OpenCNCPilot.Communication
 
 		private void Work()
 		{
-			//try
+			try
 			{
 				StreamReader reader = new StreamReader(Connection);
 				StreamWriter writer = new StreamWriter(Connection);
@@ -338,10 +338,10 @@ namespace OpenCNCPilot.Communication
 					}
 				}
 			}
-			//catch (Exception ex)
+			catch (Exception ex)
 			{
-				//RaiseEvent(ReportError, $"Fatal Error: {ex.Message}");
-				//Disconnect();
+				RaiseEvent(ReportError, $"Fatal Error: {ex.Message}");
+				Disconnect();
 			}
 		}
 
@@ -367,6 +367,9 @@ namespace OpenCNCPilot.Communication
 			Sent.Clear();
 
 			Mode = OperatingMode.Manual;
+
+			if (PositionUpdateReceived != null)
+				PositionUpdateReceived.Invoke();
 
 			WorkerThread = new Thread(Work);
 			WorkerThread.Priority = ThreadPriority.AboveNormal;

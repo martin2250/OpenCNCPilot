@@ -10,7 +10,7 @@ namespace OpenCNCPilot.Util
 		{
 			get
 			{
-				return new NumberFormatInfo() { NumberDecimalSeparator = ".", NumberDecimalDigits = Properties.Settings.Default.OutputDecimalDigits };
+				return new NumberFormatInfo() { NumberDecimalSeparator = "."};
 			}
 		}
 

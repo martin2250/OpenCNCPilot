@@ -116,6 +116,7 @@
     <Compile Include="Util\Constants.cs" />
     <Compile Include="Util\GrblErrorProvider.cs" />
     <Compile Include="Util\SettingsBinding.cs" />
+    <Compile Include="Util\UpdateCheck.cs" />
     <Compile Include="Util\Vector2.cs" />
     <Compile Include="Util\Vector3.cs" />
     <Page Include="EnterNumberWindow.xaml">

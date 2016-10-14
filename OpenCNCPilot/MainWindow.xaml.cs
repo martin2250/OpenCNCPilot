@@ -45,8 +45,80 @@ namespace OpenCNCPilot
 			machine.ProbeFinished += Machine_ProbeFinished;
 
 			UpdateAllButtons();
+
+			UpdateCheck.CheckForUpdate();
 		}
 
+		private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+		{
+			System.Diagnostics.Process.Start(e.Uri.AbsoluteUri);
+		}
 
+		private void Window_Drop(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+			{
+				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+				if(files.Length > 0)
+				{
+					string file = files[0];
+
+					if(file.EndsWith(".hmap"))
+					{
+						if (machine.Mode == Machine.OperatingMode.Probe || Map != null)
+							return;
+
+						OpenHeightMap(file);
+					}
+					else
+					{
+						if (machine.Mode == Machine.OperatingMode.SendFile)
+							return;
+
+						try
+						{
+							machine.SetFile(System.IO.File.ReadAllLines(file));
+						}
+						catch (Exception ex)
+						{
+							MessageBox.Show(ex.Message);
+						}
+					}
+				}
+			}
+		}
+
+		private void Window_DragEnter(object sender, DragEventArgs e)
+		{
+			if(e.Data.GetDataPresent(DataFormats.FileDrop))
+			{
+				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+				if (files.Length > 0)
+				{
+					string file = files[0];
+
+					if (file.EndsWith(".hmap"))
+					{
+						if (machine.Mode != Machine.OperatingMode.Probe && Map == null)
+						{
+							e.Effects = DragDropEffects.Copy;
+							return;
+						}
+					}
+					else
+					{
+						if (machine.Mode != Machine.OperatingMode.SendFile)
+						{
+							e.Effects = DragDropEffects.Copy;
+							return;
+						}
+					}
+				}
+			}
+
+			e.Effects = DragDropEffects.None;
+		}
 	}
 }

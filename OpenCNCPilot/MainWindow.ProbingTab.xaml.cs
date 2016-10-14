@@ -75,6 +75,7 @@ namespace OpenCNCPilot
 				try
 				{
 					Map.FillWithTestPattern(NewHeightMapDialog.TestPattern);
+					Map.NotProbed.Clear();
 				}
 				catch { MessageBox.Show("Error in test pattern"); }
 			}
@@ -101,14 +102,19 @@ namespace OpenCNCPilot
 
 		private void OpenFileDialogHeightMap_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
 		{
+			OpenHeightMap(openFileDialogHeightMap.FileName);
+		}
+
+		private void OpenHeightMap(string filepath)
+		{
 			if (machine.Mode == Machine.OperatingMode.Probe || Map != null)
 				return;
 
 			try
 			{
-				Map = HeightMap.Load(openFileDialogHeightMap.FileName);
+				Map = HeightMap.Load(filepath);
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				MessageBox.Show(ex.Message);
 			}
@@ -167,12 +173,12 @@ namespace OpenCNCPilot
 
 			Vector2 nextPoint = Map.GetCoordinates(Map.NotProbed.Peek().Item1, Map.NotProbed.Peek().Item2);
 
-			machine.SendLine($"G0X{nextPoint.X.ToString(Constants.DecimalOutputFormat)}Y{nextPoint.Y.ToString(Constants.DecimalOutputFormat)}");
+			machine.SendLine($"G0X{nextPoint.X.ToString("0.###", Constants.DecimalOutputFormat)}Y{nextPoint.Y.ToString("0.###", Constants.DecimalOutputFormat)}");
 
-			machine.SendLine($"G38.3Z-{Properties.Settings.Default.ProbeMaxDepth.ToString(Constants.DecimalOutputFormat)}F{Properties.Settings.Default.ProbeFeed.ToString(Constants.DecimalOutputFormat)}");
+			machine.SendLine($"G38.3Z-{Properties.Settings.Default.ProbeMaxDepth.ToString("0.###", Constants.DecimalOutputFormat)}F{Properties.Settings.Default.ProbeFeed.ToString("0.#", Constants.DecimalOutputFormat)}");
 
 			machine.SendLine("G91");
-			machine.SendLine($"G0Z{Properties.Settings.Default.ProbeMinimumHeight.ToString(Constants.DecimalOutputFormat)}");
+			machine.SendLine($"G0Z{Properties.Settings.Default.ProbeMinimumHeight.ToString("0.###", Constants.DecimalOutputFormat)}");
 			machine.SendLine("G90");
 		}
 
@@ -223,7 +229,7 @@ namespace OpenCNCPilot
 				return;
 
 			machine.SendLine("G90");
-			machine.SendLine($"G0Z{Properties.Settings.Default.ProbeSafeHeight.ToString(Constants.DecimalOutputFormat)}");
+			machine.SendLine($"G0Z{Properties.Settings.Default.ProbeSafeHeight.ToString("0.###", Constants.DecimalOutputFormat)}");
 
 			HeightMapProbeNextPoint();
 		}

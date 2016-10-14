@@ -82,6 +82,9 @@ namespace OpenCNCPilot.GCode
 
 		public double InterpolateZ(double x, double y)
 		{
+			if (x > Max.X || x < Min.X || y > Max.Y || y < Min.Y)
+				return MaxHeight;
+
 			x -= Min.X;
 			y -= Min.Y;
 
@@ -265,6 +268,12 @@ namespace OpenCNCPilot.GCode
 
 		public static void GetPreviewModel(Vector2 min, Vector2 max, double gridSize, LinesVisual3D border, PointsVisual3D pointv)
 		{
+			Vector2 min_temp = new Vector2(Math.Min(min.X, max.X), Math.Min(min.Y, max.Y));
+			Vector2 max_temp = new Vector2(Math.Max(min.X, max.X), Math.Max(min.Y, max.Y));
+
+			min = min_temp;
+			max = max_temp;
+
 			if ((max.X - min.X) == 0 || (max.Y - min.Y) == 0)
 			{
 				pointv.Points.Clear();
@@ -280,6 +289,12 @@ namespace OpenCNCPilot.GCode
 
 		public static void GetPreviewModel(Vector2 min, Vector2 max, int pointsX, int pointsY, LinesVisual3D border, PointsVisual3D pointv)
 		{
+			Vector2 min_temp = new Vector2(Math.Min(min.X, max.X), Math.Min(min.Y, max.Y));
+			Vector2 max_temp = new Vector2(Math.Max(min.X, max.X), Math.Max(min.Y, max.Y));
+
+			min = min_temp;
+			max = max_temp;
+
 			double gridX = (max.X - min.X) / (pointsX - 1);
 			double gridY = (max.Y - min.Y) / (pointsY - 1);
 

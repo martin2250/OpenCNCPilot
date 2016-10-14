@@ -31,9 +31,6 @@
 
                 <TextBox Margin="10,116,0,0" Text="{util:SettingBinding StatusPollInterval}"/>
                 <Label Content="Status Poll Interval (ms)" HorizontalAlignment="Left" Margin="135,115,0,0" VerticalAlignment="Top"/>
-
-                <TextBox Margin="10,144,0,0" Text="{util:SettingBinding OutputDecimalDigits}"/>
-                <Label Content="Decimal places" HorizontalAlignment="Left" Margin="135,143,0,0" VerticalAlignment="Top"/>
             </Grid>
         </TabItem>
 

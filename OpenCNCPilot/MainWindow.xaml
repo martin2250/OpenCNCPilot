@@ -7,7 +7,10 @@
         xmlns:local="clr-namespace:OpenCNCPilot"
 		xmlns:util="clr-namespace:OpenCNCPilot.Util"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="900" Closing="Window_Closing">
+		AllowDrop="True"
+		Drop="Window_Drop"
+		DragEnter="Window_DragEnter"
+        Title="OpenCNCPilot by martin2250" Height="500" Width="900" Closing="Window_Closing">
     <Window.Resources>
         <ResourceDictionary Source="MainWindow.Resources.xaml"/>
     </Window.Resources>
@@ -27,17 +30,17 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="X:"/>
-                        <Label Name="LabelPosX" Width="40" Content="0.0"/>
+                        <Label Name="LabelPosX" Width="45" Content="0.0"/>
                         <Label Content="Y:"/>
-                        <Label Name="LabelPosY" Width="40" Content="0.0"/>
+                        <Label Name="LabelPosY" Width="45" Content="0.0"/>
                         <Label Content="Z:"/>
                         <Label Name="LabelPosZ" Width="60" Content="0.0"/>
                         <Label Content="MX:"/>
-                        <Label Name="LabelPosMX" Width="40" Content="0.0"/>
+                        <Label Name="LabelPosMX" Width="45" Content="0.0"/>
                         <Label Content="MY:"/>
-                        <Label Name="LabelPosMY" Width="40" Content="0.0"/>
+                        <Label Name="LabelPosMY" Width="45" Content="0.0"/>
                         <Label Content="MZ:"/>
-                        <Label Name="LabelPosMZ" Width="40" Content="0.0"/>
+                        <Label Name="LabelPosMZ" Width="45" Content="0.0"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -121,6 +124,17 @@
                                     <Label Content="{util:SettingBinding ControllerBufferSize}" Margin="-8,0,0,0"/>
                                 </StackPanel>
                             </Grid>
+                        </StackPanel>
+                    </Expander>
+                </Border>
+                <Border Style="{StaticResource stylePanelOut}">
+                    <Expander Header="About">
+                        <StackPanel>
+                            <TextBlock TextAlignment="Center" FontSize="14" Padding="5">
+								<Span FontWeight="Bold" FontSize="15">OpenCNCPilot by martin2250</Span><LineBreak/>
+								<Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="https://github.com/martin2250/OpenCNCPilot">Project Page</Hyperlink>
+								<Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="https://github.com/martin2250/OpenCNCPilot/issues">Help</Hyperlink>
+                            </TextBlock>
                         </StackPanel>
                     </Expander>
                 </Border>
