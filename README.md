@@ -4,7 +4,7 @@
 OpenCNCPilot is a GRBL compatible G-Code Sender.
 
 It's main feature is it's ability to **probe user-defined areas for warpage and wrap the toolpath around the curved surface**.
-This is especially useful for engraving metal surfaces with V-shaped cutters where any deviation in the Z-direction will result in wider or narrower traces, eg for **isolation milling PCBs**.
+This is especially useful for engraving metal surfaces with V-shaped cutters where any deviation in the Z-direction will result in wider or narrower traces, eg for **isolation milling PCBs** where warpage would result in broken or shorted traces.
 
 ![Screenshot](https://raw.githubusercontent.com/martin2250/OpenCNCPilot/master/img/Screenshot.png)
 
@@ -31,3 +31,9 @@ To probe the area, set up your work coordinate system by entering "G92 X0 Y0 Z0"
 
 Once it's done probing the surface, load the gcode file you want to run and hit the "Apply HeightMap" button in the "Edit" tab.
 Now you can run the code with the "Start" button in the "File" tab.
+
+
+
+Since this project did get some attention, I'll include a donation button. Getting this application to a point where it's 'production-ready' took many days of non-stop work before and during the fist two semesters of my physics studies.  
+Please note that my programs will always be (ad-)free  
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7F783UGMYHRWN)
