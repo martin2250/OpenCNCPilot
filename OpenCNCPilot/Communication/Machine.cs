@@ -46,7 +46,8 @@ namespace OpenCNCPilot.Communication
 		public event Action FilePositionChanged;
 
 		public Vector3 MachinePosition { get; private set; } = new Vector3();   //No events here, the parser triggers a single event for both
-		public Vector3 WorkPosition { get; private set; } = new Vector3();
+		public Vector3 WorkOffset { get; private set; } = new Vector3();
+		public Vector3 WorkPosition { get { return MachinePosition - WorkOffset; } }
 
 		private ReadOnlyCollection<string> _file = new ReadOnlyCollection<string>(new string[0]);
 		public ReadOnlyCollection<string> File
@@ -283,6 +284,7 @@ namespace OpenCNCPilot.Communication
 					}
 
 					string line = lineTask.Result;
+
 					if (line == "ok")
 					{
 						if (Sent.Count != 0)
@@ -297,7 +299,7 @@ namespace OpenCNCPilot.Communication
 					}
 					else
 					{
-						if (line.StartsWith("error: "))
+						if (line.StartsWith("error:"))
 						{
 							if (Sent.Count != 0)
 							{
@@ -392,7 +394,7 @@ namespace OpenCNCPilot.Communication
 			Mode = OperatingMode.Disconnected;
 
 			MachinePosition = new Vector3();
-			WorkPosition = new Vector3();
+			WorkOffset = new Vector3();
 
 			if (PositionUpdateReceived != null)
 				PositionUpdateReceived.Invoke();
@@ -621,60 +623,73 @@ namespace OpenCNCPilot.Communication
 			}
 		}
 
-		private static Regex StatusEx = new Regex(@"<(?'State'Idle|Run|Hold|Home|Alarm|Check|Door)(?:,MPos:(?'MX'-?[0-9\.]*),(?'MY'-?[0-9\.]*),(?'MZ'-?[0-9\.]*))?(?:,WPos:(?'WX'-?[0-9\.]*),(?'WY'-?[0-9\.]*),(?'WZ'-?[0-9\.]*))?(?:,Buf:(?'Buf'[0-9]*))?(?:,RX:(?'RX'[0-9]*))?(?:,Ln:(?'L'[0-9]*))?(?:,F:(?'F'[0-9\.]*))?(?:,Lim:(?'Lim'[0-1]*))?(?:,Ctl:(?'Ctl'[0-1]*))?>", RegexOptions.Compiled);
+		//	https://regex101.com/r/4r3Ukj/3
+		private static Regex StatusEx = new Regex(@"(?<=[<|])(\w+):?(([0-9\.-]*),?([0-9\.-]*)?,?([0-9\.,-]*)?)?(?=[|>])", RegexOptions.Compiled);
 
 		/// <summary>
 		/// Parses a recevied status report (answer to '?')
 		/// </summary>
 		private void ParseStatus(string line)
 		{
-			Match statusMatch = StatusEx.Match(line);
+			MatchCollection statusMatch = StatusEx.Matches(line);
 
-			if (!statusMatch.Success)
+			if (statusMatch.Count == 0)
 			{
 				NonFatalException.Invoke(string.Format("Received Bad Status: '{0}'", line));
 				return;
 			}
 
-			Group status = statusMatch.Groups["State"];
+			bool posUpdate = false;
 
-			if (status.Success)
+			foreach(Match m in statusMatch)
 			{
-				Status = status.Value;
+				if(m.Index == 1)
+				{
+					Status = m.Groups[1].Value;
+					continue;
+				}
+
+				if (m.Groups[1].Value == "WCO")
+				{
+					try
+					{
+						WorkOffset = Vector3.Parse(m.Groups[2].Value);
+						posUpdate = true;
+					}
+					catch { NonFatalException.Invoke(string.Format("Received Bad Status: '{0}'", line)); }
+				}
+            }
+
+			//run this later to catch work offset changes before parsing position
+			Vector3 NewMachinePosition = MachinePosition;
+
+			foreach (Match m in statusMatch)
+			{
+                if (m.Groups[1].Value == "MPos" || m.Groups[1].Value == "WPos")
+				{
+					try
+					{
+						NewMachinePosition = Vector3.Parse(m.Groups[2].Value);
+
+						if (m.Groups[1].Value == "WPos")
+							NewMachinePosition += WorkOffset;
+
+						if (NewMachinePosition != MachinePosition)
+						{
+							posUpdate = true;
+							MachinePosition = NewMachinePosition;
+						}
+					}
+					catch { NonFatalException.Invoke(string.Format("Received Bad Status: '{0}'", line)); }
+				}
+
 			}
 
-			Vector3 NewMachinePosition, NewWorkPosition;
-			bool update = false;
-
-			Group mx = statusMatch.Groups["MX"], my = statusMatch.Groups["MY"], mz = statusMatch.Groups["MZ"];
-
-			if (mx.Success)
-			{
-				NewMachinePosition = new Vector3(double.Parse(mx.Value, Constants.DecimalParseFormat), double.Parse(my.Value, Constants.DecimalParseFormat), double.Parse(mz.Value, Constants.DecimalParseFormat));
-
-				if (MachinePosition != NewMachinePosition)
-					update = true;
-
-				MachinePosition = NewMachinePosition;
-			}
-
-			Group wx = statusMatch.Groups["WX"], wy = statusMatch.Groups["WY"], wz = statusMatch.Groups["WZ"];
-
-			if (wx.Success)
-			{
-				NewWorkPosition = new Vector3(double.Parse(wx.Value, Constants.DecimalParseFormat), double.Parse(wy.Value, Constants.DecimalParseFormat), double.Parse(wz.Value, Constants.DecimalParseFormat));
-
-				if (WorkPosition != NewWorkPosition)
-					update = true;
-
-				WorkPosition = NewWorkPosition;
-			}
-
-			if (update && Connected && PositionUpdateReceived != null)
+			if (posUpdate && Connected && PositionUpdateReceived != null)
 				PositionUpdateReceived.Invoke();
 		}
 
-		private static Regex ProbeEx = new Regex(@"\[PRB:(?'MX'-?[0-9]+\.?[0-9]*),(?'MY'-?[0-9]+\.?[0-9]*),(?'MZ'-?[0-9]+\.?[0-9]*):(?'Success'0|1)\]", RegexOptions.Compiled);
+		private static Regex ProbeEx = new Regex(@"\[PRB:(?'Pos'[-0-9\.]*,[-0-9\.]*,[-0-9\.]*):(?'Success'0|1)\]", RegexOptions.Compiled);
 
 		/// <summary>
 		/// Parses a recevied probe report
@@ -685,20 +700,19 @@ namespace OpenCNCPilot.Communication
 				return;
 
 			Match probeMatch = ProbeEx.Match(line);
-			Group mx = probeMatch.Groups["MX"];
-			Group my = probeMatch.Groups["MY"];
-			Group mz = probeMatch.Groups["MZ"];
+
+			Group pos = probeMatch.Groups["Pos"];
 			Group success = probeMatch.Groups["Success"];
 
-			if (!probeMatch.Success || !(mx.Success & my.Success & mz.Success & success.Success))
+			if (!probeMatch.Success || !(pos.Success & success.Success))
 			{
 				NonFatalException.Invoke($"Received Bad Probe: '{line}'");
 				return;
 			}
 
-			Vector3 ProbePos = new Vector3(double.Parse(mx.Value, Constants.DecimalParseFormat), double.Parse(my.Value, Constants.DecimalParseFormat), double.Parse(mz.Value, Constants.DecimalParseFormat));
+			Vector3 ProbePos = Vector3.Parse(pos.Value);
 
-			ProbePos += WorkPosition - MachinePosition;     //Mpos, Wpos only get updated by the same dispatcher, so this should be thread safe
+			ProbePos -= WorkOffset;     //Mpos, Wpos only get updated by the same dispatcher, so this should be thread safe
 
 			bool ProbeSuccess = success.Value == "1";
 

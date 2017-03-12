@@ -36,7 +36,7 @@ namespace OpenCNCPilot.Util
 			Regex LineParser = new Regex(@"([0-9]+)\t([^\n^\r]*)");     //test here https://www.regex101.com/r/hO5zI1/2
 
 			MatchCollection mc = LineParser.Matches(ErrorFile);
-
+			
 			foreach (Match m in mc)
 			{
 				int errorNo = int.Parse(m.Groups[1].Value);
@@ -55,7 +55,7 @@ namespace OpenCNCPilot.Util
 				return $"Unknown Error: {errorCode}";
 		}
 
-		static Regex ErrorExp = new Regex(@"Invalid gcode ID:(\d+)");
+		static Regex ErrorExp = new Regex(@"error:(\d+)");
 		private static string ErrorMatchEvaluator(Match m)
 		{
 			return GetErrorMessage(int.Parse(m.Groups[1].Value));

@@ -1571,5 +1571,24 @@ namespace OpenCNCPilot.Util
 
 			return roll;
 		}
+
+		/// <summary>
+		/// Parses a 3-component string in this format
+		///	0.00,0.00,0.00
+		/// </summary>
+		public static Vector3 Parse(string input)
+		{
+			string[] components = input.Split(',');
+
+			if (components.Length != 3)
+				throw new FormatException("string does not contain 3 components");
+
+			double[] values = new double[3];
+
+			for (int i = 0; i < 3; i++)
+				values[i] = double.Parse(components[i], Constants.DecimalParseFormat);
+
+			return new Vector3(values);
+		}
 	}
 }
