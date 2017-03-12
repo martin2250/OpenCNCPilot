@@ -212,6 +212,7 @@ namespace OpenCNCPilot
 			ButtonSettings.IsEnabled = machine.Mode == Machine.OperatingMode.Disconnected;
 
 			ButtonFileOpen.IsEnabled = machine.Mode != Machine.OperatingMode.SendFile;
+			ButtonFileSave.IsEnabled = machine.Mode != Machine.OperatingMode.SendFile;
 			ButtonFileStart.IsEnabled = machine.Mode == Machine.OperatingMode.Manual;
 			ButtonFilePause.IsEnabled = machine.Mode == Machine.OperatingMode.SendFile;
 			ButtonFileGoto.IsEnabled = machine.Mode != Machine.OperatingMode.SendFile;

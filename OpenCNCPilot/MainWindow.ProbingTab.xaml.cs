@@ -207,7 +207,7 @@ namespace OpenCNCPilot
 
 			if (Map.NotProbed.Count == 0)
 			{
-				machine.SendLine($"G0Z{Properties.Settings.Default.ProbeSafeHeight.ToString(Constants.DecimalOutputFormat)}");
+				machine.SendLine($"G0Z{Math.Max(Properties.Settings.Default.ProbeSafeHeight, position.Z).ToString(Constants.DecimalOutputFormat)}");
 				machine.ProbeStop();
 				return;
 			}

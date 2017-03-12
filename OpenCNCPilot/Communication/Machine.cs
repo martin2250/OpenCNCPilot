@@ -623,7 +623,6 @@ namespace OpenCNCPilot.Communication
 			}
 		}
 
-		//	https://regex101.com/r/4r3Ukj/3
 		private static Regex StatusEx = new Regex(@"(?<=[<|])(\w+):?(([0-9\.-]*),?([0-9\.-]*)?,?([0-9\.,-]*)?)?(?=[|>])", RegexOptions.Compiled);
 
 		/// <summary>

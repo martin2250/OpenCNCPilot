@@ -25,12 +25,35 @@ namespace OpenCNCPilot
 			}
 		}
 
+		private void SaveFileDialogGCode_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if (machine.Mode == Machine.OperatingMode.SendFile)
+				return;
+
+			try
+			{
+				ToolPath.Save(saveFileDialogGCode.FileName);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message);
+			}
+		}
+
 		private void ButtonOpen_Click(object sender, RoutedEventArgs e)
 		{
 			if (machine.Mode == Machine.OperatingMode.SendFile)
 				return;
 
 			openFileDialogGCode.ShowDialog();
+		}
+
+		private void ButtonSave_Click(object sender, RoutedEventArgs e)
+		{
+			if (machine.Mode == Machine.OperatingMode.SendFile)
+				return;
+
+			saveFileDialogGCode.ShowDialog();
 		}
 
 		private void ButtonClear_Click(object sender, RoutedEventArgs e)

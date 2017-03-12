@@ -11,9 +11,10 @@ namespace OpenCNCPilot
 	{
 		Machine machine = new Machine();
 
-		OpenFileDialog openFileDialogGCode = new OpenFileDialog() { InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), Filter = Constants.FileFilterGCode };
-		OpenFileDialog openFileDialogHeightMap = new OpenFileDialog() { InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), Filter = Constants.FileFilterHeightMap };
-		SaveFileDialog saveFileDialogHeightMap = new SaveFileDialog() { InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), Filter = Constants.FileFilterHeightMap };
+		OpenFileDialog openFileDialogGCode = new OpenFileDialog() { Filter = Constants.FileFilterGCode };
+		SaveFileDialog saveFileDialogGCode = new SaveFileDialog() { Filter = Constants.FileFilterGCode };
+		OpenFileDialog openFileDialogHeightMap = new OpenFileDialog() { Filter = Constants.FileFilterHeightMap };
+		SaveFileDialog saveFileDialogHeightMap = new SaveFileDialog() { Filter = Constants.FileFilterHeightMap };
 
         GCodeFile ToolPath { get; set; } = GCodeFile.Empty;
 		HeightMap Map { get; set; }
@@ -23,6 +24,7 @@ namespace OpenCNCPilot
 			InitializeComponent();
 
 			openFileDialogGCode.FileOk += OpenFileDialogGCode_FileOk;
+			saveFileDialogGCode.FileOk += SaveFileDialogGCode_FileOk;
 			openFileDialogHeightMap.FileOk += OpenFileDialogHeightMap_FileOk;
 			saveFileDialogHeightMap.FileOk += SaveFileDialogHeightMap_FileOk;
 

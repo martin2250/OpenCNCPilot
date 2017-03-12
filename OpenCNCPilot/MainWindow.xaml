@@ -49,8 +49,9 @@
                     <Expander Header="File" Width="Auto">
                         <Grid Width="200" Height="240">
                             <Button Name="ButtonFileOpen" Click="ButtonOpen_Click" Content="Open" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top"/>
-                            <Button Name="ButtonFileClear" Click="ButtonClear_Click" Content="Clear" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="48,5,0,0" VerticalAlignment="Top"/>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Width="101" Margin="89,5,0,0">
+                            <Button Name="ButtonFileSave" Click="ButtonSave_Click" Content="Save" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="48,5,0,0" VerticalAlignment="Top"/>
+                            <Button Name="ButtonFileClear" Click="ButtonClear_Click" Content="Clear" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="87,5,0,0" VerticalAlignment="Top"/>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Width="62" Margin="128,5,0,0">
                                 <Label Name="LabelFilePosition" Content="0" Margin="0,0,-6,0"/>
                                 <Label Content="/"/>
                                 <Label Name="LabelFileLength" Content="0" Margin="-8,0,0,0"/>
