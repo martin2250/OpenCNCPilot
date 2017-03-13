@@ -202,5 +202,29 @@ namespace OpenCNCPilot.Properties {
                 this["WebServerPort"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public double JogFeed {
+            get {
+                return ((double)(this["JogFeed"]));
+            }
+            set {
+                this["JogFeed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public double JogDistance {
+            get {
+                return ((double)(this["JogDistance"]));
+            }
+            set {
+                this["JogDistance"] = value;
+            }
+        }
     }
 }

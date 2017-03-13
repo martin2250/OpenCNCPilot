@@ -16,7 +16,7 @@ namespace OpenCNCPilot
 		OpenFileDialog openFileDialogHeightMap = new OpenFileDialog() { Filter = Constants.FileFilterHeightMap };
 		SaveFileDialog saveFileDialogHeightMap = new SaveFileDialog() { Filter = Constants.FileFilterHeightMap };
 
-        GCodeFile ToolPath { get; set; } = GCodeFile.Empty;
+		GCodeFile ToolPath { get; set; } = GCodeFile.Empty;
 		HeightMap Map { get; set; }
 
 		public MainWindow()
@@ -41,14 +41,41 @@ namespace OpenCNCPilot
 			machine.UnitChanged += Machine_UnitChanged;
 			machine.PlaneChanged += Machine_PlaneChanged;
 			machine.BufferStateChanged += Machine_BufferStateChanged;
-			machine.OperatingModeChanged += UpdateAllButtons;
+			machine.OperatingModeChanged += Machine_OperatingMode_Changed;
 			machine.FileChanged += Machine_FileChanged;
 			machine.FilePositionChanged += Machine_FilePositionChanged;
 			machine.ProbeFinished += Machine_ProbeFinished;
 
-			UpdateAllButtons();
+			Machine_OperatingMode_Changed();
+
+			Properties.Settings.Default.SettingChanging += Default_SettingChanging;
 
 			UpdateCheck.CheckForUpdate();
+		}
+
+		private void Default_SettingChanging(object sender, System.Configuration.SettingChangingEventArgs e)
+		{
+			if (e.SettingName.Equals("JogFeed") ||
+				e.SettingName.Equals("JogDistance") ||
+				e.SettingName.Equals("ProbeFeed") ||
+				e.SettingName.Equals("ProbeSafeHeight") ||
+				e.SettingName.Equals("ProbeMinimumHeight") ||
+				e.SettingName.Equals("ProbeMaxDepth") ||
+				e.SettingName.Equals("SplitSegmentLength") ||
+				e.SettingName.Equals("ViewportArcSplit") ||
+				e.SettingName.Equals("ArcToLineSegmentLength"))
+			{
+				if (((double)e.NewValue) <= 0)
+					e.Cancel = true;
+			}
+
+			if (e.SettingName.Equals("SerialPortBaud") ||
+				e.SettingName.Equals("StatusPollInterval") ||
+				e.SettingName.Equals("ControllerBufferSize"))
+			{
+				if (((int)e.NewValue) <= 0)
+					e.Cancel = true;
+			}
 		}
 
 		private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
@@ -62,11 +89,11 @@ namespace OpenCNCPilot
 			{
 				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
-				if(files.Length > 0)
+				if (files.Length > 0)
 				{
 					string file = files[0];
 
-					if(file.EndsWith(".hmap"))
+					if (file.EndsWith(".hmap"))
 					{
 						if (machine.Mode == Machine.OperatingMode.Probe || Map != null)
 							return;
@@ -93,7 +120,7 @@ namespace OpenCNCPilot
 
 		private void Window_DragEnter(object sender, DragEventArgs e)
 		{
-			if(e.Data.GetDataPresent(DataFormats.FileDrop))
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
 			{
 				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 

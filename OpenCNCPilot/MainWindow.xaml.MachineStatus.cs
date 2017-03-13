@@ -198,7 +198,7 @@ namespace OpenCNCPilot
 
 		}
 
-		private void UpdateAllButtons()
+		private void Machine_OperatingMode_Changed()
 		{
 			ButtonDistanceMode.IsEnabled = machine.Mode == Machine.OperatingMode.Manual;
 			ButtonUnit.IsEnabled = machine.Mode == Machine.OperatingMode.Manual;
@@ -222,6 +222,10 @@ namespace OpenCNCPilot
 			ButtonManualSetG10Zero.IsEnabled = machine.Mode == Machine.OperatingMode.Manual;
 			ButtonManualSetG92Zero.IsEnabled = machine.Mode == Machine.OperatingMode.Manual;
 			ButtonManualResetG10.IsEnabled = machine.Mode == Machine.OperatingMode.Manual;
+
+			if (machine.Mode != Machine.OperatingMode.Manual)
+				CheckBoxEnableJog.IsChecked = false;
+			CheckBoxEnableJog.IsEnabled = machine.Mode == Machine.OperatingMode.Manual;
 
 			ButtonEditSimplify.IsEnabled = machine.Mode != Machine.OperatingMode.SendFile;
 			ButtonEditArcToLines.IsEnabled = machine.Mode != Machine.OperatingMode.SendFile;

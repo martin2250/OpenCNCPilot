@@ -28,7 +28,7 @@ namespace OpenCNCPilot
 			try
 			{
 				machine.SetFile(ToolPath.ApplyHeightMap(Map).GetGCode());
-				UpdateAllButtons();
+				Machine_OperatingMode_Changed();
 			}
 			catch(IndexOutOfRangeException)
 			{

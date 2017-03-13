@@ -469,6 +469,17 @@ namespace OpenCNCPilot.Communication
 			ToSendPriority.Enqueue('~');
 		}
 
+		public void JogCancel()
+		{
+			if (!Connected)
+			{
+				RaiseEvent(Info, "Not Connected");
+				return;
+			}
+
+			ToSendPriority.Enqueue((char)0x85);
+		}
+
 		public void SetFile(IList<string> file)
 		{
 			if (Mode == OperatingMode.SendFile)

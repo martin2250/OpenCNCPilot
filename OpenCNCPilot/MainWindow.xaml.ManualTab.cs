@@ -91,5 +91,69 @@ namespace OpenCNCPilot
 
 			TextBoxManual.Text = "G10 L2 P0 X0 Y0 Z0";
         }
+
+		private void CheckBoxEnableJog_Checked(object sender, RoutedEventArgs e)
+		{
+			if(machine.Mode != Machine.OperatingMode.Manual)
+			{
+				CheckBoxEnableJog.IsChecked = false;
+				return;
+			}
+		}
+
+		private void CheckBoxEnableJog_Unchecked(object sender, RoutedEventArgs e)
+		{
+			if (!machine.Connected)
+				return;
+			machine.JogCancel();
+		}
+
+		private void Jogging_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+		{
+			if (!machine.Connected)
+				return;
+
+			if (!CheckBoxEnableJog.IsChecked.Value)
+				return;
+
+			e.Handled = true;
+
+			if (e.IsRepeat)
+				return;
+
+			string direction = null;
+
+			if (e.Key == System.Windows.Input.Key.Right)
+				direction = "X";
+			if (e.Key == System.Windows.Input.Key.Left)
+				direction = "X-";
+			if (e.Key == System.Windows.Input.Key.Up)
+				direction = "Y";
+			if (e.Key == System.Windows.Input.Key.Down)
+				direction = "Y-";
+			if (e.Key == System.Windows.Input.Key.PageUp)
+				direction = "Z";
+			if (e.Key == System.Windows.Input.Key.PageDown)
+				direction = "Z-";
+
+			if(direction != null)
+				machine.SendLine($"$J=G91F{Properties.Settings.Default.JogFeed}{direction}{Properties.Settings.Default.JogDistance}");
+		}
+
+		private void Jogging_LostKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
+		{
+			if (!machine.Connected)
+				return;
+
+			machine.JogCancel();
+        }
+
+		private void Jogging_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+		{
+			if (!machine.Connected)
+				return;
+
+			machine.JogCancel();
+		}
 	}
 }
