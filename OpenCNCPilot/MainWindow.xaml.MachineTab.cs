@@ -48,5 +48,13 @@ namespace OpenCNCPilot
 
 			Properties.Settings.Default.Save();
 		}
+
+		private void ButtonSyncBuffer_Click(object sender, RoutedEventArgs e)
+		{
+			if (machine.Mode != Communication.Machine.OperatingMode.Manual)
+				return;
+
+			machine.SyncBuffer = true;
+		}
 	}
 }

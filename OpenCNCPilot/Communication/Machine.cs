@@ -177,6 +177,8 @@ namespace OpenCNCPilot.Communication
 		}
 		#endregion Status
 
+		public bool SyncBuffer { get; set; }
+
 		private Stream Connection;
 		private Thread WorkerThread;
 
@@ -241,7 +243,7 @@ namespace OpenCNCPilot.Communication
 
 								Sent.Enqueue(send_line);
 
-								if(FilePosition >= File.Count)
+								if (FilePosition >= File.Count)
 								{
 									Mode = OperatingMode.Manual;
 								}
@@ -563,8 +565,8 @@ namespace OpenCNCPilot.Communication
 		{
 			if (Mode == OperatingMode.SendFile)
 				return;
-			
-			if(lineNumber >= File.Count || lineNumber < 0)
+
+			if (lineNumber >= File.Count || lineNumber < 0)
 			{
 				RaiseEvent(NonFatalException, "Line Number outside of file length");
 				return;
@@ -597,7 +599,7 @@ namespace OpenCNCPilot.Communication
 
 			//we use a Regex here so G91.1 etc don't get recognized as G91
 
-			foreach(Match m in GCodeSplitter.Matches(line))
+			foreach (Match m in GCodeSplitter.Matches(line))
 			{
 				if (m.Groups[1].Value != "G")
 					continue;
@@ -640,9 +642,9 @@ namespace OpenCNCPilot.Communication
 
 			bool posUpdate = false;
 
-			foreach(Match m in statusMatch)
+			foreach (Match m in statusMatch)
 			{
-				if(m.Index == 1)
+				if (m.Index == 1)
 				{
 					Status = m.Groups[1].Value;
 					continue;
@@ -657,14 +659,32 @@ namespace OpenCNCPilot.Communication
 					}
 					catch { NonFatalException.Invoke(string.Format("Received Bad Status: '{0}'", line)); }
 				}
-            }
+
+				if(SyncBuffer && m.Groups[1].Value == "Bf")
+				{
+					try
+					{
+						int availableBytes = int.Parse(m.Groups[4].Value);
+						int used = Properties.Settings.Default.ControllerBufferSize - availableBytes;
+
+						if (used < 0)
+							used = 0;
+
+						BufferState = used;
+						RaiseEvent(Info, $"Buffer State Synced ({availableBytes} bytes free)");
+					}
+					catch { NonFatalException.Invoke(string.Format("Received Bad Status: '{0}'", line)); }
+				}
+			}
+
+			SyncBuffer = false;	//only run this immediately after button press
 
 			//run this later to catch work offset changes before parsing position
 			Vector3 NewMachinePosition = MachinePosition;
 
 			foreach (Match m in statusMatch)
 			{
-                if (m.Groups[1].Value == "MPos" || m.Groups[1].Value == "WPos")
+				if (m.Groups[1].Value == "MPos" || m.Groups[1].Value == "WPos")
 				{
 					try
 					{
@@ -739,7 +759,7 @@ namespace OpenCNCPilot.Communication
 		{
 			if (action == null)
 				return;
-			
+
 			Application.Current.Dispatcher.BeginInvoke(action);
 		}
 	}

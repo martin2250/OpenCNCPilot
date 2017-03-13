@@ -229,6 +229,8 @@ namespace OpenCNCPilot
 
 			ModelTool.Visible = machine.Connected;
 
+			ButtonSyncBuffer.IsEnabled = machine.Mode == Machine.OperatingMode.Manual;
+
 			UpdateProbeTabButtons();
 		}
 

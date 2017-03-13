@@ -117,14 +117,16 @@
                                 <Button Name="ButtonConnect" Content="Connect" Style="{StaticResource styleButton}" Click="ButtonConnect_Click"/>
                                 <Button Name="ButtonDisconnect" Visibility="Collapsed" Content="Disconnect" Style="{StaticResource styleButton}" Click="ButtonDisconnect_Click"/>
                             </StackPanel>
-                            <Grid>
-                                <ProgressBar Name="ProgressBarBufferCapacity" Height="20" Margin="0,0,0,3" FlowDirection="LeftToRight" Maximum="{util:SettingBinding ControllerBufferSize}"/>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" FlowDirection="LeftToRight">
-                                    <Label Name="LabelBufferState" Content="0" Margin="0,0,-6,0"/>
-                                    <Label Content="/"/>
-                                    <Label Content="{util:SettingBinding ControllerBufferSize}" Margin="-8,0,0,0"/>
-                                </StackPanel>
-                            </Grid>
+                            <Button Name="ButtonSyncBuffer" Click="ButtonSyncBuffer_Click" Margin="0,0,0,3" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FlowDirection="LeftToRight" ToolTip="Sync Buffer Status&#xA;(requires bit 1 of $10 to be set)">
+                                <Grid Margin="-2" IsHitTestVisible="False">
+                                    <ProgressBar Name="ProgressBarBufferCapacity" Maximum="{util:SettingBinding ControllerBufferSize}" Background="Transparent"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                                        <Label Name="LabelBufferState" Content="0" Margin="0,0,-6,0"/>
+                                        <Label Content="/"/>
+                                        <Label Content="{util:SettingBinding ControllerBufferSize}" Margin="-8,0,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Button>
                         </StackPanel>
                     </Expander>
                 </Border>
