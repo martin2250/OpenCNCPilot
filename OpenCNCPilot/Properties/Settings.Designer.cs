@@ -226,5 +226,17 @@ namespace OpenCNCPilot.Properties {
                 this["JogDistance"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LogTraffic {
+            get {
+                return ((bool)(this["LogTraffic"]));
+            }
+            set {
+                this["LogTraffic"] = value;
+            }
+        }
     }
 }

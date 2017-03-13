@@ -20,6 +20,8 @@ namespace OpenCNCPilot.Util
 		public static string FilePathErrors = "Resources\\GrblErrors.txt";
 		public static string FilePathWebsite = "Resources\\index.html";
 
+		public static string LogFile = "log.txt";
+
 		public static char[] NewLines = new char[] {'\n', '\r'};
 
 		static Constants()

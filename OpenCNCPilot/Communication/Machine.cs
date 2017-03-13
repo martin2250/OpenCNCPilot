@@ -182,6 +182,20 @@ namespace OpenCNCPilot.Communication
 		private Stream Connection;
 		private Thread WorkerThread;
 
+		private StreamWriter Log;
+
+		private void RecordLog(string message)
+		{
+			if (Log != null)
+			{
+				try
+				{
+					Log.WriteLine(message);
+				}
+				catch { throw; }
+			}
+		}
+
 		public Machine()
 		{
 
@@ -236,6 +250,8 @@ namespace OpenCNCPilot.Communication
 								writer.Write('\n');
 								writer.Flush();
 
+								RecordLog("> " + send_line);
+
 								RaiseEvent(UpdateStatus, send_line);
 								RaiseEvent(LineSent, send_line);
 
@@ -260,6 +276,8 @@ namespace OpenCNCPilot.Communication
 								writer.Write(send_line);
 								writer.Write('\n');
 								writer.Flush();
+
+								RecordLog("> " + send_line);
 
 								RaiseEvent(UpdateStatus, send_line);
 								RaiseEvent(LineSent, send_line);
@@ -286,6 +304,8 @@ namespace OpenCNCPilot.Communication
 					}
 
 					string line = lineTask.Result;
+
+					RecordLog("< " + line);
 
 					if (line == "ok")
 					{
@@ -365,6 +385,18 @@ namespace OpenCNCPilot.Communication
 					throw new Exception("Invalid Connection Type");
 			}
 
+			if (Properties.Settings.Default.LogTraffic)
+			{
+				try
+				{
+					Log = new StreamWriter(Constants.LogFile);
+				}
+				catch (Exception e)
+				{
+					NonFatalException("could not open logfile: " + e.Message);
+				}
+			}
+
 			Connected = true;
 
 			ToSend.Clear();
@@ -384,6 +416,10 @@ namespace OpenCNCPilot.Communication
 		{
 			if (!Connected)
 				throw new Exception("Can't Disconnect: Not Connected");
+
+			if (Log != null)
+				Log.Close();
+			Log = null;
 
 			Connected = false;
 
@@ -671,7 +707,7 @@ namespace OpenCNCPilot.Communication
 					catch { NonFatalException.Invoke(string.Format("Received Bad Status: '{0}'", line)); }
 				}
 
-				if(SyncBuffer && m.Groups[1].Value == "Bf")
+				if (SyncBuffer && m.Groups[1].Value == "Bf")
 				{
 					try
 					{
@@ -688,7 +724,7 @@ namespace OpenCNCPilot.Communication
 				}
 			}
 
-			SyncBuffer = false;	//only run this immediately after button press
+			SyncBuffer = false; //only run this immediately after button press
 
 			//run this later to catch work offset changes before parsing position
 			Vector3 NewMachinePosition = MachinePosition;
