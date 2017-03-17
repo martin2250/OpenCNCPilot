@@ -30,6 +30,7 @@ namespace OpenCNCPilot
 
 				Button b = new Button();
 				b.Content = Macros[i].Item1;
+				b.Margin = new Thickness(2, 0, 2, 2);
 				b.Click += (sender, e) => { RunMacro(Macros[index].Item2); };
 
 				MenuItem editItem = new MenuItem();

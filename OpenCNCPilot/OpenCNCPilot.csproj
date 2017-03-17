@@ -110,6 +110,9 @@
     <Compile Include="MainWindow.xaml.MachineTab.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MainWindow.xaml.Macros.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.ManualTab.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>

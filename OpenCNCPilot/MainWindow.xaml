@@ -130,16 +130,13 @@
                     </Expander>
                 </Border>
                 <Border Style="{StaticResource stylePanelOut}">
-                    <Expander>
-                        <Expander.Header>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Macros"/>
-                                <Button Content="+" Name="ButtonAddMacro" Click="ButtonAddMacro_Click" Height="20" Width="20" Margin="10,0,0,0"/>
+                    <Expander Header="Macros">
+                        <StackPanel>
+                            <Button Content="Add Macro" Name="ButtonAddMacro" Click="ButtonAddMacro_Click" Margin="2"/>
+                            <StackPanel MinWidth="120" Name="StackPanelMacros">
+
                             </StackPanel>
-						</Expander.Header>
-                        <StackPanel MinWidth="120" Name="StackPanelMacros">
-							
-						</StackPanel>
+                        </StackPanel>
                     </Expander>
                 </Border>
             </StackPanel>
