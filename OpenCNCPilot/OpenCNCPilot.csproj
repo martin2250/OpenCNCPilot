@@ -40,6 +40,12 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>test.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="HelixToolkit, Version=2015.1.715.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
       <HintPath>..\packages\HelixToolkit.2015.1.715\lib\portable-net4+sl4+wp71+win8\HelixToolkit.dll</HintPath>
@@ -72,6 +78,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Communication\Machine.cs" />
+    <Compile Include="EditMacroItemWindow.xaml.cs">
+      <DependentUpon>EditMacroItemWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EnterNumberWindow.xaml.cs">
       <DependentUpon>EnterNumberWindow.xaml</DependentUpon>
     </Compile>
@@ -119,6 +128,10 @@
     <Compile Include="Util\UpdateCheck.cs" />
     <Compile Include="Util\Vector2.cs" />
     <Compile Include="Util\Vector3.cs" />
+    <Page Include="EditMacroItemWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="EnterNumberWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -178,6 +191,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="test.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\GrblErrors.txt">

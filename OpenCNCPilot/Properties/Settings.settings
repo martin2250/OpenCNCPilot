@@ -56,5 +56,9 @@
     <Setting Name="LogTraffic" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="Macros" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Probe and set Zero:G38.2Z-10F20
+G92Z0;</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

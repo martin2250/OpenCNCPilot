@@ -238,5 +238,17 @@ namespace OpenCNCPilot.Properties {
                 this["LogTraffic"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Probe and set Zero:G38.2Z-10F20\r\nG92Z0;")]
+        public string Macros {
+            get {
+                return ((string)(this["Macros"]));
+            }
+            set {
+                this["Macros"] = value;
+            }
+        }
     }
 }

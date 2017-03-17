@@ -50,6 +50,8 @@ namespace OpenCNCPilot
 
 			Properties.Settings.Default.SettingChanging += Default_SettingChanging;
 
+			LoadMacros();
+
 			UpdateCheck.CheckForUpdate();
 		}
 
