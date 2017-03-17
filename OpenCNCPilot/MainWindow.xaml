@@ -115,7 +115,8 @@
 												You can only Jog as long as this textbox has the keyboard focus<LineBreak/>
 												Use the arrow keys for XY movement (Right/Up is the positive direction for X/Y)<LineBreak/>
 												Use PgUp/Down for Z movement<LineBreak/>
-												The motion will stop when you release the button
+												The motion will stop when you release the button (not 100% stable at the moment)<LineBreak/>
+												Esc will issue a soft reset
 											</TextBlock>
                                         </TextBox.ToolTip>
                                     </TextBox>

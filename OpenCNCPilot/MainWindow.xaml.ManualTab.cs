@@ -1,10 +1,6 @@
 ﻿using OpenCNCPilot.Communication;
 using OpenCNCPilot.Util;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace OpenCNCPilot
@@ -121,6 +117,9 @@ namespace OpenCNCPilot
 			if (e.IsRepeat)
 				return;
 
+			if (machine.BufferState > 0 || machine.Status != "Idle")
+				return;
+
 			string direction = null;
 
 			if (e.Key == System.Windows.Input.Key.Right)
@@ -135,9 +134,13 @@ namespace OpenCNCPilot
 				direction = "Z";
 			if (e.Key == System.Windows.Input.Key.PageDown)
 				direction = "Z-";
+			if (e.Key == System.Windows.Input.Key.Escape)
+				machine.SoftReset();
 
-			if(direction != null)
+			if (direction != null)
+			{
 				machine.SendLine($"$J=G91F{Properties.Settings.Default.JogFeed}{direction}{Properties.Settings.Default.JogDistance}");
+			}
 		}
 
 		private void Jogging_LostKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
@@ -146,7 +149,7 @@ namespace OpenCNCPilot
 				return;
 
 			machine.JogCancel();
-        }
+		}
 
 		private void Jogging_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
 		{
