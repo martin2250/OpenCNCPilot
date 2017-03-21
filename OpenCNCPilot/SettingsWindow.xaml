@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:OpenCNCPilot"
         xmlns:util="clr-namespace:OpenCNCPilot.Util"
         mc:Ignorable="d"
-        Title="SettingsWindow" Height="300" Width="392.161">
+        Title="SettingsWindow" Height="300" Width="390">
     <Window.Resources>
         <Style TargetType="TextBox">
             <Setter Property="VerticalContentAlignment" Value="Center"/>

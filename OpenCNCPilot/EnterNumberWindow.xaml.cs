@@ -28,6 +28,7 @@ namespace OpenCNCPilot
 		{
 			Value = defaultValue;
 			InitializeComponent();
+			textBox.SelectAll();
 		}
 
 		private void buttonCancel_Click(object sender, RoutedEventArgs e)

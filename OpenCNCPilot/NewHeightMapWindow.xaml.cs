@@ -1,17 +1,7 @@
 ﻿using OpenCNCPilot.Util;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace OpenCNCPilot
 {
@@ -113,11 +103,22 @@ namespace OpenCNCPilot
 			Max = max;
 
 			InitializeComponent();
+
+			EventManager.RegisterClassHandler(typeof(System.Windows.Controls.TextBox), GotKeyboardFocusEvent, new KeyboardFocusChangedEventHandler(OnGotKeyboardFocus));
+			FirstTextBox.SelectAll();
 		}
 
 		public NewHeightMapWindow() : this(LastMin, LastMax)
 		{
+			
+		}
 
+		void OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+		{
+			var textBox = sender as System.Windows.Controls.TextBox;
+
+			if (textBox != null && !textBox.IsReadOnly && e.KeyboardDevice.IsKeyDown(Key.Tab))
+				textBox.SelectAll();
 		}
 
 		private void Button_Click(object sender, RoutedEventArgs e)
