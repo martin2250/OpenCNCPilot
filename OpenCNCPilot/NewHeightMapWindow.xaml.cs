@@ -20,6 +20,12 @@ namespace OpenCNCPilot
 	/// </summary>
 	public partial class NewHeightMapWindow : Window
 	{
+		static Vector2 LastMin = new Vector2();
+		static Vector2 LastMax = new Vector2(100, 50);
+		static string LastTestPattern = "(x * x + y * y) / 1000.0";
+		static double LastGridSize = 5;
+		static bool LastGenTestPattern = false;
+
 		public event Action SelectedSizeChanged;
 		public event Action Size_Ok;
 
@@ -27,8 +33,8 @@ namespace OpenCNCPilot
 		public Vector2 Max;
 
 		public bool Ok { get; set; } = false;
-		public bool GenerateTestPattern { get; set; } = false;
-		public string TestPattern { get; set; } = "(x * x + y * y) / 1000.0";
+		public bool GenerateTestPattern { get; set; } = LastGenTestPattern;
+		public string TestPattern { get; set; } = LastTestPattern;
 
 		public double MinX
 		{
@@ -84,7 +90,7 @@ namespace OpenCNCPilot
 			}
 		}
 
-		private double _gridSize = 5;
+		private double _gridSize = LastGridSize;
 		public double GridSize
 		{
 			get { return _gridSize; }
@@ -109,14 +115,14 @@ namespace OpenCNCPilot
 			InitializeComponent();
 		}
 
-		public NewHeightMapWindow() : this(new Vector2(), new Vector2(100, 50))
+		public NewHeightMapWindow() : this(LastMin, LastMax)
 		{
 
 		}
 
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
-			if(Min.X > Max.X)
+			if (Min.X > Max.X)
 			{
 				double a = Min.X;
 				Min.X = Max.X;
@@ -131,6 +137,12 @@ namespace OpenCNCPilot
 			}
 
 			Ok = true;
+
+			LastMin = Min;
+			LastMax = Max;
+			LastGridSize = GridSize;
+			LastTestPattern = TestPattern;
+			LastGenTestPattern = GenerateTestPattern;
 
 			if (Size_Ok != null)
 				Size_Ok.Invoke();
