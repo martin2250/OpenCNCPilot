@@ -455,6 +455,7 @@ namespace OpenCNCPilot.GCode
 				A -= U;     //(AB) = vector from start to end of arc along the axes of the current plane
 				B -= V;
 
+				/*
 				double C = -B;  //(UV) = vector perpendicular to (AB)
 				double D = A;
 
@@ -476,6 +477,23 @@ namespace OpenCNCPilot.GCode
 
 				U += (A / 2) + C * (PerpLength);
 				V += (B / 2) + (D * PerpLength);
+				*/
+				//see grbl/gcode.c
+				double h_x2_div_d = 4.0 * (Radius * Radius) - (A * A + B * B);
+				if (h_x2_div_d < 0)
+				{
+					throw new ParseException("arc radius too small to reach both ends", lineNumber);
+				}
+
+				h_x2_div_d = -Math.Sqrt(h_x2_div_d) / Math.Sqrt(A * A + B * B);
+
+				if (MotionMode == 3 ^ Radius < 0)
+				{
+					h_x2_div_d = -h_x2_div_d;
+				}
+
+				U += 0.5 * (A - (B * h_x2_div_d));
+				V += 0.5 * (B + (A * h_x2_div_d));
 
 				Words.RemoveAt(i);
 				break;
