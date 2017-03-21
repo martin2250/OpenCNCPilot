@@ -10,6 +10,7 @@
 		AllowDrop="True"
 		Drop="Window_Drop"
 		DragEnter="Window_DragEnter"
+		DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Title="OpenCNCPilot by martin2250" Height="500" Width="900" Closing="Window_Closing">
     <Window.Resources>
         <ResourceDictionary Source="MainWindow.Resources.xaml"/>
@@ -167,7 +168,7 @@
                     <Expander Header="About">
                         <StackPanel>
                             <TextBlock TextAlignment="Center" FontSize="14" Padding="5">
-								<Span FontWeight="Bold" FontSize="15">OpenCNCPilot by martin2250</Span><LineBreak/>
+								<Span FontWeight="Bold" FontSize="15">OpenCNCPilot <Run Text="{Binding Version,Mode=OneWay}"/> by martin2250</Span><LineBreak/>
 								<Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="https://github.com/martin2250/OpenCNCPilot">Project Page</Hyperlink>
 								<Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="https://github.com/martin2250/OpenCNCPilot/issues">Help</Hyperlink>
                             </TextBlock>

@@ -85,6 +85,15 @@ namespace OpenCNCPilot
 			System.Diagnostics.Process.Start(e.Uri.AbsoluteUri);
 		}
 
+		public string Version
+		{
+			get
+			{
+				var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+				return $"{version}";
+			}
+		}
+
 		private void Window_Drop(object sender, DragEventArgs e)
 		{
 			if (e.Data.GetDataPresent(DataFormats.FileDrop))
