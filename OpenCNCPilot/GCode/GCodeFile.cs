@@ -130,7 +130,7 @@ namespace OpenCNCPilot.GCode
 			arc.Points = arcPoints;
 
 			sw.Stop();
-			System.Console.WriteLine("Generating the Toolpath Model took {0} ms", sw.ElapsedMilliseconds);
+			Console.WriteLine("Generating the Toolpath Model took {0} ms", sw.ElapsedMilliseconds);
 		}
 
 		public List<string> GetGCode()
@@ -312,12 +312,7 @@ namespace OpenCNCPilot.GCode
 
 			foreach (Command command in Toolpath)
 			{
-				if (command is MCode)
-				{
-					newToolPath.Add(command);
-					continue;
-				}
-				else
+				if (command is Motion)
 				{
 					Motion m = (Motion)command;
 
@@ -328,6 +323,11 @@ namespace OpenCNCPilot.GCode
 
 						newToolPath.Add(subMotion);
 					}
+				}
+				else
+				{
+					newToolPath.Add(command);
+					continue;
 				}
 			}
 
