@@ -223,13 +223,22 @@ namespace OpenCNCPilot.GCode
 
 				if (c is MCode)
 				{
-					GCode.Add($"M{((MCode)c).Code}");
+					int code = ((MCode)c).Code;
+                    if (!Settings.Default.GCodeIncludeMEnd)
+					{
+						if (code == 2 || code == 30)
+							continue;
+					}
+					GCode.Add($"M{code}");
 
 					continue;
 				}
 
 				if(c is Spindle)
 				{
+					if (!Settings.Default.GCodeIncludeSpindle)
+						continue;
+
 					GCode.Add(string.Format(nfi, "S{0}", ((Spindle)c).Speed));
 
 					continue;
@@ -237,6 +246,9 @@ namespace OpenCNCPilot.GCode
 
 				if(c is Dwell)
 				{
+					if (!Settings.Default.GCodeIncludeDwell)
+						continue;
+
 					GCode.Add(string.Format(nfi, "G4P{0}", ((Dwell)c).Seconds));
 
 					continue;

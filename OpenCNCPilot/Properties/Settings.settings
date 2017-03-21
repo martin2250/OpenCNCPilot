@@ -60,5 +60,14 @@
       <Value Profile="(Default)">Probe and set Zero:G38.2Z-10F20
 G92Z0;</Value>
     </Setting>
+    <Setting Name="GCodeIncludeSpindle" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="GCodeIncludeDwell" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="GCodeIncludeMEnd" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

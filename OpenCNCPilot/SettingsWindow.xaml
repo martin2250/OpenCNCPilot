@@ -63,5 +63,13 @@
                 <Label Content="Max Depth (mm)" HorizontalAlignment="Left" Margin="135,116,0,0" VerticalAlignment="Top"/>
             </Grid>
         </TabItem>
+
+        <TabItem Header="GCode">
+            <Grid>
+                <CheckBox Content="Include Spindle 'S' Commands" HorizontalAlignment="Left" Margin="116,10,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding GCodeIncludeSpindle}"/>
+                <CheckBox Content="Include Dwell 'G4' Commands" HorizontalAlignment="Left" Margin="116,30,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding GCodeIncludeDwell}"/>
+                <CheckBox Content="Include Program End (M2, M30)" HorizontalAlignment="Left" Margin="116,50,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding GCodeIncludeMEnd}"/>
+            </Grid>
+        </TabItem>
     </TabControl>
 </Window>

@@ -250,5 +250,41 @@ namespace OpenCNCPilot.Properties {
                 this["Macros"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool GCodeIncludeSpindle {
+            get {
+                return ((bool)(this["GCodeIncludeSpindle"]));
+            }
+            set {
+                this["GCodeIncludeSpindle"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool GCodeIncludeDwell {
+            get {
+                return ((bool)(this["GCodeIncludeDwell"]));
+            }
+            set {
+                this["GCodeIncludeDwell"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool GCodeIncludeMEnd {
+            get {
+                return ((bool)(this["GCodeIncludeMEnd"]));
+            }
+            set {
+                this["GCodeIncludeMEnd"] = value;
+            }
+        }
     }
 }
