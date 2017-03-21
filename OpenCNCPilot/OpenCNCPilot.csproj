@@ -87,6 +87,8 @@
     <Compile Include="GCode\GCodeCommands\Arc.cs" />
     <Compile Include="GCode\GCodeCommands\Command.cs" />
     <Compile Include="GCode\GCodeCommands\Line.cs" />
+    <Compile Include="GCode\GCodeCommands\Dwell.cs" />
+    <Compile Include="GCode\GCodeCommands\Spindle.cs" />
     <Compile Include="GCode\GCodeCommands\MCode.cs" />
     <Compile Include="GCode\GCodeCommands\Motion.cs" />
     <Compile Include="GCode\GCodeFile.cs" />

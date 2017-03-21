@@ -54,13 +54,13 @@ namespace OpenCNCPilot.GCode
 
 		private static Regex GCodeSplitter = new Regex(@"([A-Z])\s*(\-?\d+\.?\d*)", RegexOptions.Compiled);
 		private static double[] MotionCommands = new double[] { 0, 1, 2, 3 };
-		private static string ValidWords = "GMXYZIJKFR";
+		private static string ValidWords = "GMXYZIJKFRSP";
 		public static List<Command> Commands;
 
 		public static void Reset()
 		{
 			State = new ParserState();
-			Commands = new List<Command>();	//don't reuse, might be used elsewhere
+			Commands = new List<Command>(); //don't reuse, might be used elsewhere
 		}
 
 		static GCodeParser()
@@ -79,7 +79,7 @@ namespace OpenCNCPilot.GCode
 
 			var sw = System.Diagnostics.Stopwatch.StartNew();
 
-			foreach(string linei in file)
+			foreach (string linei in file)
 			{
 				string line = CleanupLine(linei, i);
 
@@ -162,6 +162,19 @@ namespace OpenCNCPilot.GCode
 					continue;
 				}
 
+				if (Words.First().Command == 'S')
+				{
+					double param = Words.First().Parameter;
+
+					if (param < 0)
+						throw new ParseException("Spindle Speed must be positive", lineNumber);
+
+					Commands.Add(new Spindle() { Speed = param });
+
+					Words.RemoveAt(0);
+					continue;
+				}
+
 				if (Words.First().Command == 'G' && !MotionCommands.Contains(Words.First().Parameter))
 				{
 					#region UnitPlaneDistanceMode
@@ -221,6 +234,19 @@ namespace OpenCNCPilot.GCode
 						State.Plane = ArcPlane.YZ;
 						Words.RemoveAt(0);
 						continue;
+					}
+					if (param == 4)
+					{
+						if (Words.Count >= 2 && Words[1].Command == 'P')
+						{
+							if (Words[1].Parameter < 0)
+								throw new ParseException("Negative dwell time", lineNumber);
+
+							Commands.Add(new Dwell() { Seconds = Words[1].Parameter });
+							Words.RemoveAt(0);
+							Words.RemoveAt(0);
+							continue;
+						}
 					}
 
 					Words.RemoveAt(0);  //unsupported G-Command
@@ -328,11 +354,11 @@ namespace OpenCNCPilot.GCode
 					if (Words[i].Command != 'I')
 						continue;
 
-					switch(State.Plane)
+					switch (State.Plane)
 					{
 						case ArcPlane.XY:
 							U = Words[i].Parameter * UnitMultiplier + ArcIncremental * State.Position.X;
-                            break;
+							break;
 						case ArcPlane.YZ:
 							throw new ParseException("Current Plane is YZ, I word is invalid", lineNumber);
 						case ArcPlane.ZX:
@@ -426,13 +452,13 @@ namespace OpenCNCPilot.GCode
 						break;
 				}
 
-				A -= U;		//(AB) = vector from start to end of arc along the axes of the current plane
+				A -= U;     //(AB) = vector from start to end of arc along the axes of the current plane
 				B -= V;
 
-				double C = -B;	//(UV) = vector perpendicular to (AB)
+				double C = -B;  //(UV) = vector perpendicular to (AB)
 				double D = A;
 
-				{	//normalize perpendicular vector
+				{   //normalize perpendicular vector
 					double perpLength = Math.Sqrt(C * C + D * D);
 					C /= perpLength;
 					D /= perpLength;

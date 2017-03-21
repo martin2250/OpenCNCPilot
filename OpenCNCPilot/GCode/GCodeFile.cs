@@ -227,6 +227,20 @@ namespace OpenCNCPilot.GCode
 
 					continue;
 				}
+
+				if(c is Spindle)
+				{
+					GCode.Add(string.Format(nfi, "S{0}", ((Spindle)c).Speed));
+
+					continue;
+				}
+
+				if(c is Dwell)
+				{
+					GCode.Add(string.Format(nfi, "G4P{0}", ((Dwell)c).Seconds));
+
+					continue;
+				}
 			}
 
 			return GCode;
