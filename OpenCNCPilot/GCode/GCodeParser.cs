@@ -141,6 +141,8 @@ namespace OpenCNCPilot.GCode
 					continue;
 
 				State.Feed = Words[i].Parameter;
+				if (State.Unit == ParseUnit.Imperial)
+					State.Feed *= 25.4;
 				Words.RemoveAt(i);
 				continue;
 			}
