@@ -1,5 +1,4 @@
 # OpenCNCPilot
-####autolevelling gcode-sender for grbl
 
 OpenCNCPilot is a GRBL compatible G-Code Sender.
 
@@ -13,11 +12,13 @@ The 3D viewport is managed with HelixToolkit.
 
 Here is a quick overview on YouTube [https://www.youtube.com/watch?v=XDCu3cgOjCY](https://www.youtube.com/watch?v=XDCu3cgOjCY)  
 
-###Installation
+### Installation
 Go to the [Releases section](https://github.com/martin2250/OpenCNCPilot/releases/latest) and download the latest binaries (or compile it from source).
 Unzip **all** files to your hard drive and run "OpenCNCPilot.exe"
 
-###Quick Start Guide
+Make sure to use GRBL version 1.1f (later versions may work but are yet untested)
+
+### Quick Start Guide
 Before the first run, you have to select a Serial Port, the selector is hidden in the Settings menu that you can access in the "Machine" tab. Other than that you don't need to modify any settings.  
 Now you can connect to your machine.
 
@@ -32,8 +33,8 @@ To probe the area, set up your work coordinate system by entering "G92 X0 Y0 Z0"
 Once it's done probing the surface, load the gcode file you want to run and hit the "Apply HeightMap" button in the "Edit" tab.
 Now you can run the code with the "Start" button in the "File" tab.
 
+##### Donations
 
-
-Since this project did get some attention, I'll include a donation button. Getting this application to a point where it's 'production-ready' took many days of non-stop work before and during the fist two semesters of my physics studies.  
+Since this project did get some attention, I'll include a donation button. Getting this application to a point where it's 'production-ready' took many days of non-stop work before and during the fist three semesters of my physics studies.  
 Please note that my programs will always be (ad-)free  
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7F783UGMYHRWN)
