@@ -55,6 +55,24 @@ namespace OpenCNCPilot
 				menu.Items.Add(editItem);
 				menu.Items.Add(removeItem);
 
+				if (i > 0)
+				{
+					MenuItem moveUpItem = new MenuItem();
+					moveUpItem.Header = "Move Up";
+
+					moveUpItem.Click += (s, e) =>
+					{
+						var macro = Macros[index];
+						Macros.RemoveAt(index);
+						Macros.Insert(index - 1, macro);
+
+						SaveMacros();
+						RefreshMacroButtons();
+					};
+
+					menu.Items.Add(moveUpItem);
+                }
+
 				b.ContextMenu = menu;
 
 				StackPanelMacros.Children.Add(b);
