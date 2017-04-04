@@ -33,8 +33,21 @@ To probe the area, set up your work coordinate system by entering "G92 X0 Y0 Z0"
 Once it's done probing the surface, load the gcode file you want to run and hit the "Apply HeightMap" button in the "Edit" tab.
 Now you can run the code with the "Start" button in the "File" tab.
 
-##### Donations
+### Notes
+The probing data is stored in an array of (double precision) floats, the intermediate values are obtained via bilinear interpolation between the four nearest points. All GCode commands whose length exceeds the GridSize are split up into sections smaller than the GridSize. This includes arcs.
 
+In the input files, arcs can be defined via center (IJ) coordinates or by a radius (R). The output file will always use IJ notation, absolute coordinates and metric units. Both relative coordinates and imperial units are supported, but are converted to the aforementioned format.
+
+#### Supported G-Codes:
+* G0, G1	linear motion
+* G2, G3	arc motion
+* G4 dwell
+* G20, G21	units
+* G90, G91	distance mode
+* S spindle speed
+* M M-codes
+
+#### Donations
 Since this project did get some attention, I'll include a donation button. Getting this application to a point where it's 'production-ready' took many days of non-stop work before and during the fist three semesters of my physics studies.  
 Please note that my programs will always be (ad-)free  
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7F783UGMYHRWN)
