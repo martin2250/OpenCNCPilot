@@ -21,6 +21,8 @@ namespace OpenCNCPilot
 
 		public MainWindow()
 		{
+			AppDomain.CurrentDomain.UnhandledException += UnhandledException;
+
 			InitializeComponent();
 
 			openFileDialogGCode.FileOk += OpenFileDialogGCode_FileOk;
@@ -53,6 +55,29 @@ namespace OpenCNCPilot
 			LoadMacros();
 
 			UpdateCheck.CheckForUpdate();
+		}
+
+		private void UnhandledException(object sender, UnhandledExceptionEventArgs ea)
+		{
+			Exception e = (Exception)ea.ExceptionObject;
+
+			string info = "Unhandled Exception:\r\nMessage:\r\n";
+			info += e.Message;
+			info += "\r\nStackTrace:\r\n";
+			info += e.StackTrace;
+			info += "\r\nToString():\r\n";
+			info += e.ToString();
+
+			MessageBox.Show(info);
+			Console.WriteLine(info);
+
+			try
+			{
+				System.IO.File.WriteAllText("OpenCNCPilot_Crash_Log.txt", info);
+			}
+			catch { }
+
+			System.Environment.Exit(1);
 		}
 
 		private void Default_SettingChanging(object sender, System.Configuration.SettingChangingEventArgs e)
