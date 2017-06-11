@@ -13,6 +13,7 @@ The 3D viewport is managed with HelixToolkit.
 Here is a quick overview on YouTube [https://www.youtube.com/watch?v=XDCu3cgOjCY](https://www.youtube.com/watch?v=XDCu3cgOjCY)  
 
 ### Installation
+**Install .NET 4.6**, this has been the cause of at least 6 support requests so far.  
 Go to the [Releases section](https://github.com/martin2250/OpenCNCPilot/releases/latest) and download the latest binaries (or compile it from source).
 Unzip **all** files to your hard drive and run "OpenCNCPilot.exe"
 
