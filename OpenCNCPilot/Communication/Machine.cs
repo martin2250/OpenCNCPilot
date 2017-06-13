@@ -644,32 +644,35 @@ namespace OpenCNCPilot.Communication
 			if (!Connected)
 				return;
 
-			//we use a Regex here so G91.1 etc don't get recognized as G91
-
-			foreach (Match m in GCodeSplitter.Matches(line))
+			try
 			{
-				if (m.Groups[1].Value != "G")
-					continue;
+				//we use a Regex here so G91.1 etc don't get recognized as G91
+				foreach (Match m in GCodeSplitter.Matches(line))
+				{
+					if (m.Groups[1].Value != "G")
+						continue;
 
-				float code = float.Parse(m.Groups[2].Value);
+					float code = float.Parse(m.Groups[2].Value, Constants.DecimalParseFormat);
 
-				if (code == 17)
-					Plane = ArcPlane.XY;
-				if (code == 18)
-					Plane = ArcPlane.YZ;
-				if (code == 19)
-					Plane = ArcPlane.ZX;
+					if (code == 17)
+						Plane = ArcPlane.XY;
+					if (code == 18)
+						Plane = ArcPlane.YZ;
+					if (code == 19)
+						Plane = ArcPlane.ZX;
 
-				if (code == 20)
-					Unit = ParseUnit.Imperial;
-				if (code == 21)
-					Unit = ParseUnit.Metric;
+					if (code == 20)
+						Unit = ParseUnit.Imperial;
+					if (code == 21)
+						Unit = ParseUnit.Metric;
 
-				if (code == 90)
-					DistanceMode = ParseDistanceMode.Absolute;
-				if (code == 91)
-					DistanceMode = ParseDistanceMode.Incremental;
+					if (code == 90)
+						DistanceMode = ParseDistanceMode.Absolute;
+					if (code == 91)
+						DistanceMode = ParseDistanceMode.Incremental;
+				}
 			}
+			catch { RaiseEvent(NonFatalException, "Error while Parsing Status Message"); }
 		}
 
 		private static Regex StatusEx = new Regex(@"(?<=[<|])(\w+):?(([0-9\.-]*),?([0-9\.-]*)?,?([0-9\.,-]*)?)?(?=[|>])", RegexOptions.Compiled);

@@ -77,7 +77,7 @@ namespace OpenCNCPilot
 			}
 			catch { }
 
-			System.Environment.Exit(1);
+			Environment.Exit(1);
 		}
 
 		private void Default_SettingChanging(object sender, System.Configuration.SettingChangingEventArgs e)
