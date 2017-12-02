@@ -75,5 +75,8 @@ G92Z0;</Value>
     <Setting Name="JogDistanceCtrl" Type="System.Double" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
+    <Setting Name="PauseFileOnHold" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

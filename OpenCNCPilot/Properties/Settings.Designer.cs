@@ -310,5 +310,17 @@ namespace OpenCNCPilot.Properties {
                 this["JogDistanceCtrl"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool PauseFileOnHold {
+            get {
+                return ((bool)(this["PauseFileOnHold"]));
+            }
+            set {
+                this["PauseFileOnHold"] = value;
+            }
+        }
     }
 }

@@ -204,6 +204,7 @@ namespace OpenCNCPilot.Communication
 		Queue Sent = Queue.Synchronized(new Queue());
 		Queue ToSend = Queue.Synchronized(new Queue());
 		Queue ToSendPriority = Queue.Synchronized(new Queue()); //contains characters (for soft reset, feed hold etc)
+		static string[] PauseCommands = new string[] { "M0", "M00", "M1", "M01" };
 
 		private void Work()
 		{
@@ -262,6 +263,14 @@ namespace OpenCNCPilot.Communication
 								if (FilePosition >= File.Count)
 								{
 									Mode = OperatingMode.Manual;
+								}
+
+								for (int index = 0; index < PauseCommands.Length; index++)
+								{
+									if (send_line.Contains(PauseCommands[index]) && Properties.Settings.Default.PauseFileOnHold)
+									{
+										Mode = OperatingMode.Manual;
+									}
 								}
 
 								continue;
