@@ -5,6 +5,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Media3D;
 
 namespace OpenCNCPilot
 {
@@ -188,14 +189,61 @@ namespace OpenCNCPilot
 
 			string format = "D" + digits;
 
-			int i = 1;
+			int lineNo = 1;
 
 			ListViewFile.Items.Clear();
 			foreach (string line in machine.File)
 			{
-				ListViewFile.Items.Add(new TextBlock() { Text = $"{i++.ToString(format)} : {line}" });
+				ListViewFile.Items.Add(new TextBlock() { Text = $"{lineNo++.ToString(format)} : {line}" });
 			}
 
+			if (ToolPath.Toolpath.Count > 0)
+			{
+				ModelFileBoundary.Points.Clear();
+				Point3DCollection boundary = new Point3DCollection();
+
+				Vector3 MinPoint = ToolPath.Min;
+				Vector3 MaxPoint = ToolPath.Max;
+
+				for (int ax = 0; ax < 3; ax++)
+				{
+					for (int mask = 0; mask < 4; mask++)
+					{
+						Vector3 point = MinPoint;
+
+						for (int i = 0; i < 2; i++)
+						{
+							// binary integer logic? hell yeah!
+							if (((mask >> i) & 0x01) == 1)
+							{
+								point[(ax + i + 1) % 3] = MaxPoint[(ax + i + 1) % 3];
+							}
+						}
+
+						boundary.Add(point.ToPoint3D());
+
+						point[ax] = MaxPoint[ax];
+						boundary.Add(point.ToPoint3D());
+					}
+				}
+
+				ModelFileBoundary.Points = boundary;
+
+				ModelTextMinPoint.Text = string.Format(Constants.DecimalOutputFormat, "({0}, {1}, {2})", MinPoint.X, MinPoint.Y, MinPoint.Z);
+				ModelTextMaxPoint.Text = string.Format(Constants.DecimalOutputFormat, "({0}, {1}, {2})", MaxPoint.X, MaxPoint.Y, MaxPoint.Z);
+				ModelTextMinPoint.Position = MinPoint.ToPoint3D();
+				ModelTextMaxPoint.Position = MaxPoint.ToPoint3D();
+				ModelFileBoundaryPoints.Points.Clear();
+				ModelFileBoundaryPoints.Points.Add(MinPoint.ToPoint3D());
+				ModelFileBoundaryPoints.Points.Add(MaxPoint.ToPoint3D());
+			}
+			else
+			{
+				ModelFileBoundary.Points.Clear();
+				ModelFileBoundaryPoints.Points.Clear();
+				ModelTextMinPoint.Text = "";
+				ModelTextMaxPoint.Text = "";
+			}
 		}
 
 		private void Machine_OperatingMode_Changed()

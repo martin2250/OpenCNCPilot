@@ -243,6 +243,10 @@
             </h:MeshGeometryVisual3D>
             <h:LinesVisual3D x:Name="ModelHeightMapBoundary" Thickness="2" Color="Lime"/>
             <h:PointsVisual3D x:Name="ModelHeightMapPoints" Color="Red" Size="4"/>
+			<h:LinesVisual3D x:Name="ModelFileBoundary" Color="GreenYellow" Thickness="2.5"/>
+            <h:PointsVisual3D x:Name="ModelFileBoundaryPoints" Color="Green" Size="8"/>
+            <h:TextVisual3D x:Name="ModelTextMinPoint" UpDirection="0,1,0" Height="7" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            <h:TextVisual3D x:Name="ModelTextMaxPoint" UpDirection="0,1,0" Height="7" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
         </h:HelixViewport3D>
     </Grid>
 </Window>
