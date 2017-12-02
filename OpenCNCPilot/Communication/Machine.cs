@@ -653,6 +653,9 @@ namespace OpenCNCPilot.Communication
 			if (!Connected)
 				return;
 
+			if (line.Contains("$J="))
+				return;
+
 			try
 			{
 				//we use a Regex here so G91.1 etc don't get recognized as G91
