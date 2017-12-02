@@ -95,7 +95,7 @@
                 </Border>
                 <Border Style="{StaticResource stylePanelOut}">
                     <Expander Header="Manual">
-                        <Grid Width="240" Height="150">
+                        <Grid Width="240" Height="174">
                             <TextBox Name="TextBoxManual" Height="23" Margin="10,10,51,0" PreviewKeyDown="TextBoxManual_PreviewKeyDown" VerticalAlignment="Top"/>
                             <Button Name="ButtonManualSend" Click="ButtonManualSend_Click" Style="{StaticResource styleButton}" Margin="0,10,10,0" Height="23" VerticalAlignment="Top" HorizontalAlignment="Right" Content="Send"/>
                             <Button Name="ButtonManualSetG10Zero" Click="ButtonManualSetG10Zero_Click" Style="{StaticResource styleButton}" Margin="80,38,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Content="Zero (G10)"
@@ -125,6 +125,10 @@
                                     <TextBox Name="TextBoxJogFeed" Text="{util:SettingBinding JogFeed}" VerticalContentAlignment="Center" HorizontalAlignment="Left" Height="23" Margin="50,34,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="40"/>
                                     <Label Content="Max Distance" HorizontalAlignment="Left" Margin="90,33,0,0" VerticalAlignment="Top"/>
                                     <TextBox Name="TextBoxJogDistance" Text="{util:SettingBinding JogDistance}" VerticalContentAlignment="Center"  HorizontalAlignment="Right" Height="23" Margin="0,34,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="40"/>
+                                    <Label Content="CtrlFeed" HorizontalAlignment="Left" Margin="10,61,0,0" VerticalAlignment="Top"/>
+                                    <TextBox Name="TextBoxJogFeedFine" Text="{util:SettingBinding JogFeedCtrl}" VerticalContentAlignment="Center" HorizontalAlignment="Left" Height="23" Margin="69,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="40"/>
+                                    <Label Content="Distance" HorizontalAlignment="Left" Margin="116,61,0,0" VerticalAlignment="Top"/>
+                                    <TextBox Name="TextBoxJogDistanceFine" Text="{util:SettingBinding JogDistanceCtrl}" VerticalContentAlignment="Center"  HorizontalAlignment="Right" Height="23" Margin="0,62,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="40"/>
                                 </Grid>
                             </GroupBox>
                         </Grid>
@@ -198,7 +202,7 @@
                 </ListBox.Resources>
             </ListBox>
         </Grid>
-        <h:HelixViewport3D Name="viewport" ShowViewCube="False" Panel.ZIndex="0">
+        <h:HelixViewport3D Name="viewport" ShowViewCube="False" Panel.ZIndex="0" PreviewKeyDown="viewport_PreviewKeyDown">
             <h:HelixViewport3D.Camera>
                 <PerspectiveCamera
 					Position="50, -150, 250"

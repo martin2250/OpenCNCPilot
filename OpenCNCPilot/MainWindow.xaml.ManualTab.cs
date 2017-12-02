@@ -2,6 +2,7 @@
 using OpenCNCPilot.Util;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Input;
 
 namespace OpenCNCPilot
 {
@@ -28,14 +29,14 @@ namespace OpenCNCPilot
 			ManualSend();
 		}
 
-		private void TextBoxManual_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+		private void TextBoxManual_PreviewKeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Key == System.Windows.Input.Key.Enter)
+			if (e.Key == Key.Enter)
 			{
 				e.Handled = true;
 				ManualSend();
 			}
-			else if (e.Key == System.Windows.Input.Key.Down)
+			else if (e.Key == Key.Down)
 			{
 				e.Handled = true;
 
@@ -51,7 +52,7 @@ namespace OpenCNCPilot
 					TextBoxManual.SelectionStart = TextBoxManual.Text.Length;
 				}
 			}
-			else if (e.Key == System.Windows.Input.Key.Up)
+			else if (e.Key == Key.Up)
 			{
 				e.Handled = true;
 
@@ -69,7 +70,7 @@ namespace OpenCNCPilot
 			if (machine.Mode != Machine.OperatingMode.Manual)
 				return;
 
-			TextBoxManual.Text = $"G10 L2 P0 X{machine.WorkPosition.X.ToString(Constants.DecimalOutputFormat)} Y{machine.WorkPosition.Y.ToString(Constants.DecimalOutputFormat)} Z{machine.WorkPosition.Z.ToString(Constants.DecimalOutputFormat)}";
+			TextBoxManual.Text = $"G10 L2 P0 X{machine.MachinePosition.X.ToString(Constants.DecimalOutputFormat)} Y{machine.MachinePosition.Y.ToString(Constants.DecimalOutputFormat)} Z{machine.MachinePosition.Z.ToString(Constants.DecimalOutputFormat)}";
 		}
 
 		private void ButtonManualSetG92Zero_Click(object sender, RoutedEventArgs e)
@@ -104,7 +105,7 @@ namespace OpenCNCPilot
 			machine.JogCancel();
 		}
 
-		private void Jogging_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+		private void Jogging_KeyDown(object sender, KeyEventArgs e)
 		{
 			if (!machine.Connected)
 				return;
@@ -122,40 +123,55 @@ namespace OpenCNCPilot
 
 			string direction = null;
 
-			if (e.Key == System.Windows.Input.Key.Right)
-				direction = "X";
-			if (e.Key == System.Windows.Input.Key.Left)
-				direction = "X-";
-			if (e.Key == System.Windows.Input.Key.Up)
-				direction = "Y";
-			if (e.Key == System.Windows.Input.Key.Down)
-				direction = "Y-";
-			if (e.Key == System.Windows.Input.Key.PageUp)
-				direction = "Z";
-			if (e.Key == System.Windows.Input.Key.PageDown)
-				direction = "Z-";
-			if (e.Key == System.Windows.Input.Key.Escape)
-				machine.SoftReset();
+			if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+			{
+				if (e.Key == Key.Up)
+					direction = "Z";
+				else if (e.Key == Key.Down)
+					direction = "Z-";
+				else
+					e.Handled = false;
+			}
+			else
+			{
+				if (e.Key == Key.Right)
+					direction = "X";
+				else if (e.Key == Key.Left)
+					direction = "X-";
+				else if (e.Key == Key.Up)
+					direction = "Y";
+				else if (e.Key == Key.Down)
+					direction = "Y-";
+				else if (e.Key == Key.PageUp)
+					direction = "Z";
+				else if (e.Key == Key.PageDown)
+					direction = "Z-";
+				else
+					e.Handled = false;
+			}
+
+			double feed = Properties.Settings.Default.JogFeed;
+			double distance = Properties.Settings.Default.JogDistance;
+
+			if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+			{
+				feed = Properties.Settings.Default.JogFeedCtrl;
+				distance = Properties.Settings.Default.JogDistanceCtrl;
+			}
 
 			if (direction != null)
 			{
-				machine.SendLine($"$J=G91F{Properties.Settings.Default.JogFeed}{direction}{Properties.Settings.Default.JogDistance}");
+				machine.SendLine($"$J=G91F{feed}{direction}{distance}");
 			}
 		}
 
-		private void Jogging_LostKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
+		private void Jogging_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
 		{
-			if (!machine.Connected)
-				return;
-
 			machine.JogCancel();
 		}
 
-		private void Jogging_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+		private void Jogging_KeyUp(object sender, KeyEventArgs e)
 		{
-			if (!machine.Connected)
-				return;
-
 			machine.JogCancel();
 		}
 	}

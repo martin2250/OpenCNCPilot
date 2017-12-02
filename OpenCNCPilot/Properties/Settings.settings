@@ -48,7 +48,7 @@
       <Value Profile="(Default)">8080</Value>
     </Setting>
     <Setting Name="JogFeed" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">100</Value>
+      <Value Profile="(Default)">1000</Value>
     </Setting>
     <Setting Name="JogDistance" Type="System.Double" Scope="User">
       <Value Profile="(Default)">10</Value>
@@ -68,6 +68,12 @@ G92Z0;</Value>
     </Setting>
     <Setting Name="GCodeIncludeMEnd" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="JogFeedCtrl" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">250</Value>
+    </Setting>
+    <Setting Name="JogDistanceCtrl" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1</Value>
     </Setting>
   </Settings>
 </SettingsFile>

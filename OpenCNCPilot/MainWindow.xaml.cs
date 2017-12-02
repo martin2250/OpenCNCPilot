@@ -185,5 +185,14 @@ namespace OpenCNCPilot
 
 			e.Effects = DragDropEffects.None;
 		}
+
+		private void viewport_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+		{
+			if(e.Key == System.Windows.Input.Key.Space)
+			{
+				machine.FeedHold();
+				e.Handled = true;
+			}
+		}
 	}
 }

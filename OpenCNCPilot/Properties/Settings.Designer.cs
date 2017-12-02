@@ -205,7 +205,7 @@ namespace OpenCNCPilot.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
         public double JogFeed {
             get {
                 return ((double)(this["JogFeed"]));
@@ -284,6 +284,30 @@ namespace OpenCNCPilot.Properties {
             }
             set {
                 this["GCodeIncludeMEnd"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("250")]
+        public double JogFeedCtrl {
+            get {
+                return ((double)(this["JogFeedCtrl"]));
+            }
+            set {
+                this["JogFeedCtrl"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public double JogDistanceCtrl {
+            get {
+                return ((double)(this["JogDistanceCtrl"]));
+            }
+            set {
+                this["JogDistanceCtrl"] = value;
             }
         }
     }
