@@ -75,20 +75,19 @@ namespace OpenCNCPilot.GCode
 
 		public static void Parse(IEnumerable<string> file)
 		{
-			int i = 1;
+			int i = 0;
 
 			var sw = System.Diagnostics.Stopwatch.StartNew();
 
 			foreach (string linei in file)
 			{
+				i++;
 				string line = CleanupLine(linei, i);
 
 				if (string.IsNullOrWhiteSpace(line))
 					continue;
 
 				Parse(line.ToUpper(), i);
-
-				i++;
 			}
 
 			sw.Stop();
@@ -147,114 +146,124 @@ namespace OpenCNCPilot.GCode
 				continue;
 			}
 
-			while (Words.Count > 0)
+			for(int i = 0; i < Words.Count; i++)
 			{
-				if (Words.First().Command == 'M')
+				if (Words[i].Command == 'M')
 				{
-					int param = (int)Words.First().Parameter;
+					int param = (int)Words[i].Parameter;
 
-					if (param != Words.First().Parameter || param < 0)
+					if (param != Words[i].Parameter || param < 0)
 						throw new ParseException("MCode can only have integer parameters", lineNumber);
 
 					Commands.Add(new MCode() { Code = param });
 
-					Words.RemoveAt(0);
+					Words.RemoveAt(i);
+					i--;
 					continue;
 				}
 
-				if (Words.First().Command == 'S')
+				if (Words[i].Command == 'S')
 				{
-					double param = Words.First().Parameter;
+					double param = Words[i].Parameter;
 
 					if (param < 0)
 						throw new ParseException("Spindle Speed must be positive", lineNumber);
 
 					Commands.Add(new Spindle() { Speed = param });
 
-					Words.RemoveAt(0);
+					Words.RemoveAt(i);
+					i--;
 					continue;
 				}
 
-				if (Words.First().Command == 'G' && !MotionCommands.Contains(Words.First().Parameter))
+				if (Words[i].Command == 'G' && !MotionCommands.Contains(Words[i].Parameter))
 				{
 					#region UnitPlaneDistanceMode
 
-					double param = Words.First().Parameter;
+					double param = Words[i].Parameter;
 
 					if (param == 90)
 					{
 						State.DistanceMode = ParseDistanceMode.Absolute;
-						Words.RemoveAt(0);
+						Words.RemoveAt(i);
+						i--;
 						continue;
 					}
 					if (param == 91)
 					{
 						State.DistanceMode = ParseDistanceMode.Incremental;
-						Words.RemoveAt(0);
+						Words.RemoveAt(i);
+						i--;
 						continue;
 					}
 					if (param == 90.1)
 					{
 						State.ArcDistanceMode = ParseDistanceMode.Absolute;
-						Words.RemoveAt(0);
+						Words.RemoveAt(i);
 						continue;
 					}
 					if (param == 91.1)
 					{
 						State.ArcDistanceMode = ParseDistanceMode.Incremental;
-						Words.RemoveAt(0);
+						Words.RemoveAt(i);
+						i--;
 						continue;
 					}
 					if (param == 21)
 					{
 						State.Unit = ParseUnit.Metric;
-						Words.RemoveAt(0);
+						Words.RemoveAt(i);
+						i--;
 						continue;
 					}
 					if (param == 20)
 					{
 						State.Unit = ParseUnit.Imperial;
-						Words.RemoveAt(0);
+						Words.RemoveAt(i);
+						i--;
 						continue;
 					}
 					if (param == 17)
 					{
 						State.Plane = ArcPlane.XY;
-						Words.RemoveAt(0);
+						Words.RemoveAt(i);
+						i--;
 						continue;
 					}
 					if (param == 18)
 					{
 						State.Plane = ArcPlane.ZX;
-						Words.RemoveAt(0);
+						Words.RemoveAt(i);
+						i--;
 						continue;
 					}
 					if (param == 19)
 					{
 						State.Plane = ArcPlane.YZ;
-						Words.RemoveAt(0);
+						Words.RemoveAt(i);
+						i--;
 						continue;
 					}
 					if (param == 4)
 					{
-						if (Words.Count >= 2 && Words[1].Command == 'P')
+						if (Words.Count >= 2 && Words[i + 1].Command == 'P')
 						{
-							if (Words[1].Parameter < 0)
+							if (Words[i + 1].Parameter < 0)
 								throw new ParseException("Negative dwell time", lineNumber);
 
-							Commands.Add(new Dwell() { Seconds = Words[1].Parameter });
-							Words.RemoveAt(0);
-							Words.RemoveAt(0);
+							Commands.Add(new Dwell() { Seconds = Words[i + 1].Parameter });
+							Words.RemoveAt(i + 1);
+							Words.RemoveAt(i);
+							i--;
 							continue;
 						}
 					}
 
-					Words.RemoveAt(0);  //unsupported G-Command
+					Words.RemoveAt(i);  //unsupported G-Command
+					i--;
 					continue;
 					#endregion
 				}
-
-				break;
 			}
 
 			if (Words.Count == 0)
