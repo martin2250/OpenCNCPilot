@@ -81,7 +81,6 @@ namespace OpenCNCPilot.Communication
 			private set
 			{
 				_filePosition = value;
-				RaiseEvent(FilePositionChanged);
 			}
 		}
 
@@ -234,6 +233,9 @@ namespace OpenCNCPilot.Communication
 				DateTime LastStatusPoll = DateTime.Now + TimeSpan.FromSeconds(0.5);
 				DateTime StartTime = DateTime.Now;
 
+				DateTime LastFilePosUpdate = DateTime.Now;
+				bool filePosChanged = false;
+
 				writer.Write("\n$G\n");
 				writer.Flush();
 
@@ -282,6 +284,8 @@ namespace OpenCNCPilot.Communication
 									Mode = OperatingMode.Manual;
 								}
 
+								filePosChanged = true;
+
 								continue;
 							}
 						}
@@ -316,6 +320,14 @@ namespace OpenCNCPilot.Communication
 							writer.Write('?');
 							writer.Flush();
 							LastStatusPoll = Now;
+						}
+
+						//only update file pos every X ms
+						if(filePosChanged && (Now - LastFilePosUpdate).TotalMilliseconds > 500)
+						{
+							RaiseEvent(FilePositionChanged);
+							LastFilePosUpdate = Now;
+							filePosChanged = false;
 						}
 
 						Thread.Sleep(WaitTime);
@@ -593,6 +605,8 @@ namespace OpenCNCPilot.Communication
 			PauseLines = new ReadOnlyCollection<bool>(pauselines);
 
 			FilePosition = 0;
+
+			RaiseEvent(FilePositionChanged);
 		}
 
 		public void ClearFile()
@@ -605,6 +619,7 @@ namespace OpenCNCPilot.Communication
 
 			File = new ReadOnlyCollection<string>(new string[0]);
 			FilePosition = 0;
+			RaiseEvent(FilePositionChanged);
 		}
 
 		public void FileStart()
@@ -687,6 +702,8 @@ namespace OpenCNCPilot.Communication
 			}
 
 			FilePosition = lineNumber;
+
+			RaiseEvent(FilePositionChanged);
 		}
 
 		public void ClearQueue()
