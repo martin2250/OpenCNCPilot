@@ -44,11 +44,15 @@ namespace OpenCNCPilot.Communication
 		public event Action OperatingModeChanged;
 		public event Action FileChanged;
 		public event Action FilePositionChanged;
+		public event Action OverrideChanged;
 
 		public Vector3 MachinePosition { get; private set; } = new Vector3();   //No events here, the parser triggers a single event for both
 		public Vector3 WorkOffset { get; private set; } = new Vector3();
 		public Vector3 WorkPosition { get { return MachinePosition - WorkOffset; } }
 
+		public int FeedOverride { get; private set; } = 100;
+		public int RapidOverride { get; private set; } = 100;
+		public int SpindleOverride { get; private set; } = 100;
 		private ReadOnlyCollection<string> _file = new ReadOnlyCollection<string>(new string[0]);
 		public ReadOnlyCollection<string> File
 		{
@@ -452,6 +456,13 @@ namespace OpenCNCPilot.Communication
 			Plane = ArcPlane.XY;
 			BufferState = 0;
 
+			FeedOverride = 100;
+			RapidOverride = 100;
+			SpindleOverride = 100;
+
+			if (OverrideChanged != null)
+				OverrideChanged.Invoke();
+
 			ToSend.Clear();
 			ToSendPriority.Clear();
 			Sent.Clear();
@@ -490,6 +501,25 @@ namespace OpenCNCPilot.Communication
 			ToSendPriority.Enqueue((char)0x18);
 
 			BufferState = 0;
+
+			FeedOverride = 100;
+			RapidOverride = 100;
+			SpindleOverride = 100;
+
+			if (OverrideChanged != null)
+				OverrideChanged.Invoke();
+		}
+
+		//probably shouldn't expose this, but adding overrides would be much more effort otherwise
+		public void SendControl(byte controlchar)
+		{
+			if (!Connected)
+			{
+				RaiseEvent(Info, "Not Connected");
+				return;
+			}
+
+			ToSendPriority.Enqueue((char)controlchar);
 		}
 
 		public void FeedHold()
@@ -703,6 +733,7 @@ namespace OpenCNCPilot.Communication
 			}
 
 			bool posUpdate = false;
+			bool overrideUpdate = false;
 
 			foreach (Match m in statusMatch)
 			{
@@ -710,6 +741,19 @@ namespace OpenCNCPilot.Communication
 				{
 					Status = m.Groups[1].Value;
 					continue;
+				}
+
+				if(m.Groups[1].Value == "Ov")
+				{
+					try
+					{
+						string[] parts = m.Groups[2].Value.Split(',');
+						FeedOverride = int.Parse(parts[0]);
+						RapidOverride = int.Parse(parts[1]);
+						SpindleOverride = int.Parse(parts[2]);
+						overrideUpdate = true;
+					}
+					catch { NonFatalException.Invoke(string.Format("Received Bad Status: '{0}'", line)); }
 				}
 
 				if (m.Groups[1].Value == "WCO")
@@ -768,6 +812,9 @@ namespace OpenCNCPilot.Communication
 
 			if (posUpdate && Connected && PositionUpdateReceived != null)
 				PositionUpdateReceived.Invoke();
+
+			if (overrideUpdate && Connected && OverrideChanged != null)
+				OverrideChanged.Invoke();
 		}
 
 		private static Regex ProbeEx = new Regex(@"\[PRB:(?'Pos'[-0-9\.]*,[-0-9\.]*,[-0-9\.]*):(?'Success'0|1)\]", RegexOptions.Compiled);

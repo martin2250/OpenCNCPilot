@@ -252,6 +252,7 @@ namespace OpenCNCPilot
 			ButtonUnit.IsEnabled = machine.Mode == Machine.OperatingMode.Manual;
 			ButtonArcPlane.IsEnabled = machine.Mode == Machine.OperatingMode.Manual;
 			ButtonStatus.IsEnabled = machine.Mode == Machine.OperatingMode.Manual;
+			ButtonFeedRateOvr.IsEnabled = machine.Mode != Machine.OperatingMode.Disconnected;
 
 			ButtonFeedHold.IsEnabled = machine.Mode != Machine.OperatingMode.Disconnected;
 			ButtonCycleStart.IsEnabled = machine.Mode != Machine.OperatingMode.Disconnected;
@@ -283,6 +284,8 @@ namespace OpenCNCPilot
 
 			ButtonSyncBuffer.IsEnabled = machine.Mode == Machine.OperatingMode.Manual;
 
+			StackPanelOverrides.IsEnabled = machine.Mode != Machine.OperatingMode.Disconnected;
+
 			UpdateProbeTabButtons();
 		}
 
@@ -292,6 +295,13 @@ namespace OpenCNCPilot
 			ButtonDisconnect.Visibility = machine.Connected ? Visibility.Visible : Visibility.Collapsed;
 
 			ButtonSettings.IsEnabled = !machine.Connected;
+		}
+
+		private void Machine_OverrideChanged()
+		{
+			ButtonFeedRateOvr.Content = $"Feed: {machine.FeedOverride}%";
+			LabelFeedOvr.Content = $"Feed: {machine.FeedOverride}%";
+			LabelRapidOvr.Content = $"Rapid: {machine.RapidOverride}%";
 		}
 	}
 }

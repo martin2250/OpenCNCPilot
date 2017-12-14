@@ -24,6 +24,7 @@
                         <Button Name="ButtonArcPlane" Content="XY-Plane" Click="ButtonArcPlane_Click" Style="{StaticResource styleButton}" Margin="5,5,0,5" ToolTip="Arc Plane - Click to Reset to XY"/>
                         <Button Name="ButtonUnit" Content="Metric" Click="ButtonUnit_Click" Style="{StaticResource styleButton}" Margin="5,5,0,5"  ToolTip="Unit System - Click to Toggle"/>
                         <Button Name="ButtonStatus" Content="Disconnected" Click="ButtonStatus_Click" Style="{StaticResource styleButton}" Margin="5,5,0,5"  ToolTip="Machine Status - Click to send $X to unlock"/>
+                        <Button Name="ButtonFeedRateOvr" Content="Feed: 100%" Click="ButtonFeedOverride_Click" Tag="100%" Style="{StaticResource styleButton}" Margin="5,5,0,5"  ToolTip="Feed Rate Override - Click to reset"/>
 
                         <Button Name="ButtonFeedHold" Click="ButtonFeedHold_Click" Content="Hold" Style="{StaticResource styleButton}" Margin="35,5,0,5"/>
                         <Button Name="ButtonCycleStart" Click="ButtonCycleStart_Click" Content="Start" Style="{StaticResource styleButton}" Margin="5,5,0,5"/>
@@ -75,6 +76,26 @@
                             <Button Name="ButtonEditArcToLines" Click="ButtonEditArcToLines_Click" Content="ArcsToLines" Style="{StaticResource styleButton}" ToolTip="Replaces all Arcs with G1 straight moves"/>
                             <Button Name="ButtonEditSplit" Click="ButtonEditSplit_Click" Content="Split" Style="{StaticResource styleButton}" ToolTip="Splits all motions into motions with a maximum user-selectable length"/>
                         </WrapPanel>
+                    </Expander>
+                </Border>
+                <Border Style="{StaticResource stylePanelOut}">
+                    <Expander Header="Overrides">
+                        <StackPanel Name="StackPanelOverrides">
+                            <Label Content="Rapid:" Name="LabelRapidOvr"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Click="ButtonRapidOverride_Click" Content="100%" Style="{StaticResource styleButton}" Tag="100"/>
+                                <Button Click="ButtonRapidOverride_Click" Content="50%" Style="{StaticResource styleButton}"  Tag="50"/>
+                                <Button Click="ButtonRapidOverride_Click" Content="25%" Style="{StaticResource styleButton}" Tag="25"/>
+                            </StackPanel>
+                            <Label Content="Feed:" Name="LabelFeedOvr"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Click="ButtonFeedOverride_Click" Content="+10%" Style="{StaticResource styleButton}" Tag="+10%"/>
+                                <Button Click="ButtonFeedOverride_Click" Content="+1%" Style="{StaticResource styleButton}" Tag="+1%"/>
+                                <Button Click="ButtonFeedOverride_Click" Content="100%" Style="{StaticResource styleButton}" Tag="100%"/>
+                                <Button Click="ButtonFeedOverride_Click" Content="-1%" Style="{StaticResource styleButton}" Tag="-1%"/>
+                                <Button Click="ButtonFeedOverride_Click" Content="-10%" Style="{StaticResource styleButton}" Tag="-10%"/>
+                            </StackPanel>
+                        </StackPanel>
                     </Expander>
                 </Border>
                 <Border Style="{StaticResource stylePanelOut}">
