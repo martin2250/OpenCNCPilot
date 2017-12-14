@@ -53,14 +53,23 @@ namespace OpenCNCPilot.Communication
 		public int FeedOverride { get; private set; } = 100;
 		public int RapidOverride { get; private set; } = 100;
 		public int SpindleOverride { get; private set; } = 100;
+
+		private ReadOnlyCollection<bool> _pauselines = new ReadOnlyCollection<bool>(new bool[0]);
+		public ReadOnlyCollection<bool> PauseLines
+		{
+			get { return _pauselines; }
+			private set { _pauselines = value; }
+		}
+
 		private ReadOnlyCollection<string> _file = new ReadOnlyCollection<string>(new string[0]);
 		public ReadOnlyCollection<string> File
 		{
 			get { return _file; }
-			set
+			private set
 			{
 				_file = value;
 				FilePosition = 0;
+
 				RaiseEvent(FileChanged);
 			}
 		}
@@ -208,7 +217,6 @@ namespace OpenCNCPilot.Communication
 		Queue Sent = Queue.Synchronized(new Queue());
 		Queue ToSend = Queue.Synchronized(new Queue());
 		Queue ToSendPriority = Queue.Synchronized(new Queue()); //contains characters (for soft reset, feed hold etc)
-		static string[] PauseCommands = new string[] { "M0", "M00", "M1", "M01" };
 
 		private void Work()
 		{
@@ -249,7 +257,7 @@ namespace OpenCNCPilot.Communication
 						{
 							if (File.Count > FilePosition && (File[FilePosition].Length + 1) < (ControllerBufferSize - BufferState))
 							{
-								string send_line = File[FilePosition++];
+								string send_line = File[FilePosition];
 
 								writer.Write(send_line);
 								writer.Write('\n');
@@ -264,17 +272,14 @@ namespace OpenCNCPilot.Communication
 
 								Sent.Enqueue(send_line);
 
-								if (FilePosition >= File.Count)
+								if (PauseLines[FilePosition] && Properties.Settings.Default.PauseFileOnHold)
 								{
 									Mode = OperatingMode.Manual;
 								}
 
-								for (int index = 0; index < PauseCommands.Length; index++)
+								if (++FilePosition >= File.Count)
 								{
-									if (send_line.Contains(PauseCommands[index]) && Properties.Settings.Default.PauseFileOnHold)
-									{
-										Mode = OperatingMode.Manual;
-									}
+									Mode = OperatingMode.Manual;
 								}
 
 								continue;
@@ -377,7 +382,7 @@ namespace OpenCNCPilot.Communication
 			}
 			catch (Exception ex)
 			{
-				RaiseEvent(ReportError, $"Fatal Error: {ex.Message}");
+				RaiseEvent(ReportError, $"Fatal Error in Work Loop: {ex.Message}");
 				Disconnect();
 			}
 		}
@@ -563,7 +568,30 @@ namespace OpenCNCPilot.Communication
 				return;
 			}
 
+			bool[] pauselines = new bool[file.Count];
+
+			for (int line = 0; line < file.Count; line++)
+			{
+				var matches = GCodeParser.GCodeSplitter.Matches(file[line]);
+
+				foreach (Match m in matches)
+				{
+					if (m.Groups[1].Value == "M")
+					{
+						int code = int.MinValue;
+
+						if (int.TryParse(m.Groups[2].Value, out code))
+						{
+							if (code == 0 || code == 1 || code == 2 || code == 30)
+								pauselines[line] = true;
+						}
+					}
+				}
+			}
+
 			File = new ReadOnlyCollection<string>(file);
+			PauseLines = new ReadOnlyCollection<bool>(pauselines);
+
 			FilePosition = 0;
 		}
 

@@ -52,7 +52,7 @@ namespace OpenCNCPilot.GCode
 	{
 		public static ParserState State;
 
-		private static Regex GCodeSplitter = new Regex(@"([A-Z])\s*(\-?\d+\.?\d*)", RegexOptions.Compiled);
+		public static Regex GCodeSplitter = new Regex(@"([A-Z])\s*(\-?\d+\.?\d*)", RegexOptions.Compiled);
 		private static double[] MotionCommands = new double[] { 0, 1, 2, 3 };
 		private static string ValidWords = "GMXYZIJKFRSP";
 		public static List<Command> Commands;
