@@ -152,6 +152,8 @@ namespace OpenCNCPilot.Util
 			return new Point3D(X, Y, z);
 		}
 
+		public double Magnitude { get { return Math.Sqrt(X * X + Y * Y); } }
+
 		public const double EqualityTolerence = double.Epsilon;
 	}
 }

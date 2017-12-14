@@ -7,8 +7,8 @@ using System.Windows;
 
 namespace OpenCNCPilot
 {
-    partial class MainWindow
-    {
+	partial class MainWindow
+	{
 		void UpdateProbeTabButtons()
 		{
 			ButtonHeightMapCreateNew.IsEnabled = Map == null;
@@ -69,7 +69,7 @@ namespace OpenCNCPilot
 				return;
 
 			Map = new HeightMap(NewHeightMapDialog.GridSize, NewHeightMapDialog.Min, NewHeightMapDialog.Max);
-			
+
 			if (NewHeightMapDialog.GenerateTestPattern)
 			{
 				try
@@ -171,7 +171,17 @@ namespace OpenCNCPilot
 				return;
 			}
 
-			Vector2 nextPoint = Map.GetCoordinates(Map.NotProbed.Peek().Item1, Map.NotProbed.Peek().Item2);
+			Map.NotProbed.Sort(
+				delegate (Tuple<int, int> a, Tuple<int, int> b)
+				{
+					Vector2 va = Map.GetCoordinates(a) - machine.WorkPosition.GetXY();
+					va.X *= Properties.Settings.Default.ProbeXAxisWeight;
+					Vector2 vb = Map.GetCoordinates(b) - machine.WorkPosition.GetXY();
+					vb.X *= Properties.Settings.Default.ProbeXAxisWeight;
+					return va.Magnitude.CompareTo(vb.Magnitude);
+				});
+
+			Vector2 nextPoint = Map.GetCoordinates(Map.NotProbed[0].Item1, Map.NotProbed[0].Item2);
 
 			machine.SendLine($"G0X{nextPoint.X.ToString("0.###", Constants.DecimalOutputFormat)}Y{nextPoint.Y.ToString("0.###", Constants.DecimalOutputFormat)}");
 
@@ -201,7 +211,8 @@ namespace OpenCNCPilot
 				return;
 			}
 
-			Tuple<int, int> lastPoint = Map.NotProbed.Dequeue();
+			Tuple<int, int> lastPoint = Map.NotProbed[0];
+			Map.NotProbed.RemoveAt(0);
 
 			Map.AddPoint(lastPoint.Item1, lastPoint.Item2, position.Z);
 

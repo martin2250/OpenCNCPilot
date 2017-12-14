@@ -18,7 +18,7 @@ namespace OpenCNCPilot.GCode
 		public int Progress { get { return TotalPoints - NotProbed.Count; } }
 		public int TotalPoints { get { return SizeX * SizeY; } }
 
-		public Queue<Tuple<int, int>> NotProbed { get; private set; } = new Queue<Tuple<int, int>>();
+		public List<Tuple<int, int>> NotProbed { get; private set; } = new List<Tuple<int, int>>();
 
 		public Vector2 Min { get; private set; }
 		public Vector2 Max { get; private set; }
@@ -67,16 +67,11 @@ namespace OpenCNCPilot.GCode
 			SizeX = pointsX;
 			SizeY = pointsY;
 
+			
 			for (int x = 0; x < SizeX; x++)
 			{
 				for (int y = 0; y < SizeY; y++)
-					NotProbed.Enqueue(new Tuple<int, int>(x, y));
-
-				if (++x >= SizeX)
-					break;
-
-				for (int y = SizeY - 1; y >= 0; y--)
-					NotProbed.Enqueue(new Tuple<int, int>(x, y));
+					NotProbed.Add(new Tuple<int, int>(x, y));
 			}
 		}
 
@@ -109,6 +104,11 @@ namespace OpenCNCPilot.GCode
 		public Vector2 GetCoordinates(int x, int y)
 		{
 			return new Vector2(x * (Delta.X / (SizeX - 1)) + Min.X, y * (Delta.Y / (SizeY - 1)) + Min.Y);
+		}
+
+		public Vector2 GetCoordinates(Tuple<int, int> index)
+		{
+			return GetCoordinates(index.Item1, index.Item2);
 		}
 
 		private HeightMap()
@@ -170,14 +170,7 @@ namespace OpenCNCPilot.GCode
 			{
 				for (int y = 0; y < map.SizeY; y++)
 					if (!map.Points[x, y].HasValue)
-						map.NotProbed.Enqueue(new Tuple<int, int>(x, y));
-
-				if (++x >= map.SizeX)
-					break;
-
-				for (int y = map.SizeY - 1; y >= 0; y--)
-					if (!map.Points[x, y].HasValue)
-						map.NotProbed.Enqueue(new Tuple<int, int>(x, y));
+						map.NotProbed.Add(new Tuple<int, int>(x, y));
 			}
 
 			return map;

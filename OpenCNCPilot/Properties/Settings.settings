@@ -78,5 +78,8 @@ G92Z0;</Value>
     <Setting Name="PauseFileOnHold" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="ProbeXAxisWeight" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.95</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

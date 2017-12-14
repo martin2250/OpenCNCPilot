@@ -90,7 +90,8 @@ namespace OpenCNCPilot
 				e.SettingName.Equals("ProbeMaxDepth") ||
 				e.SettingName.Equals("SplitSegmentLength") ||
 				e.SettingName.Equals("ViewportArcSplit") ||
-				e.SettingName.Equals("ArcToLineSegmentLength"))
+				e.SettingName.Equals("ArcToLineSegmentLength") ||
+				e.SettingName.Equals("ProbeXAxisWeight"))
 			{
 				if (((double)e.NewValue) <= 0)
 					e.Cancel = true;
