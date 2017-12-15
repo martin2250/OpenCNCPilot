@@ -239,8 +239,8 @@ namespace OpenCNCPilot
 
 				ModelFileBoundary.Points = boundary;
 
-				ModelTextMinPoint.Text = string.Format(Constants.DecimalOutputFormat, "({0}, {1}, {2})", MinPoint.X, MinPoint.Y, MinPoint.Z);
-				ModelTextMaxPoint.Text = string.Format(Constants.DecimalOutputFormat, "({0}, {1}, {2})", MaxPoint.X, MaxPoint.Y, MaxPoint.Z);
+				ModelTextMinPoint.Text = string.Format(Constants.DecimalOutputFormat, "({0:0.###}, {1:0.###}, {2:0.###})", MinPoint.X, MinPoint.Y, MinPoint.Z);
+				ModelTextMaxPoint.Text = string.Format(Constants.DecimalOutputFormat, "({0:0.###}, {1:0.###}, {2:0.###})", MaxPoint.X, MaxPoint.Y, MaxPoint.Z);
 				ModelTextMinPoint.Position = MinPoint.ToPoint3D();
 				ModelTextMaxPoint.Position = MaxPoint.ToPoint3D();
 				ModelFileBoundaryPoints.Points.Clear();
