@@ -158,7 +158,12 @@ namespace OpenCNCPilot
 			LabelFilePosition.Content = machine.FilePosition;
 
 			if (ListViewFile.SelectedItem is TextBlock)
-				((TextBlock)ListViewFile.SelectedItem).Background = Brushes.Transparent;
+			{
+				if(ListViewFile.SelectedIndex >= 0 && machine.PauseLines[ListViewFile.SelectedIndex])
+					((TextBlock)ListViewFile.SelectedItem).Background = Brushes.YellowGreen;
+				else
+					((TextBlock)ListViewFile.SelectedItem).Background = Brushes.Transparent;
+			}
 
 			ListViewFile.SelectedIndex = machine.FilePosition;
 
@@ -189,12 +194,17 @@ namespace OpenCNCPilot
 
 			string format = "D" + digits;
 
-			int lineNo = 1;
 
 			ListViewFile.Items.Clear();
-			foreach (string line in machine.File)
+
+			for(int line = 0; line < machine.File.Count; line++)
 			{
-				ListViewFile.Items.Add(new TextBlock() { Text = $"{lineNo++.ToString(format)} : {line}" });
+				TextBlock tb = new TextBlock() { Text = $"{(line + 1).ToString(format)} : {machine.File[line]}" };
+
+				if (machine.PauseLines[line])
+					tb.Background = Brushes.YellowGreen;
+
+				ListViewFile.Items.Add(tb);
 			}
 
 			if (ToolPath.ContainsMotion)
@@ -252,6 +262,7 @@ namespace OpenCNCPilot
 			ButtonUnit.IsEnabled = machine.Mode == Machine.OperatingMode.Manual;
 			ButtonArcPlane.IsEnabled = machine.Mode == Machine.OperatingMode.Manual;
 			ButtonStatus.IsEnabled = machine.Mode == Machine.OperatingMode.Manual;
+			ButtonFeedRateOvr.IsEnabled = machine.Mode != Machine.OperatingMode.Disconnected;
 
 			ButtonFeedHold.IsEnabled = machine.Mode != Machine.OperatingMode.Disconnected;
 			ButtonCycleStart.IsEnabled = machine.Mode != Machine.OperatingMode.Disconnected;
@@ -283,6 +294,8 @@ namespace OpenCNCPilot
 
 			ButtonSyncBuffer.IsEnabled = machine.Mode == Machine.OperatingMode.Manual;
 
+			StackPanelOverrides.IsEnabled = machine.Mode != Machine.OperatingMode.Disconnected;
+
 			UpdateProbeTabButtons();
 		}
 
@@ -292,6 +305,13 @@ namespace OpenCNCPilot
 			ButtonDisconnect.Visibility = machine.Connected ? Visibility.Visible : Visibility.Collapsed;
 
 			ButtonSettings.IsEnabled = !machine.Connected;
+		}
+
+		private void Machine_OverrideChanged()
+		{
+			ButtonFeedRateOvr.Content = $"Feed: {machine.FeedOverride}%";
+			LabelFeedOvr.Content = $"Feed: {machine.FeedOverride}%";
+			LabelRapidOvr.Content = $"Rapid: {machine.RapidOverride}%";
 		}
 	}
 }

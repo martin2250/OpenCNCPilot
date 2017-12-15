@@ -44,19 +44,32 @@ namespace OpenCNCPilot.Communication
 		public event Action OperatingModeChanged;
 		public event Action FileChanged;
 		public event Action FilePositionChanged;
+		public event Action OverrideChanged;
 
 		public Vector3 MachinePosition { get; private set; } = new Vector3();   //No events here, the parser triggers a single event for both
 		public Vector3 WorkOffset { get; private set; } = new Vector3();
 		public Vector3 WorkPosition { get { return MachinePosition - WorkOffset; } }
 
+		public int FeedOverride { get; private set; } = 100;
+		public int RapidOverride { get; private set; } = 100;
+		public int SpindleOverride { get; private set; } = 100;
+
+		private ReadOnlyCollection<bool> _pauselines = new ReadOnlyCollection<bool>(new bool[0]);
+		public ReadOnlyCollection<bool> PauseLines
+		{
+			get { return _pauselines; }
+			private set { _pauselines = value; }
+		}
+
 		private ReadOnlyCollection<string> _file = new ReadOnlyCollection<string>(new string[0]);
 		public ReadOnlyCollection<string> File
 		{
 			get { return _file; }
-			set
+			private set
 			{
 				_file = value;
 				FilePosition = 0;
+
 				RaiseEvent(FileChanged);
 			}
 		}
@@ -68,7 +81,6 @@ namespace OpenCNCPilot.Communication
 			private set
 			{
 				_filePosition = value;
-				RaiseEvent(FilePositionChanged);
 			}
 		}
 
@@ -204,7 +216,6 @@ namespace OpenCNCPilot.Communication
 		Queue Sent = Queue.Synchronized(new Queue());
 		Queue ToSend = Queue.Synchronized(new Queue());
 		Queue ToSendPriority = Queue.Synchronized(new Queue()); //contains characters (for soft reset, feed hold etc)
-		static string[] PauseCommands = new string[] { "M0", "M00", "M1", "M01" };
 
 		private void Work()
 		{
@@ -221,6 +232,9 @@ namespace OpenCNCPilot.Communication
 				TimeSpan WaitTime = TimeSpan.FromMilliseconds(0.5);
 				DateTime LastStatusPoll = DateTime.Now + TimeSpan.FromSeconds(0.5);
 				DateTime StartTime = DateTime.Now;
+
+				DateTime LastFilePosUpdate = DateTime.Now;
+				bool filePosChanged = false;
 
 				writer.Write("\n$G\n");
 				writer.Flush();
@@ -245,7 +259,7 @@ namespace OpenCNCPilot.Communication
 						{
 							if (File.Count > FilePosition && (File[FilePosition].Length + 1) < (ControllerBufferSize - BufferState))
 							{
-								string send_line = File[FilePosition++];
+								string send_line = File[FilePosition];
 
 								writer.Write(send_line);
 								writer.Write('\n');
@@ -260,18 +274,17 @@ namespace OpenCNCPilot.Communication
 
 								Sent.Enqueue(send_line);
 
-								if (FilePosition >= File.Count)
+								if (PauseLines[FilePosition] && Properties.Settings.Default.PauseFileOnHold)
 								{
 									Mode = OperatingMode.Manual;
 								}
 
-								for (int index = 0; index < PauseCommands.Length; index++)
+								if (++FilePosition >= File.Count)
 								{
-									if (send_line.Contains(PauseCommands[index]) && Properties.Settings.Default.PauseFileOnHold)
-									{
-										Mode = OperatingMode.Manual;
-									}
+									Mode = OperatingMode.Manual;
 								}
+
+								filePosChanged = true;
 
 								continue;
 							}
@@ -307,6 +320,14 @@ namespace OpenCNCPilot.Communication
 							writer.Write('?');
 							writer.Flush();
 							LastStatusPoll = Now;
+						}
+
+						//only update file pos every X ms
+						if(filePosChanged && (Now - LastFilePosUpdate).TotalMilliseconds > 500)
+						{
+							RaiseEvent(FilePositionChanged);
+							LastFilePosUpdate = Now;
+							filePosChanged = false;
 						}
 
 						Thread.Sleep(WaitTime);
@@ -373,7 +394,7 @@ namespace OpenCNCPilot.Communication
 			}
 			catch (Exception ex)
 			{
-				RaiseEvent(ReportError, $"Fatal Error: {ex.Message}");
+				RaiseEvent(ReportError, $"Fatal Error in Work Loop: {ex.Message}");
 				Disconnect();
 			}
 		}
@@ -452,6 +473,13 @@ namespace OpenCNCPilot.Communication
 			Plane = ArcPlane.XY;
 			BufferState = 0;
 
+			FeedOverride = 100;
+			RapidOverride = 100;
+			SpindleOverride = 100;
+
+			if (OverrideChanged != null)
+				OverrideChanged.Invoke();
+
 			ToSend.Clear();
 			ToSendPriority.Clear();
 			Sent.Clear();
@@ -490,6 +518,25 @@ namespace OpenCNCPilot.Communication
 			ToSendPriority.Enqueue((char)0x18);
 
 			BufferState = 0;
+
+			FeedOverride = 100;
+			RapidOverride = 100;
+			SpindleOverride = 100;
+
+			if (OverrideChanged != null)
+				OverrideChanged.Invoke();
+		}
+
+		//probably shouldn't expose this, but adding overrides would be much more effort otherwise
+		public void SendControl(byte controlchar)
+		{
+			if (!Connected)
+			{
+				RaiseEvent(Info, "Not Connected");
+				return;
+			}
+
+			ToSendPriority.Enqueue((char)controlchar);
 		}
 
 		public void FeedHold()
@@ -533,8 +580,33 @@ namespace OpenCNCPilot.Communication
 				return;
 			}
 
+			bool[] pauselines = new bool[file.Count];
+
+			for (int line = 0; line < file.Count; line++)
+			{
+				var matches = GCodeParser.GCodeSplitter.Matches(file[line]);
+
+				foreach (Match m in matches)
+				{
+					if (m.Groups[1].Value == "M")
+					{
+						int code = int.MinValue;
+
+						if (int.TryParse(m.Groups[2].Value, out code))
+						{
+							if (code == 0 || code == 1 || code == 2 || code == 30)
+								pauselines[line] = true;
+						}
+					}
+				}
+			}
+
 			File = new ReadOnlyCollection<string>(file);
+			PauseLines = new ReadOnlyCollection<bool>(pauselines);
+
 			FilePosition = 0;
+
+			RaiseEvent(FilePositionChanged);
 		}
 
 		public void ClearFile()
@@ -547,6 +619,7 @@ namespace OpenCNCPilot.Communication
 
 			File = new ReadOnlyCollection<string>(new string[0]);
 			FilePosition = 0;
+			RaiseEvent(FilePositionChanged);
 		}
 
 		public void FileStart()
@@ -629,6 +702,8 @@ namespace OpenCNCPilot.Communication
 			}
 
 			FilePosition = lineNumber;
+
+			RaiseEvent(FilePositionChanged);
 		}
 
 		public void ClearQueue()
@@ -703,6 +778,7 @@ namespace OpenCNCPilot.Communication
 			}
 
 			bool posUpdate = false;
+			bool overrideUpdate = false;
 
 			foreach (Match m in statusMatch)
 			{
@@ -710,6 +786,19 @@ namespace OpenCNCPilot.Communication
 				{
 					Status = m.Groups[1].Value;
 					continue;
+				}
+
+				if(m.Groups[1].Value == "Ov")
+				{
+					try
+					{
+						string[] parts = m.Groups[2].Value.Split(',');
+						FeedOverride = int.Parse(parts[0]);
+						RapidOverride = int.Parse(parts[1]);
+						SpindleOverride = int.Parse(parts[2]);
+						overrideUpdate = true;
+					}
+					catch { NonFatalException.Invoke(string.Format("Received Bad Status: '{0}'", line)); }
 				}
 
 				if (m.Groups[1].Value == "WCO")
@@ -768,6 +857,9 @@ namespace OpenCNCPilot.Communication
 
 			if (posUpdate && Connected && PositionUpdateReceived != null)
 				PositionUpdateReceived.Invoke();
+
+			if (overrideUpdate && Connected && OverrideChanged != null)
+				OverrideChanged.Invoke();
 		}
 
 		private static Regex ProbeEx = new Regex(@"\[PRB:(?'Pos'[-0-9\.]*,[-0-9\.]*,[-0-9\.]*):(?'Success'0|1)\]", RegexOptions.Compiled);

@@ -1560,6 +1560,11 @@ namespace OpenCNCPilot.Util
 			return new Point3D(X, Y, Z);
 		}
 
+		public Vector2 GetXY()
+		{
+			return new Vector2(X, Y);
+		}
+
 		public Vector3 RollComponents(int turns)
 		{
 			Vector3 roll = new Vector3();

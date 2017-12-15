@@ -4,6 +4,7 @@ using OpenCNCPilot.Communication;
 using OpenCNCPilot.Util;
 using Microsoft.Win32;
 using OpenCNCPilot.GCode;
+using System.Windows.Controls;
 
 namespace OpenCNCPilot
 {
@@ -47,6 +48,7 @@ namespace OpenCNCPilot
 			machine.FileChanged += Machine_FileChanged;
 			machine.FilePositionChanged += Machine_FilePositionChanged;
 			machine.ProbeFinished += Machine_ProbeFinished;
+			machine.OverrideChanged += Machine_OverrideChanged;
 
 			Machine_OperatingMode_Changed();
 
@@ -90,7 +92,8 @@ namespace OpenCNCPilot
 				e.SettingName.Equals("ProbeMaxDepth") ||
 				e.SettingName.Equals("SplitSegmentLength") ||
 				e.SettingName.Equals("ViewportArcSplit") ||
-				e.SettingName.Equals("ArcToLineSegmentLength"))
+				e.SettingName.Equals("ArcToLineSegmentLength") ||
+				e.SettingName.Equals("ProbeXAxisWeight"))
 			{
 				if (((double)e.NewValue) <= 0)
 					e.Cancel = true;
@@ -192,6 +195,54 @@ namespace OpenCNCPilot
 			{
 				machine.FeedHold();
 				e.Handled = true;
+			}
+		}
+
+		private void ButtonRapidOverride_Click(object sender, RoutedEventArgs e)
+		{
+			Button b = sender as Button;
+
+			if (b == null)
+				return;
+
+			switch(b.Content as string)
+			{
+				case "100%":
+					machine.SendControl(0x95);
+					break;
+				case "50%":
+					machine.SendControl(0x96);
+					break;
+				case "25%":
+					machine.SendControl(0x97);
+					break;
+			}
+		}
+
+		private void ButtonFeedOverride_Click(object sender, RoutedEventArgs e)
+		{
+			Button b = sender as Button;
+
+			if (b == null)
+				return;
+
+			switch (b.Tag as string)
+			{
+				case "100%":
+					machine.SendControl(0x90);
+					break;
+				case "+10%":
+					machine.SendControl(0x91);
+					break;
+				case "-10%":
+					machine.SendControl(0x92);
+					break;
+				case "+1%":
+					machine.SendControl(0x93);
+					break;
+				case "-1%":
+					machine.SendControl(0x94);
+					break;
 			}
 		}
 	}
