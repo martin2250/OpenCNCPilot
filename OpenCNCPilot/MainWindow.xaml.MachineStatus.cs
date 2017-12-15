@@ -197,7 +197,7 @@ namespace OpenCNCPilot
 				ListViewFile.Items.Add(new TextBlock() { Text = $"{lineNo++.ToString(format)} : {line}" });
 			}
 
-			if (ToolPath.Toolpath.Count > 0)
+			if (ToolPath.ContainsMotion)
 			{
 				ModelFileBoundary.Points.Clear();
 				Point3DCollection boundary = new Point3DCollection();

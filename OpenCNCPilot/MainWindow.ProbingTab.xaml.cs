@@ -37,7 +37,14 @@ namespace OpenCNCPilot
 			if (machine.Mode == Machine.OperatingMode.Probe || Map != null)
 				return;
 
-			NewHeightMapDialog = new NewHeightMapWindow();
+			Vector3 MinPoint = ToolPath.Min;
+			Vector3 MaxPoint = ToolPath.Max;
+
+			if(ToolPath.ContainsMotion)
+				NewHeightMapDialog = new NewHeightMapWindow(new Vector2(MinPoint.X, MinPoint.Y), new Vector2(MaxPoint.X, MaxPoint.Y));
+			else
+				NewHeightMapDialog = new NewHeightMapWindow();
+
 			NewHeightMapDialog.Owner = this;
 
 			NewHeightMapDialog.Size_Ok += NewHeightMapDialog_Size_Ok;
@@ -68,21 +75,31 @@ namespace OpenCNCPilot
 			if (machine.Mode == Machine.OperatingMode.Probe || Map != null)
 				return;
 
-			Map = new HeightMap(NewHeightMapDialog.GridSize, NewHeightMapDialog.Min, NewHeightMapDialog.Max);
-			
-			if (NewHeightMapDialog.GenerateTestPattern)
-			{
-				try
-				{
-					Map.FillWithTestPattern(NewHeightMapDialog.TestPattern);
-					Map.NotProbed.Clear();
-				}
-				catch { MessageBox.Show("Error in test pattern"); }
-			}
+			if (NewHeightMapDialog.Min.X == NewHeightMapDialog.Max.X || NewHeightMapDialog.Min.Y == NewHeightMapDialog.Max.Y)
+				return;
 
-			Map.MapUpdated += Map_MapUpdated;
-			UpdateProbeTabButtons();
-			Map_MapUpdated();
+			try
+			{
+				Map = new HeightMap(NewHeightMapDialog.GridSize, NewHeightMapDialog.Min, NewHeightMapDialog.Max);
+
+				if (NewHeightMapDialog.GenerateTestPattern)
+				{
+					try
+					{
+						Map.FillWithTestPattern(NewHeightMapDialog.TestPattern);
+						Map.NotProbed.Clear();
+					}
+					catch { MessageBox.Show("Error in test pattern"); }
+				}
+
+				Map.MapUpdated += Map_MapUpdated;
+				UpdateProbeTabButtons();
+				Map_MapUpdated();
+			}
+            catch(Exception ex)
+			{
+				Machine_Info(ex.Message);
+			}
 		}
 
 		private void SaveFileDialogHeightMap_FileOk(object sender, System.ComponentModel.CancelEventArgs e)

@@ -42,7 +42,7 @@ namespace OpenCNCPilot.GCode
 			int pointsX = (int)Math.Ceiling((max.X - min.X) / gridSize) + 1;
 			int pointsY = (int)Math.Ceiling((max.Y - min.Y) / gridSize) + 1;
 
-			if (pointsX == 0 || pointsY == 0)
+			if (pointsX < 2 || pointsY < 2)
 				throw new Exception("Height map must have at least 4 points");
 
 			Points = new double?[pointsX, pointsY];

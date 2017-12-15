@@ -20,6 +20,7 @@ namespace OpenCNCPilot.GCode
 		public Vector3 Min { get; private set; }
 		public Vector3 Max { get; private set; }
 		public Vector3 Size { get; private set; }
+		public bool ContainsMotion { get; private set; } = false;
 
 		public double TravelDistance { get; private set; } = 0;
 
@@ -41,6 +42,8 @@ namespace OpenCNCPilot.GCode
 				}
 
 				TravelDistance += m.Length;
+
+				ContainsMotion = true;
 			}
 
 			Max = max;
