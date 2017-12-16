@@ -161,7 +161,7 @@ namespace OpenCNCPilot
 
 			if (direction != null)
 			{
-				machine.SendLine($"$J=G91F{feed}{direction}{distance}");
+				machine.SendLine(string.Format(Constants.DecimalOutputFormat, "$J=G91F{0:0.#}{1}{2:0.###}", feed, direction, distance));
 			}
 		}
 
