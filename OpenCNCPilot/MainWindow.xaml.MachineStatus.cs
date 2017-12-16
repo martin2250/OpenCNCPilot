@@ -212,8 +212,8 @@ namespace OpenCNCPilot
 				ModelFileBoundary.Points.Clear();
 				Point3DCollection boundary = new Point3DCollection();
 
-				Vector3 MinPoint = ToolPath.Min;
-				Vector3 MaxPoint = ToolPath.Max;
+				Vector3 MinPoint = ToolPath.MinFeed;
+				Vector3 MaxPoint = ToolPath.MaxFeed;
 
 				for (int ax = 0; ax < 3; ax++)
 				{

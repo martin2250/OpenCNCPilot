@@ -20,6 +20,11 @@ namespace OpenCNCPilot.GCode
 		public Vector3 Min { get; private set; }
 		public Vector3 Max { get; private set; }
 		public Vector3 Size { get; private set; }
+
+		public Vector3 MinFeed { get; private set; }
+		public Vector3 MaxFeed { get; private set; }
+		public Vector3 SizeFeed { get; private set; }
+
 		public bool ContainsMotion { get; private set; } = false;
 
 		public double TravelDistance { get; private set; } = 0;
@@ -29,9 +34,14 @@ namespace OpenCNCPilot.GCode
 			Toolpath = new ReadOnlyCollection<Command>(toolpath);
 
 			Vector3 min = Vector3.MaxValue, max = Vector3.MinValue;
+			Vector3 minfeed = Vector3.MaxValue, maxfeed = Vector3.MinValue;
 
 			foreach (Motion m in Enumerable.Concat(Toolpath.OfType<Line>(), Toolpath.OfType<Arc>().SelectMany(a => a.Split(0.1))))
 			{
+				TravelDistance += m.Length;
+
+				ContainsMotion = true;
+
 				for (int i = 0; i < 3; i++)
 				{
 					if (m.End[i] > max[i])
@@ -41,14 +51,21 @@ namespace OpenCNCPilot.GCode
 						min[i] = m.End[i];
 				}
 
-				TravelDistance += m.Length;
+				if (m is Line && (m as Line).Rapid)
+					continue;
 
-				ContainsMotion = true;
+				for (int i = 0; i < 3; i++)
+				{
+					if (m.End[i] > maxfeed[i])
+						maxfeed[i] = m.End[i];
+
+					if (m.End[i] < minfeed[i])
+						minfeed[i] = m.End[i];
+				}
 			}
 
 			Max = max;
 			Min = min;
-
 			Vector3 size = Max - Min;
 
 			for (int i = 0; i < 3; i++)
@@ -58,6 +75,19 @@ namespace OpenCNCPilot.GCode
 			}
 
 			Size = size;
+
+
+			MaxFeed = maxfeed;
+			MinFeed = minfeed;
+			Vector3 sizefeed = MaxFeed - MinFeed;
+
+			for (int i = 0; i < 3; i++)
+			{
+				if (sizefeed[i] < 0)
+					sizefeed[i] = 0;
+			}
+
+			SizeFeed = sizefeed;
 		}
 
 		public static GCodeFile Load(string path)
