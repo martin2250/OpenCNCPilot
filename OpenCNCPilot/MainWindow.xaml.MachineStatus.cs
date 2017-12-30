@@ -109,9 +109,13 @@ namespace OpenCNCPilot
 
 			DoubleAnimation anim = new DoubleAnimation(0, new Duration(TimeSpan.FromSeconds(2)));
 			anim.BeginTime = TimeSpan.FromSeconds(Properties.Settings.Default.ConsoleFadeTime);
-			item.BeginAnimation(OpacityProperty, anim);
+
+			item.HorizontalContentAlignment = HorizontalAlignment.Left;
+			item.VerticalContentAlignment = VerticalAlignment.Center;
 
 			ListBoxHistory.Items.Add(item);
+
+			item.BeginAnimation(OpacityProperty, anim);
 		}
 
 		private void Machine_NonFatalException(string obj)
