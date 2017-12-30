@@ -334,5 +334,29 @@ namespace OpenCNCPilot.Properties {
                 this["ProbeXAxisWeight"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowStatusLines {
+            get {
+                return ((bool)(this["ShowStatusLines"]));
+            }
+            set {
+                this["ShowStatusLines"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public double ConsoleFadeTime {
+            get {
+                return ((double)(this["ConsoleFadeTime"]));
+            }
+            set {
+                this["ConsoleFadeTime"] = value;
+            }
+        }
     }
 }

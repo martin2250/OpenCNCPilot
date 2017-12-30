@@ -5,6 +5,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Media3D;
 
 namespace OpenCNCPilot
@@ -106,6 +107,10 @@ namespace OpenCNCPilot
 			if (ListBoxHistory.Items.Count > 8)
 				ListBoxHistory.Items.RemoveAt(0);
 
+			DoubleAnimation anim = new DoubleAnimation(0, new Duration(TimeSpan.FromSeconds(2)));
+			anim.BeginTime = TimeSpan.FromSeconds(Properties.Settings.Default.ConsoleFadeTime);
+			item.BeginAnimation(OpacityProperty, anim);
+
 			ListBoxHistory.Items.Add(item);
 		}
 
@@ -149,6 +154,20 @@ namespace OpenCNCPilot
 				item.Foreground = Brushes.Red;
 			else
 				item.Foreground = Brushes.Green;
+
+			AddHistoryItem(item);
+		}
+
+		private void Machine_StatusReceived(string obj)
+		{
+			if (!Properties.Settings.Default.ShowStatusLines)
+				return;
+
+			ListBoxItem item = new ListBoxItem();
+			item.Content = obj;
+			item.FontSize = 14;
+
+			item.Foreground = Brushes.Black;
 
 			AddHistoryItem(item);
 		}

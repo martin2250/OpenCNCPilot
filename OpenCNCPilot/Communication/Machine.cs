@@ -33,6 +33,7 @@ namespace OpenCNCPilot.Communication
 		public event Action<string> NonFatalException;
 		public event Action<string> Info;
 		public event Action<string> LineReceived;
+		public event Action<string> StatusReceived;
 		public event Action<string> LineSent;
 		public event Action ConnectionStateChanged;
 		public event Action PositionUpdateReceived;
@@ -860,6 +861,9 @@ namespace OpenCNCPilot.Communication
 
 			if (overrideUpdate && Connected && OverrideChanged != null)
 				OverrideChanged.Invoke();
+
+			if (StatusReceived != null)
+				StatusReceived.Invoke(line);
 		}
 
 		private static Regex ProbeEx = new Regex(@"\[PRB:(?'Pos'[-0-9\.]*,[-0-9\.]*,[-0-9\.]*):(?'Success'0|1)\]", RegexOptions.Compiled);

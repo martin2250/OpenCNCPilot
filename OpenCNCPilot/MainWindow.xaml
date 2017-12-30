@@ -201,6 +201,17 @@
                         </StackPanel>
                     </Expander>
                 </Border>
+                <Border Style="{StaticResource stylePanelOut}">
+                    <Expander Header="Debug Info">
+                        <StackPanel HorizontalAlignment="Left" FlowDirection="LeftToRight">
+                            <CheckBox Content="Show Status Messages" IsChecked="{util:SettingBinding ShowStatusLines}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Console Fade Time (s)"/>
+                                <TextBox Text="{util:SettingBinding ConsoleFadeTime}" VerticalContentAlignment="Center" Width="40" Margin="10,3,0,3"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Expander>
+                </Border>
             </StackPanel>
 
             <ListBox Name="ListBoxHistory" HorizontalContentAlignment="Right"  HorizontalAlignment="Right" VerticalAlignment="Bottom" IsHitTestVisible="False" BorderThickness="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
@@ -209,19 +220,6 @@
                         <VirtualizingStackPanel VerticalAlignment="Bottom"/>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
-                <ListBox.Resources>
-                    <Style TargetType="{x:Type ListBoxItem}">
-                        <Style.Triggers>
-                            <EventTrigger RoutedEvent="ListBoxItem.Loaded">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation BeginTime="0:0:8.0" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:2.0"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ListBox.Resources>
             </ListBox>
         </Grid>
         <h:HelixViewport3D Name="viewport" ShowViewCube="False" Panel.ZIndex="0" PreviewKeyDown="viewport_PreviewKeyDown">

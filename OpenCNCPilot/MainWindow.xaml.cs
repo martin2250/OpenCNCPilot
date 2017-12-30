@@ -36,6 +36,7 @@ namespace OpenCNCPilot
 			machine.NonFatalException += Machine_NonFatalException;
 			machine.Info += Machine_Info;
 			machine.LineReceived += Machine_LineReceived;
+			machine.StatusReceived += Machine_StatusReceived;
 			machine.LineSent += Machine_LineSent;
 
 			machine.PositionUpdateReceived += Machine_PositionUpdateReceived;
@@ -93,7 +94,8 @@ namespace OpenCNCPilot
 				e.SettingName.Equals("SplitSegmentLength") ||
 				e.SettingName.Equals("ViewportArcSplit") ||
 				e.SettingName.Equals("ArcToLineSegmentLength") ||
-				e.SettingName.Equals("ProbeXAxisWeight"))
+				e.SettingName.Equals("ProbeXAxisWeight") ||
+				e.SettingName.Equals("ConsoleFadeTime"))
 			{
 				if (((double)e.NewValue) <= 0)
 					e.Cancel = true;

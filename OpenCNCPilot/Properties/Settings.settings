@@ -81,5 +81,11 @@ G92Z0;</Value>
     <Setting Name="ProbeXAxisWeight" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0.95</Value>
     </Setting>
+    <Setting Name="ShowStatusLines" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ConsoleFadeTime" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
