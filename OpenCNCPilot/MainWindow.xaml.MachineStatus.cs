@@ -336,5 +336,13 @@ namespace OpenCNCPilot
 			LabelFeedOvr.Content = $"Feed: {machine.FeedOverride}%";
 			LabelRapidOvr.Content = $"Rapid: {machine.RapidOverride}%";
 		}
+
+		private void Machine_PinStateChanged()
+		{
+			LabelStateLimitX.Visibility = machine.PinStateLimitX ? Visibility.Visible : Visibility.Collapsed;
+			LabelStateLimitY.Visibility = machine.PinStateLimitY ? Visibility.Visible : Visibility.Collapsed;
+			LabelStateLimitZ.Visibility = machine.PinStateLimitZ ? Visibility.Visible : Visibility.Collapsed;
+			LabelStateProbe.Visibility = machine.PinStateProbe ? Visibility.Visible : Visibility.Collapsed;
+		}
 	}
 }

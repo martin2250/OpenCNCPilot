@@ -42,6 +42,7 @@ namespace OpenCNCPilot.Communication
 		public event Action UnitChanged;
 		public event Action PlaneChanged;
 		public event Action BufferStateChanged;
+		public event Action PinStateChanged;
 		public event Action OperatingModeChanged;
 		public event Action FileChanged;
 		public event Action FilePositionChanged;
@@ -54,6 +55,11 @@ namespace OpenCNCPilot.Communication
 		public int FeedOverride { get; private set; } = 100;
 		public int RapidOverride { get; private set; } = 100;
 		public int SpindleOverride { get; private set; } = 100;
+
+		public bool PinStateProbe { get; private set; } = false;
+		public bool PinStateLimitX { get; private set; } = false;
+		public bool PinStateLimitY { get; private set; } = false;
+		public bool PinStateLimitZ { get; private set; } = false;
 
 		private ReadOnlyCollection<bool> _pauselines = new ReadOnlyCollection<bool>(new bool[0]);
 		public ReadOnlyCollection<bool> PauseLines
@@ -481,6 +487,14 @@ namespace OpenCNCPilot.Communication
 			if (OverrideChanged != null)
 				OverrideChanged.Invoke();
 
+			PinStateLimitX = false;
+			PinStateLimitY = false;
+			PinStateLimitZ = false;
+			PinStateProbe = false;
+
+			if (PinStateChanged != null)
+				PinStateChanged.Invoke();
+
 			ToSend.Clear();
 			ToSendPriority.Clear();
 			Sent.Clear();
@@ -763,8 +777,7 @@ namespace OpenCNCPilot.Communication
 			catch { RaiseEvent(NonFatalException, "Error while Parsing Status Message"); }
 		}
 
-		private static Regex StatusEx = new Regex(@"(?<=[<|])(\w+):?(([0-9\.-]*),?([0-9\.-]*)?,?([0-9\.,-]*)?)?(?=[|>])", RegexOptions.Compiled);
-
+		private static Regex StatusEx = new Regex(@"(?<=[<|])(\w+):?([^|>]*)?(?=[|>])", RegexOptions.Compiled);
 		/// <summary>
 		/// Parses a recevied status report (answer to '?')
 		/// </summary>
@@ -780,6 +793,8 @@ namespace OpenCNCPilot.Communication
 
 			bool posUpdate = false;
 			bool overrideUpdate = false;
+			bool pinStateUpdate = false;
+			bool resetPins = true;
 
 			foreach (Match m in statusMatch)
 			{
@@ -827,6 +842,33 @@ namespace OpenCNCPilot.Communication
 					}
 					catch { NonFatalException.Invoke(string.Format("Received Bad Status: '{0}'", line)); }
 				}
+
+				if(m.Groups[1].Value == "Pn")
+				{
+					resetPins = false;
+
+					string states = m.Groups[2].Value;
+
+					bool stateX = states.Contains("X");
+					if (stateX != PinStateLimitX)
+						pinStateUpdate = true;
+					PinStateLimitX = stateX;
+
+					bool stateY = states.Contains("Y");
+					if (stateY != PinStateLimitY)
+						pinStateUpdate = true;
+					PinStateLimitY = stateY;
+
+					bool stateZ = states.Contains("Z");
+					if (stateZ != PinStateLimitZ)
+						pinStateUpdate = true;
+					PinStateLimitZ = stateZ;
+
+					bool stateP = states.Contains("P");
+					if (stateP != PinStateProbe)
+						pinStateUpdate = true;
+					PinStateProbe = stateP;
+				}
 			}
 
 			SyncBuffer = false; //only run this immediately after button press
@@ -862,7 +904,20 @@ namespace OpenCNCPilot.Communication
 			if (overrideUpdate && Connected && OverrideChanged != null)
 				OverrideChanged.Invoke();
 
-			if (StatusReceived != null)
+			if (resetPins)	//no pin state received in status -> all zero
+			{
+				pinStateUpdate = PinStateLimitX | PinStateLimitY | PinStateLimitZ | PinStateProbe;	//was any pin set before
+
+				PinStateLimitX = false;
+				PinStateLimitY = false;
+				PinStateLimitZ = false;
+				PinStateProbe = false;
+			}
+
+			if (pinStateUpdate && Connected && PinStateChanged != null)
+				PinStateChanged.Invoke();
+
+			if (Connected && StatusReceived != null)
 				StatusReceived.Invoke(line);
 		}
 

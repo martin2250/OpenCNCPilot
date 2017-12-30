@@ -50,6 +50,7 @@ namespace OpenCNCPilot
 			machine.FilePositionChanged += Machine_FilePositionChanged;
 			machine.ProbeFinished += Machine_ProbeFinished;
 			machine.OverrideChanged += Machine_OverrideChanged;
+			machine.PinStateChanged += Machine_PinStateChanged;
 
 			Machine_OperatingMode_Changed();
 
