@@ -1,6 +1,7 @@
 ﻿using OpenCNCPilot.Util;
 using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace OpenCNCPilot
@@ -21,6 +22,9 @@ namespace OpenCNCPilot
 
 		public Vector2 Min;
 		public Vector2 Max;
+
+		public Vector2 ToolPathMin = LastMin;
+		public Vector2 ToolPathMax = LastMax;
 
 		public bool Ok { get; set; } = false;
 		public bool GenerateTestPattern { get; set; } = LastGenTestPattern;
@@ -105,12 +109,12 @@ namespace OpenCNCPilot
 			InitializeComponent();
 
 			EventManager.RegisterClassHandler(typeof(System.Windows.Controls.TextBox), GotKeyboardFocusEvent, new KeyboardFocusChangedEventHandler(OnGotKeyboardFocus));
-			FirstTextBox.SelectAll();
+			TextBoxMinX.SelectAll();
 		}
 
 		public NewHeightMapWindow() : this(LastMin, LastMax)
 		{
-			
+
 		}
 
 		void OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
@@ -121,7 +125,7 @@ namespace OpenCNCPilot
 				textBox.SelectAll();
 		}
 
-		private void Button_Click(object sender, RoutedEventArgs e)
+		private void ButtonOK_Click(object sender, RoutedEventArgs e)
 		{
 			if (Min.X > Max.X)
 			{
@@ -149,6 +153,20 @@ namespace OpenCNCPilot
 				Size_Ok.Invoke();
 
 			Close();
+		}
+
+		private void ButtonSizeFromCode_Click(object sender, RoutedEventArgs e)
+		{
+			MinX = ToolPathMin.X;
+			MinY = ToolPathMin.Y;
+
+			MaxX = ToolPathMax.X;
+			MaxY = ToolPathMax.Y;
+
+			foreach (TextBox tb in new TextBox[] { TextBoxMinX, TextBoxMaxX, TextBoxMinY, TextBoxMaxY })
+			{
+				tb.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+			}
 		}
 	}
 }

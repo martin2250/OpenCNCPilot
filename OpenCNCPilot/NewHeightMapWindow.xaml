@@ -12,10 +12,10 @@
     <Grid>
         <Label Content="X:" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top"/>
         <Label Content="Y:" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="30,10,0,0" Text="{Binding MinX, UpdateSourceTrigger=PropertyChanged, Delay=500}" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="60" x:Name="FirstTextBox"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="105,10,0,0" Text="{Binding MaxX, UpdateSourceTrigger=PropertyChanged, Delay=500}" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="60"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="30,38,0,0" Text="{Binding MinY, UpdateSourceTrigger=PropertyChanged, Delay=500}" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="60"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="105,38,0,0" Text="{Binding MaxY, UpdateSourceTrigger=PropertyChanged, Delay=500}" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="60"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="30,10,0,0" Text="{Binding MinX, UpdateSourceTrigger=Explicit, Delay=500}" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="60" x:Name="TextBoxMinX"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="105,10,0,0" Text="{Binding MaxX, UpdateSourceTrigger=PropertyChanged, Delay=500}" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="60" x:Name="TextBoxMaxX"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="30,38,0,0" Text="{Binding MinY, UpdateSourceTrigger=PropertyChanged, Delay=500}" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="60" x:Name="TextBoxMinY"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="105,38,0,0" Text="{Binding MaxY, UpdateSourceTrigger=PropertyChanged, Delay=500}" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="60" x:Name="TextBoxMaxY"/>
         <Label Content="-" HorizontalAlignment="Left" Margin="90,8,0,0" VerticalAlignment="Top"/>
         <Label Content="-" HorizontalAlignment="Left" Margin="90,36,0,0" VerticalAlignment="Top"/>
         <Label Content="GridSize:" HorizontalAlignment="Left" Margin="10,68,0,0" VerticalAlignment="Top"/>
@@ -27,7 +27,8 @@
             </GroupBox.Header>
             <TextBox Margin="5" Text="{Binding TestPattern}" IsEnabled="{Binding ElementName=checkBoxGenTest, Path=IsChecked}" VerticalContentAlignment="Center"/>
         </GroupBox>
-		
-        <Button Content="Ok" Click="Button_Click" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalContentAlignment="Center" Width="60" Height="23" VerticalAlignment="Bottom"/>
+
+        <Button Content="Size From GCode" Click="ButtonSizeFromCode_Click" Margin="10,0,75,10" VerticalContentAlignment="Center" Height="23" VerticalAlignment="Bottom"/>
+        <Button Content="Ok" Click="ButtonOK_Click" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalContentAlignment="Center" Width="60" Height="23" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

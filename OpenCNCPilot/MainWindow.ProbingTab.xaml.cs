@@ -37,13 +37,13 @@ namespace OpenCNCPilot
 			if (machine.Mode == Machine.OperatingMode.Probe || Map != null)
 				return;
 
-			Vector3 MinPoint = ToolPath.MinFeed;
-			Vector3 MaxPoint = ToolPath.MaxFeed;
+			NewHeightMapDialog = new NewHeightMapWindow();
 
 			if (ToolPath.ContainsMotion)
-				NewHeightMapDialog = new NewHeightMapWindow(MinPoint.GetXY(), MaxPoint.GetXY());
-			else
-				NewHeightMapDialog = new NewHeightMapWindow();
+			{
+				NewHeightMapDialog.ToolPathMin = ToolPath.MinFeed.GetXY();
+				NewHeightMapDialog.ToolPathMax = ToolPath.MaxFeed.GetXY();
+			}
 
 			NewHeightMapDialog.Owner = this;
 
