@@ -34,7 +34,7 @@ namespace OpenCNCPilot.GCode
 		{
 			Position = new Vector3();
 			Plane = ArcPlane.XY;
-			Feed = 100;
+			Feed = 0;
 			DistanceMode = ParseDistanceMode.Absolute;
 			ArcDistanceMode = ParseDistanceMode.Incremental;
 			Unit = ParseUnit.Metric;
@@ -317,6 +317,11 @@ namespace OpenCNCPilot.GCode
 				}
 			}
 			#endregion
+
+			if (MotionMode != 0 && State.Feed <= 0)
+			{
+				throw new ParseException("Feed Rate Undefined", lineNumber);
+			}
 
 			if (MotionMode <= 1)
 			{
