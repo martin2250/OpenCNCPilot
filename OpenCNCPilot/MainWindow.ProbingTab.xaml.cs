@@ -30,6 +30,17 @@ namespace OpenCNCPilot
 		{
 			Map.GetModel(ModelHeightMap);
 			LabelHeightMapProgress.Content = Map.Progress + "/" + Map.TotalPoints;
+
+			if (Map.MinHeight != double.MaxValue)
+				LabelHeightMapMinZ.Content = Map.MinHeight;
+			else
+				LabelHeightMapMinZ.Content = "~";
+
+			if (Map.MaxHeight != double.MinValue)
+				LabelHeightMapMaxZ.Content = Map.MaxHeight;
+			else
+				LabelHeightMapMaxZ.Content = "~";
+
 		}
 
 		private void ButtonHeightmapCreateNew_Click(object sender, RoutedEventArgs e)

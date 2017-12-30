@@ -25,8 +25,8 @@ namespace OpenCNCPilot.GCode
 
 		public Vector2 Delta { get { return Max - Min; } }
 
-		public double MinHeight { get; private set; } = 0;
-		public double MaxHeight { get; private set; } = 0;
+		public double MinHeight { get; private set; } = double.MaxValue;
+		public double MaxHeight { get; private set; } = double.MinValue;
 
 		public event Action MapUpdated;
 
