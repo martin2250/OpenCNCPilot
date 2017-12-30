@@ -61,6 +61,8 @@ namespace OpenCNCPilot.Communication
 		public bool PinStateLimitY { get; private set; } = false;
 		public bool PinStateLimitZ { get; private set; } = false;
 
+		public double FeedRateRealtime { get; private set; } = 0;
+
 		private ReadOnlyCollection<bool> _pauselines = new ReadOnlyCollection<bool>(new bool[0]);
 		public ReadOnlyCollection<bool> PauseLines
 		{
@@ -470,6 +472,7 @@ namespace OpenCNCPilot.Communication
 
 			MachinePosition = new Vector3();
 			WorkOffset = new Vector3();
+			FeedRateRealtime = 0;
 
 			if (PositionUpdateReceived != null)
 				PositionUpdateReceived.Invoke();
@@ -868,6 +871,16 @@ namespace OpenCNCPilot.Communication
 					if (stateP != PinStateProbe)
 						pinStateUpdate = true;
 					PinStateProbe = stateP;
+				}
+
+				if (m.Groups[1].Value == "F")
+				{
+					try
+					{
+						FeedRateRealtime = double.Parse(m.Groups[2].Value, Constants.DecimalParseFormat);
+						posUpdate = true;
+					}
+					catch { NonFatalException.Invoke(string.Format("Received Bad Status: '{0}'", line)); }
 				}
 			}
 

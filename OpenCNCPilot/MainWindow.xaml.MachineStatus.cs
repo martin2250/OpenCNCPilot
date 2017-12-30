@@ -55,6 +55,8 @@ namespace OpenCNCPilot
 			LabelPosMX.Content = machine.MachinePosition.X.ToString(nfi);
 			LabelPosMY.Content = machine.MachinePosition.Y.ToString(nfi);
 			LabelPosMZ.Content = machine.MachinePosition.Z.ToString(nfi);
+
+			LabelFeedRateRealtime.Content = Math.Round(machine.FeedRateRealtime);
 		}
 
 		private void Machine_BufferStateChanged()

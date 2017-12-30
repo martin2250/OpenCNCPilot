@@ -43,6 +43,8 @@
                         <Label Name="LabelPosMY" Width="45" Content="0.0"/>
                         <Label Content="MZ:"/>
                         <Label Name="LabelPosMZ" Width="45" Content="0.0"/>
+                        <Label Content="F:"/>
+                        <Label Name="LabelFeedRateRealtime" Width="45" Content="0"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
