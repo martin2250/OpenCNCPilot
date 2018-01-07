@@ -12,6 +12,11 @@ namespace OpenCNCPilot
 {
 	partial class MainWindow
 	{
+		// Used for displaying runtime of job
+		Machine.OperatingMode lastMode = Machine.OperatingMode.Disconnected;
+		DateTime lastFileStart = DateTime.Now;
+		bool ShowRuntimeOnIdle = false;
+
 		private void Machine_PlaneChanged()
 		{
 			ButtonArcPlane.Content = machine.Plane.ToString() + "-Plane";
@@ -39,6 +44,12 @@ namespace OpenCNCPilot
 				ButtonStatus.Foreground = Brushes.Green;
 			else
 				ButtonStatus.Foreground = Brushes.Black;
+
+			if (ShowRuntimeOnIdle && machine.Status == "Idle")
+			{
+				Machine_Info($"File took {(DateTime.Now - lastFileStart).ToString(@"hh\:mm\:ss")}");
+				ShowRuntimeOnIdle = false;
+			}
 		}
 
 		private void Machine_PositionUpdateReceived()
@@ -322,6 +333,14 @@ namespace OpenCNCPilot
 			StackPanelOverrides.IsEnabled = machine.Mode != Machine.OperatingMode.Disconnected;
 
 			UpdateProbeTabButtons();
+
+			if (lastMode == Machine.OperatingMode.Manual && machine.Mode == Machine.OperatingMode.SendFile)
+				lastFileStart = DateTime.Now;
+
+			if (lastMode == Machine.OperatingMode.SendFile && machine.Mode == Machine.OperatingMode.Manual)
+				ShowRuntimeOnIdle = true;
+
+			lastMode = machine.Mode;
 		}
 
 		private void Machine_ConnectionStateChanged()
