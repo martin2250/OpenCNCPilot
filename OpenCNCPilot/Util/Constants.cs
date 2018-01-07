@@ -17,9 +17,6 @@ namespace OpenCNCPilot.Util
 		public static string FileFilterGCode = "GCode|*.tap;*.nc;*.ngc|All Files|*.*";
 		public static string FileFilterHeightMap = "Height Maps|*.hmap|All Files|*.*";
 
-		public static string FilePathErrors = "Resources\\GrblErrors.txt";
-		public static string FilePathWebsite = "Resources\\index.html";
-
 		public static string LogFile = "log.txt";
 
 		public static char[] NewLines = new char[] {'\n', '\r'};

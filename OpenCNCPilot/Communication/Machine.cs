@@ -394,7 +394,7 @@ namespace OpenCNCPilot.Communication
 						}
 						else if (line.StartsWith("ALARM"))
 						{
-							RaiseEvent(NonFatalException, line);
+							RaiseEvent(ReportError, line);
 							Mode = OperatingMode.Manual;
 						}
 						else if (line.Length > 0)
@@ -979,11 +979,12 @@ namespace OpenCNCPilot.Communication
 
 		/// <summary>
 		/// Reports error. This is there to offload the ExpandError function from the "Real-Time" worker thread to the application thread
+		/// also used for alarms
 		/// </summary>
 		private void ReportError(string error)
 		{
 			if (NonFatalException != null)
-				NonFatalException.Invoke(GrblErrorProvider.ExpandError(error));
+				NonFatalException.Invoke(GrblCodeTranslator.ExpandError(error));
 		}
 
 		private void RaiseEvent(Action<string> action, string param)
