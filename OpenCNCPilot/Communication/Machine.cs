@@ -62,6 +62,7 @@ namespace OpenCNCPilot.Communication
 		public bool PinStateLimitZ { get; private set; } = false;
 
 		public double FeedRateRealtime { get; private set; } = 0;
+		public double SpindleSpeedRealtime { get; private set; } = 0;
 
 		private ReadOnlyCollection<bool> _pauselines = new ReadOnlyCollection<bool>(new bool[0]);
 		public ReadOnlyCollection<bool> PauseLines
@@ -820,7 +821,7 @@ namespace OpenCNCPilot.Communication
 					catch { NonFatalException.Invoke(string.Format("Received Bad Status: '{0}'", line)); }
 				}
 
-				if (m.Groups[1].Value == "WCO")
+				else if (m.Groups[1].Value == "WCO")
 				{
 					try
 					{
@@ -830,7 +831,7 @@ namespace OpenCNCPilot.Communication
 					catch { NonFatalException.Invoke(string.Format("Received Bad Status: '{0}'", line)); }
 				}
 
-				if (SyncBuffer && m.Groups[1].Value == "Bf")
+				else if (SyncBuffer && m.Groups[1].Value == "Bf")
 				{
 					try
 					{
@@ -846,7 +847,7 @@ namespace OpenCNCPilot.Communication
 					catch { NonFatalException.Invoke(string.Format("Received Bad Status: '{0}'", line)); }
 				}
 
-				if(m.Groups[1].Value == "Pn")
+				else if(m.Groups[1].Value == "Pn")
 				{
 					resetPins = false;
 
@@ -873,11 +874,23 @@ namespace OpenCNCPilot.Communication
 					PinStateProbe = stateP;
 				}
 
-				if (m.Groups[1].Value == "F")
+				else if (m.Groups[1].Value == "F")
 				{
 					try
 					{
 						FeedRateRealtime = double.Parse(m.Groups[2].Value, Constants.DecimalParseFormat);
+						posUpdate = true;
+					}
+					catch { NonFatalException.Invoke(string.Format("Received Bad Status: '{0}'", line)); }
+				}
+
+				else if (m.Groups[1].Value == "FS")
+				{
+					try
+					{
+						string[] parts = m.Groups[2].Value.Split(',');
+						FeedRateRealtime = double.Parse(parts[0], Constants.DecimalParseFormat);
+						SpindleSpeedRealtime = double.Parse(parts[1], Constants.DecimalParseFormat);
 						posUpdate = true;
 					}
 					catch { NonFatalException.Invoke(string.Format("Received Bad Status: '{0}'", line)); }
