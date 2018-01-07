@@ -11,6 +11,7 @@
 		Drop="Window_Drop"
 		DragEnter="Window_DragEnter"
 		DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        PreviewKeyDown="Window_PreviewKeyDown"
         Title="OpenCNCPilot by martin2250" Height="500" Width="900" Closing="Window_Closing">
     <Window.Resources>
         <ResourceDictionary Source="MainWindow.Resources.xaml"/>

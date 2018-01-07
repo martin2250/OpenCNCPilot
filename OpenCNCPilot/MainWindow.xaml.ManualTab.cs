@@ -110,10 +110,13 @@ namespace OpenCNCPilot
 			if (!machine.Connected)
 				return;
 
+			if (e.Key == Key.Escape)
+				machine.SoftReset();
+
 			if (!CheckBoxEnableJog.IsChecked.Value)
 				return;
 
-			e.Handled = true;
+			e.Handled = e.Key != Key.Tab;
 
 			if (e.IsRepeat)
 				return;
@@ -129,8 +132,6 @@ namespace OpenCNCPilot
 					direction = "Z";
 				else if (e.Key == Key.Down)
 					direction = "Z-";
-				else
-					e.Handled = false;
 			}
 			else
 			{
@@ -146,8 +147,6 @@ namespace OpenCNCPilot
 					direction = "Z";
 				else if (e.Key == Key.PageDown)
 					direction = "Z-";
-				else
-					e.Handled = false;
 			}
 
 			double feed = Properties.Settings.Default.JogFeed;
@@ -173,6 +172,12 @@ namespace OpenCNCPilot
 		private void Jogging_KeyUp(object sender, KeyEventArgs e)
 		{
 			machine.JogCancel();
+		}
+
+		private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+		{
+			if (machine.Connected && e.Key == System.Windows.Input.Key.Escape)
+				machine.SoftReset();
 		}
 	}
 }
