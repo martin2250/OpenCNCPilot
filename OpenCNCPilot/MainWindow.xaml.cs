@@ -55,6 +55,7 @@ namespace OpenCNCPilot
 			Machine_OperatingMode_Changed();
 
 			Properties.Settings.Default.SettingChanging += Default_SettingChanging;
+			FileRuntimeTimer.Tick += FileRuntimeTimer_Tick;
 
 			LoadMacros();
 
