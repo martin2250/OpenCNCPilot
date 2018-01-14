@@ -196,6 +196,9 @@
                                     </StackPanel>
                                 </Grid>
                             </Button>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="GRBL Settings"  Style="{StaticResource styleButton}" Click="ShowGrblSettings_Click"/>
+                            </StackPanel>                       
                         </StackPanel>
                     </Expander>
                 </Border>

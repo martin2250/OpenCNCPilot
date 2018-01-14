@@ -20,6 +20,8 @@ namespace OpenCNCPilot
 		GCodeFile ToolPath { get; set; } = GCodeFile.Empty;
 		HeightMap Map { get; set; }
 
+		GrblSettingsWindow settingsWindow = new GrblSettingsWindow();
+
 		public MainWindow()
 		{
 			AppDomain.CurrentDomain.UnhandledException += UnhandledException;
@@ -36,6 +38,7 @@ namespace OpenCNCPilot
 			machine.NonFatalException += Machine_NonFatalException;
 			machine.Info += Machine_Info;
 			machine.LineReceived += Machine_LineReceived;
+			machine.LineReceived += settingsWindow.LineReceived;
 			machine.StatusReceived += Machine_StatusReceived;
 			machine.LineSent += Machine_LineSent;
 
@@ -57,6 +60,8 @@ namespace OpenCNCPilot
 			Properties.Settings.Default.SettingChanging += Default_SettingChanging;
 
 			LoadMacros();
+
+			settingsWindow.SendLine += machine.SendLine;
 
 			UpdateCheck.CheckForUpdate();
 		}

@@ -96,6 +96,9 @@
     <Compile Include="GCode\GCodeParser.cs" />
     <Compile Include="GCode\HeightMap.cs" />
     <Compile Include="GCode\ParseException.cs" />
+    <Compile Include="GrblSettingsWindow.xaml.cs">
+      <DependentUpon>GrblSettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.ProbingTab.xaml.cs">
       <SubType>Code</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -129,7 +132,7 @@
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Util\Constants.cs" />
-    <Compile Include="Util\GrblErrorProvider.cs" />
+    <Compile Include="Util\GrblCodeTranslator.cs" />
     <Compile Include="Util\SettingsBinding.cs" />
     <Compile Include="Util\UpdateCheck.cs" />
     <Compile Include="Util\Vector2.cs" />
@@ -139,6 +142,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="EnterNumberWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GrblSettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

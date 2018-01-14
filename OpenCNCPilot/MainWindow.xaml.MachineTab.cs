@@ -56,5 +56,14 @@ namespace OpenCNCPilot
 
 			machine.SyncBuffer = true;
 		}
+
+		private void ShowGrblSettings_Click(object sender, RoutedEventArgs e)
+		{
+			if (machine.Mode != Communication.Machine.OperatingMode.Manual)
+				return;
+
+			machine.SendLine("$$");
+			settingsWindow.ShowDialog();
+		}
 	}
 }
