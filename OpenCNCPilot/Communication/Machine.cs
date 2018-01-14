@@ -613,7 +613,7 @@ namespace OpenCNCPilot.Communication
 
 						if (int.TryParse(m.Groups[2].Value, out code))
 						{
-							if (code == 0 || code == 1 || code == 2 || code == 30)
+							if (code == 0 || code == 1 || code == 2 || code == 30 || code == 6)
 								pauselines[line] = true;
 						}
 					}
