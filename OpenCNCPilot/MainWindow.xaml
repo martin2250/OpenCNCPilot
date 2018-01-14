@@ -52,7 +52,7 @@
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
                 <Border Style="{StaticResource stylePanelOut}">
                     <Expander Header="File" Width="Auto">
-                        <Grid Width="210" Height="240">
+                        <Grid Width="210" Height="260">
                             <Button Name="ButtonFileOpen" Click="ButtonOpen_Click" Content="Open" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top"/>
                             <Button Name="ButtonFileSave" Click="ButtonSave_Click" Content="Save" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="48,5,0,0" VerticalAlignment="Top"/>
                             <Button Name="ButtonFileClear" Click="ButtonClear_Click" Content="Clear" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="87,5,0,0" VerticalAlignment="Top"/>
@@ -62,12 +62,19 @@
                                 <Label Name="LabelFileLength" Content="0" Margin="-8,0,0,0"/>
                             </StackPanel>
 
-                            <ListView Name="ListViewFile"  Margin="0,33" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent"/>
+                            <ListView Name="ListViewFile"  Margin="0,53" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent"/>
 
-                            <Button Name="ButtonFileStart" Click="ButtonFileStart_Click" Content="Start" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="5,0,0,5" Height="23" VerticalAlignment="Bottom"/>
-                            <Button Name="ButtonFilePause" Click="ButtonFilePause_Click" Content="Pause" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="48,0,0,5" Height="23" VerticalAlignment="Bottom"/>
-                            <Button Name="ButtonFileGoto" Click="ButtonFileGoto_Click" Content="Go To" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="93,0,0,5" Height="23" VerticalAlignment="Bottom"/>
-                            <CheckBox Name="CheckBoxPauseOnM0" Content="Pause" ToolTip="Pause the Program on M0/M1/M30" IsChecked="{util:SettingBinding PauseFileOnHold}" HorizontalAlignment="Left" Margin="138,0,-24,0" Height="23" VerticalAlignment="Bottom"/>
+                            <Button Name="ButtonFileStart" Click="ButtonFileStart_Click" Content="Start" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="5,0,0,25" Height="23" VerticalAlignment="Bottom"/>
+                            <Button Name="ButtonFilePause" Click="ButtonFilePause_Click" Content="Pause" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="48,0,0,25" Height="23" VerticalAlignment="Bottom"/>
+                            <Button Name="ButtonFileGoto" Click="ButtonFileGoto_Click" Content="Go To" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="93,0,0,25" Height="23" VerticalAlignment="Bottom"/>
+                            <CheckBox Name="CheckBoxPauseOnM0" Content="Pause" ToolTip="Pause the Program on M0/M1/M30" IsChecked="{util:SettingBinding PauseFileOnHold}" HorizontalAlignment="Left" Margin="138,0,-24,20" Height="23" VerticalAlignment="Bottom"/>
+
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="5,5,0,0" HorizontalAlignment="Left">
+                                <Label Content="Runtime:"/>
+                                <Label Name="LabelFileRuntime" Content="00:00:00" Margin="0,0,-8,0"/>
+                                <Label Content="/"/>
+                                <Label Name="LabelFileDuration" Content="00:00:00" Margin="-8,0,0,0"/>
+                            </StackPanel>
                         </Grid>
                     </Expander>
                 </Border>

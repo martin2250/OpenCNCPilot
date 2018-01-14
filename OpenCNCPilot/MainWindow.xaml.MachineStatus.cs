@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Media3D;
+using System.Windows.Threading;
 
 namespace OpenCNCPilot
 {
@@ -14,8 +15,11 @@ namespace OpenCNCPilot
 	{
 		// Used for displaying runtime of job
 		Machine.OperatingMode lastMode = Machine.OperatingMode.Disconnected;
-		DateTime lastFileStart = DateTime.Now;
-		bool ShowRuntimeOnIdle = false;
+		TimeSpan FileRunTime = TimeSpan.Zero;
+		DateTime LastFileStart = DateTime.Now;
+		DispatcherTimer FileRuntimeTimer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1) };
+
+		bool StopRuntimeOnIdle = false;
 
 		private void Machine_PlaneChanged()
 		{
@@ -45,10 +49,12 @@ namespace OpenCNCPilot
 			else
 				ButtonStatus.Foreground = Brushes.Black;
 
-			if (ShowRuntimeOnIdle && machine.Status == "Idle")
+			if (StopRuntimeOnIdle && machine.Status == "Idle")
 			{
-				Machine_Info($"File took {(DateTime.Now - lastFileStart).ToString(@"hh\:mm\:ss")}");
-				ShowRuntimeOnIdle = false;
+				FileRuntimeTimer.Stop();
+				FileRuntimeTimer_Tick(null, null);
+				FileRunTime += DateTime.Now - LastFileStart;
+				StopRuntimeOnIdle = false;
 			}
 		}
 
@@ -225,6 +231,8 @@ namespace OpenCNCPilot
 				ToolPath.GetModel(ModelLine, ModelRapid, ModelArc);
 
 			LabelFileLength.Content = machine.File.Count;
+			LabelFileDuration.Content = ToolPath.TotalTime.ToString(@"hh\:mm\:ss");
+			FileRunTime = TimeSpan.Zero;
 
 			int digits = (int)Math.Ceiling(Math.Log10(machine.File.Count));
 
@@ -335,12 +343,20 @@ namespace OpenCNCPilot
 			UpdateProbeTabButtons();
 
 			if (lastMode == Machine.OperatingMode.Manual && machine.Mode == Machine.OperatingMode.SendFile)
-				lastFileStart = DateTime.Now;
+			{
+				LastFileStart = DateTime.Now;
+				FileRuntimeTimer.Start();
+			}
 
 			if (lastMode == Machine.OperatingMode.SendFile && machine.Mode == Machine.OperatingMode.Manual)
-				ShowRuntimeOnIdle = true;
+				StopRuntimeOnIdle = true;
 
 			lastMode = machine.Mode;
+		}
+
+		private void FileRuntimeTimer_Tick(object sender, EventArgs e)
+		{
+			LabelFileRuntime.Content = ((DateTime.Now - LastFileStart) + FileRunTime).ToString(@"hh\:mm\:ss");
 		}
 
 		private void Machine_ConnectionStateChanged()

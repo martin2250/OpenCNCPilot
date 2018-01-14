@@ -28,6 +28,7 @@ namespace OpenCNCPilot.GCode
 		public bool ContainsMotion { get; private set; } = false;
 
 		public double TravelDistance { get; private set; } = 0;
+		public TimeSpan TotalTime { get; private set; } = TimeSpan.Zero;
 
 		private GCodeFile(List<Command> toolpath)
 		{
@@ -39,6 +40,9 @@ namespace OpenCNCPilot.GCode
 			foreach (Motion m in Enumerable.Concat(Toolpath.OfType<Line>(), Toolpath.OfType<Arc>().SelectMany(a => a.Split(0.1))))
 			{
 				TravelDistance += m.Length;
+
+				if(m is Line && !((Line)m).Rapid && ((Line)m).Feed > 0.0)
+					TotalTime += TimeSpan.FromMinutes(m.Length/m.Feed);
 
 				ContainsMotion = true;
 
