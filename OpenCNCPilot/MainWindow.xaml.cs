@@ -261,5 +261,31 @@ namespace OpenCNCPilot
 			viewport.Camera.LookDirection = new System.Windows.Media.Media3D.Vector3D(-50, 150, -250);
 			viewport.Camera.UpDirection = new System.Windows.Media.Media3D.Vector3D(0, 0, 1);
 		}
+
+		private void ButtonSaveTLOPos_Click(object sender, RoutedEventArgs e)
+		{
+			if (machine.Mode != Machine.OperatingMode.Manual)
+				return;
+
+			Properties.Settings.Default.ToolLengthSetterPos = machine.MachinePosition.Z;
+		}
+
+		private void ButtonApplyTLO_Click(object sender, RoutedEventArgs e)
+		{
+			if (machine.Mode != Machine.OperatingMode.Manual)
+				return;
+
+			double delta = machine.MachinePosition.Z - Properties.Settings.Default.ToolLengthSetterPos;
+
+			machine.SendLine($"G43.1 Z{delta.ToString(Constants.DecimalOutputFormat)}");
+		}
+
+		private void ButtonClearTLO_Click(object sender, RoutedEventArgs e)
+		{
+			if (machine.Mode != Machine.OperatingMode.Manual)
+				return;
+
+			machine.SendLine("G49");
+		}
 	}
 }

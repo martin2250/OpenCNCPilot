@@ -352,6 +352,8 @@ namespace OpenCNCPilot
 				StopRuntimeOnIdle = true;
 
 			lastMode = machine.Mode;
+
+			groupBoxTLO.IsEnabled = machine.Mode == Machine.OperatingMode.Manual;
 		}
 
 		private void FileRuntimeTimer_Tick(object sender, EventArgs e)

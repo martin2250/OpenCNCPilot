@@ -87,5 +87,8 @@ G92Z0;</Value>
     <Setting Name="ConsoleFadeTime" Type="System.Double" Scope="User">
       <Value Profile="(Default)">10</Value>
     </Setting>
+    <Setting Name="ToolLengthSetterPos" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -173,6 +173,33 @@
                     </Expander>
                 </Border>
                 <Border Style="{StaticResource stylePanelOut}">
+                    <Expander Header="Manual Probing">
+                        <StackPanel>
+                            <GroupBox Header="Tool Length Offset" Name="groupBoxTLO">
+                                <Grid>
+                                    <Button Content="Save Pos" HorizontalAlignment="Left" VerticalAlignment="Top"  Style="{StaticResource styleButton}" Click="ButtonSaveTLOPos_Click">
+                                        <Button.ToolTip>
+                                            Tool Length Offsets:
+                                            1) load inital tool
+                                            2) move machine to tool length sensor
+                                            3) touch off Z (tool is at distance d over sensor. doesn't have to be zero, only constant)
+                                            4) hit 'Save Pos'
+                                            5) continue job to next tool change
+                                            6) change tool
+                                            7) move to TLS and touch off again (new tool needs to be at same height as initial tool)
+                                            8) hit 'Apply TLO'
+                                        </Button.ToolTip>
+                                    </Button>
+                                    <Label Content="@MZ: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="65,4,-7,0"/>
+                                    <Label Name="labelTLOZ" Content="{util:SettingBinding ToolLengthSetterPos}" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="105,4,-7,0" Width="60"/>
+                                    <Button Content="Apply TLO" HorizontalAlignment="Left" VerticalAlignment="Top"  Style="{StaticResource styleButton}" Margin="5,33,0,0" Click="ButtonApplyTLO_Click"/>
+                                    <Button Content="Clear TLO" HorizontalAlignment="Left" VerticalAlignment="Top"  Style="{StaticResource styleButton}" Margin="73,33,0,0" Click="ButtonClearTLO_Click"/>
+                                </Grid>
+                            </GroupBox>
+                        </StackPanel>
+                    </Expander>
+                </Border>
+                <Border Style="{StaticResource stylePanelOut}">
                     <Expander Header="Macros">
                         <StackPanel>
                             <Button Content="Add Macro" Name="ButtonAddMacro" Click="ButtonAddMacro_Click" Margin="2"/>

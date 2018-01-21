@@ -358,5 +358,17 @@ namespace OpenCNCPilot.Properties {
                 this["ConsoleFadeTime"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double ToolLengthSetterPos {
+            get {
+                return ((double)(this["ToolLengthSetterPos"]));
+            }
+            set {
+                this["ToolLengthSetterPos"] = value;
+            }
+        }
     }
 }
