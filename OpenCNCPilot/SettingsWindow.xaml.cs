@@ -31,5 +31,10 @@ namespace OpenCNCPilot
 			foreach (string port in System.IO.Ports.SerialPort.GetPortNames())
 				((ComboBox)sender).Items.Add(port);
 		}
+
+		private void Window_Closed(object sender, EventArgs e)
+		{
+			Properties.Settings.Default.Save();
+		}
 	}
 }

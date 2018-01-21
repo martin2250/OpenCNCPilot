@@ -44,9 +44,14 @@ namespace OpenCNCPilot
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			if (machine.Connected)
-				machine.Disconnect();
+			{
+				MessageBox.Show("Can't close while connected!");
+				e.Cancel = true;
+				return;
+			}
 
-			Properties.Settings.Default.Save();
+			settingsWindow.Close();
+			Application.Current.Shutdown();
 		}
 
 		private void ButtonSyncBuffer_Click(object sender, RoutedEventArgs e)
