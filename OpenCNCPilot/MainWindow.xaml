@@ -179,15 +179,17 @@
                                 <Grid>
                                     <Button Content="Save Pos" HorizontalAlignment="Left" VerticalAlignment="Top"  Style="{StaticResource styleButton}" Click="ButtonSaveTLOPos_Click">
                                         <Button.ToolTip>
-                                            Tool Length Offsets:
-                                            1) load inital tool
-                                            2) move machine to tool length sensor
-                                            3) touch off Z (tool is at distance d over sensor. doesn't have to be zero, only constant)
-                                            4) hit 'Save Pos'
-                                            5) continue job to next tool change
-                                            6) change tool
-                                            7) move to TLS and touch off again (new tool needs to be at same height as initial tool)
-                                            8) hit 'Apply TLO'
+                                            <TextBlock>
+                                                Tool Length Offsets:<LineBreak/>
+                                                1) load inital tool<LineBreak/>
+                                                2) move machine to tool length sensor<LineBreak/>
+                                                3) touch off Z (tool is at distance d over sensor. doesn't have to be zero, only constant)<LineBreak/>
+                                                4) hit 'Save Pos'<LineBreak/>
+                                                5) continue job to next tool change<LineBreak/>
+                                                6) change tool<LineBreak/>
+                                                7) move to TLS and touch off again (new tool needs to be at same height as initial tool)<LineBreak/>
+                                                8) hit 'Apply TLO'
+                                            </TextBlock>
                                         </Button.ToolTip>
                                     </Button>
                                     <Label Content="@MZ: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="65,4,-7,0"/>
