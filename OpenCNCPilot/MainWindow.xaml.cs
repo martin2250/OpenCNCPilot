@@ -5,10 +5,11 @@ using OpenCNCPilot.Util;
 using Microsoft.Win32;
 using OpenCNCPilot.GCode;
 using System.Windows.Controls;
+using System.ComponentModel;
 
 namespace OpenCNCPilot
 {
-	public partial class MainWindow : Window
+	public partial class MainWindow : Window, INotifyPropertyChanged
 	{
 		Machine machine = new Machine();
 
@@ -21,6 +22,13 @@ namespace OpenCNCPilot
 		HeightMap Map { get; set; }
 
 		GrblSettingsWindow settingsWindow = new GrblSettingsWindow();
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		private void RaisePropertyChanged(string propertyName)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
 
 		public MainWindow()
 		{
@@ -60,11 +68,25 @@ namespace OpenCNCPilot
 			Properties.Settings.Default.SettingChanging += Default_SettingChanging;
 			FileRuntimeTimer.Tick += FileRuntimeTimer_Tick;
 
+			machine.ProbeFinished += Machine_ProbeFinished_UserOutput;
+
 			LoadMacros();
 
 			settingsWindow.SendLine += machine.SendLine;
 
 			UpdateCheck.CheckForUpdate();
+		}
+
+		public Vector3 LastProbePosMachine { get; set; }
+		public Vector3 LastProbePosWork { get; set; }
+
+		private void Machine_ProbeFinished_UserOutput(Vector3 position, bool success)
+		{
+			LastProbePosWork = position;
+			LastProbePosMachine = position += machine.WorkOffset;
+
+			RaisePropertyChanged("LastProbePosMachine");
+			RaisePropertyChanged("LastProbePosWork");
 		}
 
 		private void UnhandledException(object sender, UnhandledExceptionEventArgs ea)
@@ -267,7 +289,7 @@ namespace OpenCNCPilot
 			if (machine.Mode != Machine.OperatingMode.Manual)
 				return;
 
-			Properties.Settings.Default.ToolLengthSetterPos = machine.MachinePosition.Z;
+			Properties.Settings.Default.ToolLengthSetterPos = LastProbePosMachine.Z;
 		}
 
 		private void ButtonApplyTLO_Click(object sender, RoutedEventArgs e)

@@ -175,6 +175,22 @@
                 <Border Style="{StaticResource stylePanelOut}">
                     <Expander Header="Manual Probing">
                         <StackPanel>
+                            <GroupBox Header="Last Probe Position">
+                                <StackPanel>
+                                    <Label Content="Machine:"/>
+                                    <StackPanel  Orientation="Horizontal">
+                                        <TextBox Width="60" Margin="5,0,0,0" IsReadOnly="True" Text="{Binding LastProbePosMachine.X}"/>
+                                        <TextBox Width="60" Margin="5,0,0,0" IsReadOnly="True" Text="{Binding LastProbePosMachine.Y}"/>
+                                        <TextBox Width="60" Margin="5,0,5,0" IsReadOnly="True" Text="{Binding LastProbePosMachine.Z}"/>
+                                    </StackPanel>
+                                    <Label Content="Work:"/>
+                                    <StackPanel  Orientation="Horizontal">
+                                        <TextBox Width="60" Margin="5,0,0,0" IsReadOnly="True" Text="{Binding LastProbePosWork.X}"/>
+                                        <TextBox Width="60" Margin="5,0,0,0" IsReadOnly="True" Text="{Binding LastProbePosWork.Y}"/>
+                                        <TextBox Width="60" Margin="5,0,5,0" IsReadOnly="True" Text="{Binding LastProbePosWork.Z}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </GroupBox>
                             <GroupBox Header="Tool Length Offset" Name="groupBoxTLO">
                                 <Grid>
                                     <Button Content="Save Pos" HorizontalAlignment="Left" VerticalAlignment="Top"  Style="{StaticResource styleButton}" Click="ButtonSaveTLOPos_Click">
