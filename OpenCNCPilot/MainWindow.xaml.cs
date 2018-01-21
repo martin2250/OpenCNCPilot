@@ -297,7 +297,7 @@ namespace OpenCNCPilot
 			if (machine.Mode != Machine.OperatingMode.Manual)
 				return;
 
-			double delta = machine.MachinePosition.Z - Properties.Settings.Default.ToolLengthSetterPos;
+			double delta = LastProbePosMachine.Z - Properties.Settings.Default.ToolLengthSetterPos;
 
 			machine.SendLine($"G43.1 Z{delta.ToString(Constants.DecimalOutputFormat)}");
 		}

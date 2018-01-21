@@ -199,12 +199,12 @@
                                                 Tool Length Offsets:<LineBreak/>
                                                 1) load inital tool<LineBreak/>
                                                 2) move machine to tool length sensor<LineBreak/>
-                                                3) touch off Z (tool is at distance d over sensor. doesn't have to be zero, only constant)<LineBreak/>
-                                                4) hit 'Save Pos'<LineBreak/>
+                                                3) touch off Z with some form of G38<LineBreak/>
+                                                4) hit 'Save Pos', this will save the position of the last probe cycle as the position of the TLS<LineBreak/>
                                                 5) continue job to next tool change<LineBreak/>
                                                 6) change tool<LineBreak/>
                                                 7) move to TLS and touch off again (new tool needs to be at same height as initial tool)<LineBreak/>
-                                                8) hit 'Apply TLO'
+                                                8) hit 'Apply TLO', this will use the position of the last received probe message and the saved position from earlier to compute the correct offset
                                             </TextBlock>
                                         </Button.ToolTip>
                                     </Button>
