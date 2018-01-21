@@ -204,7 +204,7 @@
                                 </Grid>
                             </Button>
                             <StackPanel Orientation="Horizontal">
-                                <Button Content="GRBL Settings"  Style="{StaticResource styleButton}" Click="ShowGrblSettings_Click"/>
+                                <Button Content="GRBL Settings" Style="{StaticResource styleButton}" Click="ShowGrblSettings_Click"/>
                             </StackPanel>                       
                         </StackPanel>
                     </Expander>
@@ -221,13 +221,14 @@
                     </Expander>
                 </Border>
                 <Border Style="{StaticResource stylePanelOut}">
-                    <Expander Header="Debug Info">
-                        <StackPanel HorizontalAlignment="Left" FlowDirection="LeftToRight">
-                            <CheckBox Content="Show Status Messages" IsChecked="{util:SettingBinding ShowStatusLines}"/>
+                    <Expander Header="Debug">
+                        <StackPanel HorizontalAlignment="Left" Margin="0,0,0,5">
+                            <CheckBox Content="Show Status Messages" IsChecked="{util:SettingBinding ShowStatusLines}" Margin="10,0,0,0"/>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Console Fade Time (s)"/>
                                 <TextBox Text="{util:SettingBinding ConsoleFadeTime}" VerticalContentAlignment="Center" Width="40" Margin="10,3,0,3"/>
+                                <Label Content="Console Fade Time (s)" FlowDirection="LeftToRight"/>
                             </StackPanel>
+                            <Button Style="{StaticResource styleButton}" Content="Reset 3D Viewport" HorizontalAlignment="Left" Margin="10,0,0,0" Click="ButtonResetViewport_Click"/>
                         </StackPanel>
                     </Expander>
                 </Border>

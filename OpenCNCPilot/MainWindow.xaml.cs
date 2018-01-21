@@ -254,5 +254,12 @@ namespace OpenCNCPilot
 					break;
 			}
 		}
+
+		private void ButtonResetViewport_Click(object sender, RoutedEventArgs e)
+		{
+			viewport.Camera.Position = new System.Windows.Media.Media3D.Point3D(50, -150, 250);
+			viewport.Camera.LookDirection = new System.Windows.Media.Media3D.Vector3D(-50, 150, -250);
+			viewport.Camera.UpDirection = new System.Windows.Media.Media3D.Vector3D(0, 0, 1);
+		}
 	}
 }
