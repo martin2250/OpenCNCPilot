@@ -65,15 +65,17 @@ namespace OpenCNCPilot
 
 			var nfi = Constants.DecimalOutputFormat;
 
-			LabelPosX.Content = machine.WorkPosition.X.ToString(nfi);
-			LabelPosY.Content = machine.WorkPosition.Y.ToString(nfi);
-			LabelPosZ.Content = machine.WorkPosition.Z.ToString(nfi);
+			LabelPosX.Text = machine.WorkPosition.X.ToString("N", nfi);
+			LabelPosY.Text = machine.WorkPosition.Y.ToString("N", nfi);
+			LabelPosZ.Text = machine.WorkPosition.Z.ToString("N", nfi);
 
-			LabelPosMX.Content = machine.MachinePosition.X.ToString(nfi);
-			LabelPosMY.Content = machine.MachinePosition.Y.ToString(nfi);
-			LabelPosMZ.Content = machine.MachinePosition.Z.ToString(nfi);
+			LabelPosMX.Text = machine.MachinePosition.X.ToString("N", nfi);
+			LabelPosMY.Text = machine.MachinePosition.Y.ToString("N", nfi);
+			LabelPosMZ.Text = machine.MachinePosition.Z.ToString("N", nfi);
 
 			LabelFeedRateRealtime.Content = Math.Round(machine.FeedRateRealtime);
+
+			TextBoxCurrentTLO.Text = machine.CurrentTLO.ToString("N", nfi);
 		}
 
 		private void Machine_BufferStateChanged()

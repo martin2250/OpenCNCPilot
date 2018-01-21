@@ -32,12 +32,12 @@ namespace OpenCNCPilot
 			LabelHeightMapProgress.Content = Map.Progress + "/" + Map.TotalPoints;
 
 			if (Map.MinHeight != double.MaxValue)
-				LabelHeightMapMinZ.Content = Map.MinHeight;
+				LabelHeightMapMinZ.Content = Map.MinHeight.ToString("N", Constants.DecimalOutputFormat);
 			else
 				LabelHeightMapMinZ.Content = "~";
 
 			if (Map.MaxHeight != double.MinValue)
-				LabelHeightMapMaxZ.Content = Map.MaxHeight;
+				LabelHeightMapMaxZ.Content = Map.MaxHeight.ToString("N", Constants.DecimalOutputFormat);
 			else
 				LabelHeightMapMaxZ.Content = "~";
 

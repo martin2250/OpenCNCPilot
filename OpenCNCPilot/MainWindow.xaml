@@ -33,18 +33,18 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="X:"/>
-                        <Label Name="LabelPosX" Width="45" Content="0.0"/>
+                        <TextBox Name="LabelPosX" Width="55" Text="0.0" IsReadOnly="True" VerticalContentAlignment="Center" Height="22"/>
                         <Label Content="Y:"/>
-                        <Label Name="LabelPosY" Width="45" Content="0.0"/>
+                        <TextBox Name="LabelPosY" Width="55" Text="0.0" IsReadOnly="True" VerticalContentAlignment="Center" Height="22"/>
                         <Label Content="Z:"/>
-                        <Label Name="LabelPosZ" Width="60" Content="0.0"/>
-                        <Label Content="MX:"/>
-                        <Label Name="LabelPosMX" Width="45" Content="0.0"/>
+                        <TextBox Name="LabelPosZ" Width="55" Text="0.0" IsReadOnly="True" VerticalContentAlignment="Center" Height="22"/>
+                        <Label Content="     MX:"/>
+                        <TextBox Name="LabelPosMX" Width="55" Text="0.0" IsReadOnly="True" VerticalContentAlignment="Center" Height="22"/>
                         <Label Content="MY:"/>
-                        <Label Name="LabelPosMY" Width="45" Content="0.0"/>
+                        <TextBox Name="LabelPosMY" Width="55" Text="0.0" IsReadOnly="True" VerticalContentAlignment="Center" Height="22"/>
                         <Label Content="MZ:"/>
-                        <Label Name="LabelPosMZ" Width="45" Content="0.0"/>
-                        <Label Content="F:"/>
+                        <TextBox Name="LabelPosMZ" Width="55" Text="0.0" IsReadOnly="True" VerticalContentAlignment="Center" Height="22"/>
+                        <Label Content="    F:"/>
                         <Label Name="LabelFeedRateRealtime" Width="45" Content="0"/>
                     </StackPanel>
                 </StackPanel>
@@ -179,15 +179,15 @@
                                 <StackPanel>
                                     <Label Content="Machine:"/>
                                     <StackPanel  Orientation="Horizontal">
-                                        <TextBox Width="60" Margin="5,0,0,0" IsReadOnly="True" Text="{Binding LastProbePosMachine.X}"/>
-                                        <TextBox Width="60" Margin="5,0,0,0" IsReadOnly="True" Text="{Binding LastProbePosMachine.Y}"/>
-                                        <TextBox Width="60" Margin="5,0,5,0" IsReadOnly="True" Text="{Binding LastProbePosMachine.Z}"/>
+                                        <TextBox Width="60" Margin="5,0,0,0" IsReadOnly="True" Text="{Binding LastProbePosMachine.X, StringFormat=N3}"/>
+                                        <TextBox Width="60" Margin="5,0,0,0" IsReadOnly="True" Text="{Binding LastProbePosMachine.Y, StringFormat=N3}"/>
+                                        <TextBox Width="60" Margin="5,0,5,0" IsReadOnly="True" Text="{Binding LastProbePosMachine.Z, StringFormat=N3}"/>
                                     </StackPanel>
                                     <Label Content="Work:"/>
                                     <StackPanel  Orientation="Horizontal">
-                                        <TextBox Width="60" Margin="5,0,0,0" IsReadOnly="True" Text="{Binding LastProbePosWork.X}"/>
-                                        <TextBox Width="60" Margin="5,0,0,0" IsReadOnly="True" Text="{Binding LastProbePosWork.Y}"/>
-                                        <TextBox Width="60" Margin="5,0,5,0" IsReadOnly="True" Text="{Binding LastProbePosWork.Z}"/>
+                                        <TextBox Width="60" Margin="5,0,0,0" IsReadOnly="True" Text="{Binding LastProbePosWork.X, StringFormat=N3}"/>
+                                        <TextBox Width="60" Margin="5,0,0,0" IsReadOnly="True" Text="{Binding LastProbePosWork.Y, StringFormat=N3}"/>
+                                        <TextBox Width="60" Margin="5,0,5,0" IsReadOnly="True" Text="{Binding LastProbePosWork.Z, StringFormat=N3}"/>
                                     </StackPanel>
                                 </StackPanel>
                             </GroupBox>
@@ -209,9 +209,10 @@
                                         </Button.ToolTip>
                                     </Button>
                                     <Label Content="@MZ: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="65,4,-7,0"/>
-                                    <Label Name="labelTLOZ" Content="{util:SettingBinding ToolLengthSetterPos}" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="105,4,-7,0" Width="60"/>
-                                    <Button Content="Apply TLO" HorizontalAlignment="Left" VerticalAlignment="Top"  Style="{StaticResource styleButton}" Margin="5,33,0,0" Click="ButtonApplyTLO_Click"/>
-                                    <Button Content="Clear TLO" HorizontalAlignment="Left" VerticalAlignment="Top"  Style="{StaticResource styleButton}" Margin="73,33,0,0" Click="ButtonClearTLO_Click"/>
+                                    <Label Content="{util:SettingBinding ToolLengthSetterPos}" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="105,4,-7,0" Width="60"/>
+                                    <Button Content="Apply TLO" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource styleButton}" Margin="5,33,0,0" Click="ButtonApplyTLO_Click"/>
+                                    <Button Content="Clear TLO" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource styleButton}" Margin="73,33,0,0" Click="ButtonClearTLO_Click"/>
+                                    <TextBox Name="TextBoxCurrentTLO" Text="0.000" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="138,33,0,0" Width="52" Height="23" VerticalContentAlignment="Center" IsReadOnly="True" ToolTip="Current TLO (Z)"/>
                                 </Grid>
                             </GroupBox>
                         </StackPanel>

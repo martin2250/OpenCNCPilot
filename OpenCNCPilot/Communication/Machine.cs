@@ -64,6 +64,8 @@ namespace OpenCNCPilot.Communication
 		public double FeedRateRealtime { get; private set; } = 0;
 		public double SpindleSpeedRealtime { get; private set; } = 0;
 
+		public double CurrentTLO { get; private set; } = 0;
+
 		private ReadOnlyCollection<bool> _pauselines = new ReadOnlyCollection<bool>(new bool[0]);
 		public ReadOnlyCollection<bool> PauseLines
 		{
@@ -247,6 +249,7 @@ namespace OpenCNCPilot.Communication
 				bool filePosChanged = false;
 
 				writer.Write("\n$G\n");
+				writer.Write("\n$#\n");
 				writer.Flush();
 
 				while (true)
@@ -474,6 +477,7 @@ namespace OpenCNCPilot.Communication
 			MachinePosition = new Vector3();
 			WorkOffset = new Vector3();
 			FeedRateRealtime = 0;
+			CurrentTLO = 0;
 
 			if (PositionUpdateReceived != null)
 				PositionUpdateReceived.Invoke();
@@ -736,7 +740,7 @@ namespace OpenCNCPilot.Communication
 			ToSend.Clear();
 		}
 
-		private static Regex GCodeSplitter = new Regex(@"(G)\s*(\-?\d+\.?\d*)", RegexOptions.Compiled);
+		private static Regex GCodeSplitter = new Regex(@"([GZ])\s*(\-?\d+\.?\d*)", RegexOptions.Compiled);
 
 		/// <summary>
 		/// Updates Status info from each line sent
@@ -750,15 +754,29 @@ namespace OpenCNCPilot.Communication
 			if (line.Contains("$J="))
 				return;
 
+			if(line.StartsWith("[TLO:"))
+			{
+				try
+				{
+					CurrentTLO = double.Parse(line.Substring(5, line.Length - 6), Constants.DecimalParseFormat);
+					RaiseEvent(PositionUpdateReceived);
+				}
+				catch { RaiseEvent(NonFatalException, "Error while Parsing Status Message"); }
+				return;
+			}
+
 			try
 			{
 				//we use a Regex here so G91.1 etc don't get recognized as G91
-				foreach (Match m in GCodeSplitter.Matches(line))
+				MatchCollection mc = GCodeSplitter.Matches(line);
+				for (int i = 0; i < mc.Count; i++)
 				{
+					Match m = mc[i];
+
 					if (m.Groups[1].Value != "G")
 						continue;
 
-					float code = float.Parse(m.Groups[2].Value, Constants.DecimalParseFormat);
+					double code = double.Parse(m.Groups[2].Value, Constants.DecimalParseFormat);
 
 					if (code == 17)
 						Plane = ArcPlane.XY;
@@ -776,6 +794,23 @@ namespace OpenCNCPilot.Communication
 						DistanceMode = ParseDistanceMode.Absolute;
 					if (code == 91)
 						DistanceMode = ParseDistanceMode.Incremental;
+
+					if (code == 49)
+						CurrentTLO = 0;
+
+					if (code == 43.1)
+					{
+						if(mc.Count > (i + 1))
+						{
+							if (mc[i + 1].Groups[1].Value == "Z")
+							{
+								CurrentTLO = double.Parse(mc[i + 1].Groups[2].Value, Constants.DecimalParseFormat);
+								RaiseEvent(PositionUpdateReceived);
+							}
+
+							i += 1;
+						}
+					}
 				}
 			}
 			catch { RaiseEvent(NonFatalException, "Error while Parsing Status Message"); }

@@ -70,7 +70,7 @@ namespace OpenCNCPilot
 			if (machine.Mode != Machine.OperatingMode.Manual)
 				return;
 
-			TextBoxManual.Text = $"G10 L2 P0 X{machine.MachinePosition.X.ToString(Constants.DecimalOutputFormat)} Y{machine.MachinePosition.Y.ToString(Constants.DecimalOutputFormat)} Z{machine.MachinePosition.Z.ToString(Constants.DecimalOutputFormat)}";
+			TextBoxManual.Text = $"G10 L2 P0 X{machine.MachinePosition.X.ToString("N", Constants.DecimalOutputFormat)} Y{machine.MachinePosition.Y.ToString("N", Constants.DecimalOutputFormat)} Z{(machine.MachinePosition.Z - machine.CurrentTLO).ToString("N", Constants.DecimalOutputFormat)}";
 		}
 
 		private void ButtonManualSetG92Zero_Click(object sender, RoutedEventArgs e)
