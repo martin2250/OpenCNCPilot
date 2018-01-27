@@ -870,7 +870,7 @@ namespace OpenCNCPilot.Communication
 				{
 					try
 					{
-						int availableBytes = int.Parse(m.Groups[4].Value);
+						int availableBytes = int.Parse(m.Groups[2].Value.Split(',')[1]);
 						int used = Properties.Settings.Default.ControllerBufferSize - availableBytes;
 
 						if (used < 0)
