@@ -548,6 +548,9 @@ namespace OpenCNCPilot.Communication
 
 			if (OverrideChanged != null)
 				OverrideChanged.Invoke();
+
+			SendLine("$G");
+			SendLine("$#");
 		}
 
 		//probably shouldn't expose this, but adding overrides would be much more effort otherwise

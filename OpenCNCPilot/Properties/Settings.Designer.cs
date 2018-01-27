@@ -394,5 +394,17 @@ namespace OpenCNCPilot.Properties {
                 this["SettingsUpdateRequired"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TLSUseActualPos {
+            get {
+                return ((bool)(this["TLSUseActualPos"]));
+            }
+            set {
+                this["TLSUseActualPos"] = value;
+            }
+        }
     }
 }

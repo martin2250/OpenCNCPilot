@@ -32,20 +32,20 @@
                         <Button Name="ButtonSoftReset" Click="ButtonSoftReset_Click" Content="Soft Reset" Style="{StaticResource styleButton}" Margin="5,5,0,5"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="X:"/>
+                        <TextBlock Text=" X: " VerticalAlignment="Center"/>
                         <TextBox Name="LabelPosX" Width="55" Text="0.0" IsReadOnly="True" VerticalContentAlignment="Center" Height="22"/>
-                        <Label Content="Y:"/>
+                        <TextBlock Text=" Y: " VerticalAlignment="Center"/>
                         <TextBox Name="LabelPosY" Width="55" Text="0.0" IsReadOnly="True" VerticalContentAlignment="Center" Height="22"/>
-                        <Label Content="Z:"/>
+                        <TextBlock Text=" Z: " VerticalAlignment="Center"/>
                         <TextBox Name="LabelPosZ" Width="55" Text="0.0" IsReadOnly="True" VerticalContentAlignment="Center" Height="22"/>
-                        <Label Content="     MX:"/>
+                        <TextBlock Text="   MX: " VerticalAlignment="Center"/>
                         <TextBox Name="LabelPosMX" Width="55" Text="0.0" IsReadOnly="True" VerticalContentAlignment="Center" Height="22"/>
-                        <Label Content="MY:"/>
+                        <TextBlock Text=" MY: " VerticalAlignment="Center"/>
                         <TextBox Name="LabelPosMY" Width="55" Text="0.0" IsReadOnly="True" VerticalContentAlignment="Center" Height="22"/>
-                        <Label Content="MZ:"/>
+                        <TextBlock Text=" MZ: " VerticalAlignment="Center"/>
                         <TextBox Name="LabelPosMZ" Width="55" Text="0.0" IsReadOnly="True" VerticalContentAlignment="Center" Height="22"/>
-                        <Label Content="    F:"/>
-                        <Label Name="LabelFeedRateRealtime" Width="45" Content="0"/>
+                        <TextBlock Text=" F:" VerticalAlignment="Center"/>
+                        <TextBlock Name="LabelFeedRateRealtime" Width="45" Text="0" VerticalAlignment="Center"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -193,7 +193,8 @@
                             </GroupBox>
                             <GroupBox Header="Tool Length Offset" Name="groupBoxTLO">
                                 <Grid>
-                                    <Button Content="Save Pos" HorizontalAlignment="Left" VerticalAlignment="Top"  Style="{StaticResource styleButton}" Click="ButtonSaveTLOPos_Click">
+                                    <CheckBox Content="Use Actual Position vs Probe" IsChecked="{util:SettingBinding TLSUseActualPos}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0"/>
+                                    <Button Content="Save Pos" HorizontalAlignment="Left" VerticalAlignment="Top"  Style="{StaticResource styleButton}" Click="ButtonSaveTLOPos_Click" Margin="5,25,0,0">
                                         <Button.ToolTip>
                                             <TextBlock>
                                                 Tool Length Offsets:<LineBreak/>
@@ -208,11 +209,11 @@
                                             </TextBlock>
                                         </Button.ToolTip>
                                     </Button>
-                                    <Label Content="@MZ: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="65,4,-7,0"/>
-                                    <Label Content="{util:SettingBinding ToolLengthSetterPos}" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="105,4,-7,0" Width="60"/>
-                                    <Button Content="Apply TLO" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource styleButton}" Margin="5,33,0,0" Click="ButtonApplyTLO_Click"/>
-                                    <Button Content="Clear TLO" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource styleButton}" Margin="73,33,0,0" Click="ButtonClearTLO_Click"/>
-                                    <TextBox Name="TextBoxCurrentTLO" Text="0.000" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="138,33,0,0" Width="52" Height="23" VerticalContentAlignment="Center" IsReadOnly="True" ToolTip="Current TLO (Z)"/>
+                                    <TextBlock Text="@MZ: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="65,29,0,0"/>
+                                    <TextBlock Text="{util:SettingBinding ToolLengthSetterPos, StringFormat=N3}" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="105,29,0,0" Width="60"/>
+                                    <Button Content="Apply TLO" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource styleButton}" Margin="5,53,0,0" Click="ButtonApplyTLO_Click"/>
+                                    <Button Content="Clear TLO" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource styleButton}" Margin="73,53,0,0" Click="ButtonClearTLO_Click"/>
+                                    <TextBox Name="TextBoxCurrentTLO" Text="0.000" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="138,53,0,0" Width="52" Height="23" VerticalContentAlignment="Center" IsReadOnly="True" ToolTip="Current TLO (Z)"/>
                                 </Grid>
                             </GroupBox>
                         </StackPanel>
@@ -251,7 +252,7 @@
                             </Button>
                             <StackPanel Orientation="Horizontal">
                                 <Button Content="GRBL Settings" Style="{StaticResource styleButton}" Click="ShowGrblSettings_Click"/>
-                            </StackPanel>                       
+                            </StackPanel>
                         </StackPanel>
                     </Expander>
                 </Border>
@@ -334,7 +335,7 @@
             </h:MeshGeometryVisual3D>
             <h:LinesVisual3D x:Name="ModelHeightMapBoundary" Thickness="2" Color="Lime"/>
             <h:PointsVisual3D x:Name="ModelHeightMapPoints" Color="Red" Size="4"/>
-			<h:LinesVisual3D x:Name="ModelFileBoundary" Color="GreenYellow" Thickness="2.5"/>
+            <h:LinesVisual3D x:Name="ModelFileBoundary" Color="GreenYellow" Thickness="2.5"/>
             <h:PointsVisual3D x:Name="ModelFileBoundaryPoints" Color="Green" Size="8"/>
             <h:TextVisual3D x:Name="ModelTextMinPoint" UpDirection="0,1,0" Height="7" VerticalAlignment="Top" HorizontalAlignment="Left"/>
             <h:TextVisual3D x:Name="ModelTextMaxPoint" UpDirection="0,1,0" Height="7" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>

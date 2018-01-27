@@ -290,7 +290,9 @@ namespace OpenCNCPilot
 			if (machine.Mode != Machine.OperatingMode.Manual)
 				return;
 
-			Properties.Settings.Default.ToolLengthSetterPos = LastProbePosMachine.Z;
+			double Z = (Properties.Settings.Default.TLSUseActualPos) ? machine.MachinePosition.Z : LastProbePosMachine.Z;
+
+			Properties.Settings.Default.ToolLengthSetterPos = Z;
 		}
 
 		private void ButtonApplyTLO_Click(object sender, RoutedEventArgs e)
@@ -298,7 +300,9 @@ namespace OpenCNCPilot
 			if (machine.Mode != Machine.OperatingMode.Manual)
 				return;
 
-			double delta = LastProbePosMachine.Z - Properties.Settings.Default.ToolLengthSetterPos;
+			double Z = (Properties.Settings.Default.TLSUseActualPos) ? machine.MachinePosition.Z : LastProbePosMachine.Z;
+
+			double delta = Z - Properties.Settings.Default.ToolLengthSetterPos;
 
 			machine.SendLine($"G43.1 Z{delta.ToString(Constants.DecimalOutputFormat)}");
 		}

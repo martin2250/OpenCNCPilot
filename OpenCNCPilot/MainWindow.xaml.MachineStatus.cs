@@ -73,7 +73,7 @@ namespace OpenCNCPilot
 			LabelPosMY.Text = machine.MachinePosition.Y.ToString("N", nfi);
 			LabelPosMZ.Text = machine.MachinePosition.Z.ToString("N", nfi);
 
-			LabelFeedRateRealtime.Content = Math.Round(machine.FeedRateRealtime);
+			LabelFeedRateRealtime.Text = ((int)Math.Round(machine.FeedRateRealtime)).ToString();
 
 			TextBoxCurrentTLO.Text = machine.CurrentTLO.ToString("N", nfi);
 		}
