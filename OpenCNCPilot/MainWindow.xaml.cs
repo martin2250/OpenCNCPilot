@@ -64,6 +64,7 @@ namespace OpenCNCPilot
 			machine.PinStateChanged += Machine_PinStateChanged;
 
 			Machine_OperatingMode_Changed();
+			Machine_PositionUpdateReceived();
 
 			Properties.Settings.Default.SettingChanging += Default_SettingChanging;
 			FileRuntimeTimer.Tick += FileRuntimeTimer_Tick;
