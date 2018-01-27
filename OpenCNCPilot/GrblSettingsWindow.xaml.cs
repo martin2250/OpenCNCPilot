@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -45,18 +46,37 @@ namespace OpenCNCPilot
 					Grid.SetColumn(valBox, 1);
 					gridMain.Children.Add(valBox);
 
+					TextBlock num = new TextBlock
+					{
+						Text = $"${number}=",
+						HorizontalAlignment = HorizontalAlignment.Right,
+						VerticalAlignment = VerticalAlignment.Center
+					};
+					Grid.SetRow(num, gridMain.RowDefinitions.Count - 1);
+					Grid.SetColumn(num, 0);
+					gridMain.Children.Add(num);
+
 					if (Util.GrblCodeTranslator.Settings.ContainsKey(number))
 					{
 						Tuple<string, string, string> labels = Util.GrblCodeTranslator.Settings[number];
 
-						Label name = new Label
+						TextBlock name = new TextBlock
 						{
-							Content = labels.Item1,
-							HorizontalAlignment = HorizontalAlignment.Right
+							Text = labels.Item1,
+							VerticalAlignment = VerticalAlignment.Center
 						};
 						Grid.SetRow(name, gridMain.RowDefinitions.Count - 1);
 						Grid.SetColumn(name, 0);
 						gridMain.Children.Add(name);
+
+						TextBlock unit = new TextBlock
+						{
+							Text = labels.Item2,
+							VerticalAlignment = VerticalAlignment.Center
+						};
+						Grid.SetRow(unit, gridMain.RowDefinitions.Count - 1);
+						Grid.SetColumn(unit, 2);
+						gridMain.Children.Add(unit);
 
 						valBox.ToolTip = $"{labels.Item1} ({labels.Item2}):\n{labels.Item3}";
 					}
@@ -67,12 +87,13 @@ namespace OpenCNCPilot
 				else
 				{
 					SettingsBoxes[number].Text = value.ToString(Util.Constants.DecimalOutputFormat);
+					CurrentSettings[number] = value;
 				}
 			}
 			catch { }
 		}
 
-		private void ButtonApply_Click(object sender, RoutedEventArgs e)
+		private async void ButtonApply_Click(object sender, RoutedEventArgs e)
 		{
 			List<Tuple<int, double>> ToSend = new List<Tuple<int, double>>();
 
@@ -99,6 +120,7 @@ namespace OpenCNCPilot
 			{
 				SendLine.Invoke($"${setting.Item1}={setting.Item2.ToString(Util.Constants.DecimalOutputFormat)}");
 				CurrentSettings[setting.Item1] = setting.Item2;
+				await Task.Delay(Properties.Settings.Default.SettingsSendDelay);
 			}
 		}
 

@@ -370,5 +370,17 @@ namespace OpenCNCPilot.Properties {
                 this["ToolLengthSetterPos"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int SettingsSendDelay {
+            get {
+                return ((int)(this["SettingsSendDelay"]));
+            }
+            set {
+                this["SettingsSendDelay"] = value;
+            }
+        }
     }
 }

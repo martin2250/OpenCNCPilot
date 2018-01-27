@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         Title="GrblSettingsWindow"
         Closing="Window_Closing"
-        Height="300" Width="300">
-    <Grid>
+        Height="700" Width="400">
+    <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="230*"/>
             <RowDefinition Height="39*"/>
@@ -17,7 +17,8 @@
             <Grid Name="gridMain">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
-                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="100"/>
                 </Grid.ColumnDefinitions>
             </Grid>
         </ScrollViewer>

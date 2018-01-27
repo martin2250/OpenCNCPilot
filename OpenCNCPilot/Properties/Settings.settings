@@ -90,5 +90,8 @@ G92Z0;</Value>
     <Setting Name="ToolLengthSetterPos" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
+    <Setting Name="SettingsSendDelay" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
