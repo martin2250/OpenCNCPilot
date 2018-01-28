@@ -11,7 +11,7 @@
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="230*"/>
-            <RowDefinition Height="39*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <ScrollViewer Margin="0,0,0,2">
             <Grid Name="gridMain">
@@ -22,6 +22,6 @@
                 </Grid.ColumnDefinitions>
             </Grid>
         </ScrollViewer>
-        <Button Content="Apply" Click="ButtonApply_Click" Height="20" Width="50" Margin="0,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="1"/>
+        <Button Content="Apply" Click="ButtonApply_Click" Height="20" Width="50" Margin="0,10,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="1"/>
     </Grid>
 </Window>
