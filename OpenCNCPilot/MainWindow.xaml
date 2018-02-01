@@ -56,11 +56,11 @@
                             <Button Name="ButtonFileOpen" Click="ButtonOpen_Click" Content="Open" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top"/>
                             <Button Name="ButtonFileSave" Click="ButtonSave_Click" Content="Save" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="48,5,0,0" VerticalAlignment="Top"/>
                             <Button Name="ButtonFileClear" Click="ButtonClear_Click" Content="Clear" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="87,5,0,0" VerticalAlignment="Top"/>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="128,5,0,0">
-                                <Label Name="LabelFilePosition" Content="0" Margin="0,0,-8,0"/>
-                                <Label Content="/"/>
-                                <Label Name="LabelFileLength" Content="0" Margin="-8,0,0,0"/>
-                            </StackPanel>
+                            <TextBlock  VerticalAlignment="Top" Margin="128,9,0,0">
+                                <Run Name="RunFilePosition" Text="0"/>
+                                <Run Text="/"/>
+                                <Run Name="RunFileLength"  Text="0"/>
+                            </TextBlock>
 
                             <ListView Name="ListViewFile"  Margin="0,53" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent"/>
 
@@ -69,12 +69,12 @@
                             <Button Name="ButtonFileGoto" Click="ButtonFileGoto_Click" Content="Go To" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="93,0,0,25" Height="23" VerticalAlignment="Bottom"/>
                             <CheckBox Name="CheckBoxPauseOnM0" Content="Pause" ToolTip="Pause the Program on M0/M1/M30" IsChecked="{util:SettingBinding PauseFileOnHold}" HorizontalAlignment="Left" Margin="138,0,-24,20" Height="23" VerticalAlignment="Bottom"/>
 
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="5,5,0,0" HorizontalAlignment="Left">
-                                <Label Content="Runtime:"/>
-                                <Label Name="LabelFileRuntime" Content="00:00:00" Margin="0,0,-8,0"/>
-                                <Label Content="/"/>
-                                <Label Name="LabelFileDuration" Content="00:00:00" Margin="-8,0,0,0"/>
-                            </StackPanel>
+                            <TextBlock  VerticalAlignment="Bottom" Margin="10,0,0,4" HorizontalAlignment="Left">
+                                <Run Text="Runtime:"/>
+                                <Run Name="RunFileRunTime" Text="00:00:00"/>
+                                <Run Text="/"/>
+                                <Run Name="RunFileDuration" Text="00:00:00"/>
+                            </TextBlock>
                         </Grid>
                     </Expander>
                 </Border>
@@ -91,13 +91,19 @@
                 <Border Style="{StaticResource stylePanelOut}">
                     <Expander Header="Overrides">
                         <StackPanel Name="StackPanelOverrides">
-                            <Label Content="Rapid:" Name="LabelRapidOvr"/>
+                            <TextBlock>
+                                <Run Text="Rapid:"/>
+                                <Run Name="RunRapidOvr"/>
+                            </TextBlock>
                             <StackPanel Orientation="Horizontal">
                                 <Button Click="ButtonRapidOverride_Click" Content="100%" Style="{StaticResource styleButton}" Tag="100"/>
                                 <Button Click="ButtonRapidOverride_Click" Content="50%" Style="{StaticResource styleButton}"  Tag="50"/>
                                 <Button Click="ButtonRapidOverride_Click" Content="25%" Style="{StaticResource styleButton}" Tag="25"/>
                             </StackPanel>
-                            <Label Content="Feed:" Name="LabelFeedOvr"/>
+                            <TextBlock>
+                                <Run Text="Feed:"/>
+                                <Run Name="RunFeedOvr"/>
+                            </TextBlock>
                             <StackPanel Orientation="Horizontal">
                                 <Button Click="ButtonFeedOverride_Click" Content="+10%" Style="{StaticResource styleButton}" Tag="+10%"/>
                                 <Button Click="ButtonFeedOverride_Click" Content="+1%" Style="{StaticResource styleButton}" Tag="+1%"/>
@@ -159,7 +165,7 @@
                                             </TextBlock>
                                         </TextBox.ToolTip>
                                     </TextBox>
-                                    <Label Content="Feed" HorizontalAlignment="Left" Margin="10,33,0,0" VerticalAlignment="Top"/>
+                                    <Label Content="Feed" HorizontalAlignment="Left" Margin="12,33,0,0" VerticalAlignment="Top"/>
                                     <TextBox Name="TextBoxJogFeed" Text="{util:SettingBinding JogFeed}" VerticalContentAlignment="Center" HorizontalAlignment="Left" Height="23" Margin="50,34,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="40"/>
                                     <Label Content="Max Distance" HorizontalAlignment="Left" Margin="90,33,0,0" VerticalAlignment="Top"/>
                                     <TextBox Name="TextBoxJogDistance" Text="{util:SettingBinding JogDistance}" VerticalContentAlignment="Center"  HorizontalAlignment="Right" Height="23" Margin="0,34,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="40"/>
@@ -251,7 +257,7 @@
                                 </Grid>
                             </Button>
                             <StackPanel Orientation="Horizontal">
-                                <Button Content="GRBL Settings" Style="{StaticResource styleButton}" Click="ShowGrblSettings_Click"/>
+                                <Button Content="GRBL Settings" Style="{StaticResource styleButton}" Click="ShowGrblSettings_Click" Name="ButtonGrblSettings"/>
                             </StackPanel>
                         </StackPanel>
                     </Expander>

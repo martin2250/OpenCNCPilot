@@ -199,7 +199,7 @@ namespace OpenCNCPilot
 
 		private void Machine_FilePositionChanged()
 		{
-			LabelFilePosition.Content = machine.FilePosition;
+			RunFilePosition.Text = machine.FilePosition.ToString();
 
 			if (ListViewFile.SelectedItem is TextBlock)
 			{
@@ -232,8 +232,8 @@ namespace OpenCNCPilot
 			if(Properties.Settings.Default.EnableCodePreview)
 				ToolPath.GetModel(ModelLine, ModelRapid, ModelArc);
 
-			LabelFileLength.Content = machine.File.Count;
-			LabelFileDuration.Content = ToolPath.TotalTime.ToString(@"hh\:mm\:ss");
+			RunFileLength.Text = machine.File.Count.ToString();
+			RunFileDuration.Text = ToolPath.TotalTime.ToString(@"hh\:mm\:ss");
 			FileRunTime = TimeSpan.Zero;
 
 			int digits = (int)Math.Ceiling(Math.Log10(machine.File.Count));
@@ -356,11 +356,13 @@ namespace OpenCNCPilot
 			lastMode = machine.Mode;
 
 			groupBoxTLO.IsEnabled = machine.Mode == Machine.OperatingMode.Manual;
+
+			ButtonGrblSettings.IsEnabled = machine.Mode == Machine.OperatingMode.Manual;
 		}
 
 		private void FileRuntimeTimer_Tick(object sender, EventArgs e)
 		{
-			LabelFileRuntime.Content = ((DateTime.Now - LastFileStart) + FileRunTime).ToString(@"hh\:mm\:ss");
+			RunFileRunTime.Text = ((DateTime.Now - LastFileStart) + FileRunTime).ToString(@"hh\:mm\:ss");
 		}
 
 		private void Machine_ConnectionStateChanged()
@@ -374,8 +376,8 @@ namespace OpenCNCPilot
 		private void Machine_OverrideChanged()
 		{
 			ButtonFeedRateOvr.Content = $"Feed: {machine.FeedOverride}%";
-			LabelFeedOvr.Content = $"Feed: {machine.FeedOverride}%";
-			LabelRapidOvr.Content = $"Rapid: {machine.RapidOverride}%";
+			RunFeedOvr.Text = $"{machine.FeedOverride}%";
+			RunRapidOvr.Text = $"{machine.RapidOverride}%";
 		}
 
 		private void Machine_PinStateChanged()
