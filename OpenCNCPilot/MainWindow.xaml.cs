@@ -34,7 +34,7 @@ namespace OpenCNCPilot
 		public MainWindow()
 		{
 			AppDomain.CurrentDomain.UnhandledException += UnhandledException;
-
+			calculator = new Calculator(machine);
 			InitializeComponent();
 
 			openFileDialogGCode.FileOk += OpenFileDialogGCode_FileOk;
@@ -76,7 +76,7 @@ namespace OpenCNCPilot
 
 			settingsWindow.SendLine += machine.SendLine;
 
-			calculator = new Calculator(machine);
+			UpdateExpressionPreview();
 
 			UpdateCheck.CheckForUpdate();
 		}
@@ -318,9 +318,6 @@ namespace OpenCNCPilot
 			machine.SendLine("G49");
 		}
 
-		private void TextBoxManual_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			TextBoxPreview.Text = calculator.Evaluate(TextBoxManual.Text);
-		}
+		
 	}
 }

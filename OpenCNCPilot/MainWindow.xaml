@@ -145,7 +145,7 @@
                                 <Button Name="ButtonManualSend" Click="ButtonManualSend_Click" Style="{StaticResource styleButton}" Height="23" Content="Send" HorizontalAlignment="Right"/>
                             </Grid>
                             <TextBox Name="TextBoxPreview" IsReadOnly="True" Margin="3,0,3,3" Background="LightYellow"/>
-                            <CheckBox Content="Use Expressions" Margin="3,0,3,3" IsChecked="{util:SettingBinding ManualUseExpressions}"/>
+                            <CheckBox Name="CheckBoxUseExpressions" Content="Use Expressions" Margin="3,0,3,3" IsChecked="{util:SettingBinding ManualUseExpressions}" Checked="CheckBoxUseExpressions_Changed" Unchecked="CheckBoxUseExpressions_Changed"/>
                             <StackPanel Orientation="Horizontal">
                                 <Button Name="ButtonManualSetG10Zero" Click="ButtonManualSetG10Zero_Click" Style="{StaticResource styleButton}" Content="Zero (G10)"
 									    ToolTip="Set Position to (0,0,0) with 'G10 L2 P0 XYZ' where XYZ are the current machine coordinates,&#x0a;this has the advantage that it will be persistent through a reset&#x0a;This button will NOT automatically send the command"/>

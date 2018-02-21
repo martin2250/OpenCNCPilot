@@ -76,6 +76,9 @@ namespace OpenCNCPilot
 			LabelFeedRateRealtime.Text = ((int)Math.Round(machine.FeedRateRealtime)).ToString();
 
 			TextBoxCurrentTLO.Text = machine.CurrentTLO.ToString("N", nfi);
+
+			if(machine.Mode == Machine.OperatingMode.Manual)
+				UpdateExpressionPreview();
 		}
 
 		private void Machine_BufferStateChanged()
