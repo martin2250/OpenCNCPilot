@@ -83,8 +83,8 @@ namespace OpenCNCPilot
 
 		private void Machine_ProbeFinished_UserOutput(Vector3 position, bool success)
 		{
-			LastProbePosWork = position;
-			LastProbePosMachine = position += machine.WorkOffset;
+			LastProbePosMachine = machine.LastProbePosMachine;
+			LastProbePosWork = machine.LastProbePosWork;
 
 			RaisePropertyChanged("LastProbePosMachine");
 			RaisePropertyChanged("LastProbePosWork");

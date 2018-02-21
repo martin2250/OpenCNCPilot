@@ -52,6 +52,9 @@ namespace OpenCNCPilot.Communication
 		public Vector3 WorkOffset { get; private set; } = new Vector3();
 		public Vector3 WorkPosition { get { return MachinePosition - WorkOffset; } }
 
+		public Vector3 LastProbePosMachine { get; private set; }
+		public Vector3 LastProbePosWork { get; private set; }
+
 		public int FeedOverride { get; private set; } = 100;
 		public int RapidOverride { get; private set; } = 100;
 		public int SpindleOverride { get; private set; } = 100;
@@ -1012,8 +1015,11 @@ namespace OpenCNCPilot.Communication
 			}
 
 			Vector3 ProbePos = Vector3.Parse(pos.Value);
+			LastProbePosMachine = ProbePos;
 
-			ProbePos -= WorkOffset;     //Mpos, Wpos only get updated by the same dispatcher, so this should be thread safe
+			ProbePos -= WorkOffset;
+
+			LastProbePosWork = ProbePos;
 
 			bool ProbeSuccess = success.Value == "1";
 
