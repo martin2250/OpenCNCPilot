@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 
 namespace OpenCNCPilot.Util
 {
@@ -20,6 +21,8 @@ namespace OpenCNCPilot.Util
 		public static string LogFile = "log.txt";
 
 		public static char[] NewLines = new char[] {'\n', '\r'};
+
+		public static Version MinimumGrblVersion = new Version(1,1, (int)'f');
 
 		static Constants()
 		{

@@ -400,6 +400,11 @@ namespace OpenCNCPilot.Communication
 							RaiseEvent(ReportError, line);
 							Mode = OperatingMode.Manual;
 						}
+						else if (line.StartsWith("grbl"))
+						{
+							RaiseEvent(LineReceived, line);
+							RaiseEvent(ParseStartup, line);
+						}
 						else if (line.Length > 0)
 							RaiseEvent(LineReceived, line);
 					}
@@ -1013,6 +1018,32 @@ namespace OpenCNCPilot.Communication
 			bool ProbeSuccess = success.Value == "1";
 
 			ProbeFinished.Invoke(ProbePos, ProbeSuccess);
+		}
+
+		private static Regex StartupRegex = new Regex("grbl v([0-9])\\.([0-9])([a-z])");
+		private void ParseStartup(string line)
+		{
+			Match m = StartupRegex.Match(line);
+
+			int major, minor;
+			char rev;
+
+			if (!m.Success ||
+				!int.TryParse(m.Groups[1].Value, out major) ||
+				!int.TryParse(m.Groups[2].Value, out minor) ||
+				!char.TryParse(m.Groups[3].Value, out rev))
+			{
+				RaiseEvent(Info, "Could not parse startup message.");
+				return;
+			}
+
+			Version v = new Version(major, minor, (int)rev);
+			if(v < Constants.MinimumGrblVersion)
+			{
+				ReportError("Outdated version of grbl detected!");
+				ReportError($"Please upgrade to at least grbl v{Constants.MinimumGrblVersion.Major}.{Constants.MinimumGrblVersion.Minor}{(char)Constants.MinimumGrblVersion.Build}");
+			}
+
 		}
 
 		/// <summary>
