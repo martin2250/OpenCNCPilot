@@ -131,6 +131,7 @@
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Util\Calculator.cs" />
     <Compile Include="Util\Constants.cs" />
     <Compile Include="Util\GrblCodeTranslator.cs" />
     <Compile Include="Util\SettingsBinding.cs" />

@@ -12,6 +12,7 @@ namespace OpenCNCPilot
 	public partial class MainWindow : Window, INotifyPropertyChanged
 	{
 		Machine machine = new Machine();
+		Calculator calculator;
 
 		OpenFileDialog openFileDialogGCode = new OpenFileDialog() { Filter = Constants.FileFilterGCode };
 		SaveFileDialog saveFileDialogGCode = new SaveFileDialog() { Filter = Constants.FileFilterGCode };
@@ -74,6 +75,8 @@ namespace OpenCNCPilot
 			LoadMacros();
 
 			settingsWindow.SendLine += machine.SendLine;
+
+			calculator = new Calculator(machine);
 
 			UpdateCheck.CheckForUpdate();
 		}
@@ -313,6 +316,11 @@ namespace OpenCNCPilot
 				return;
 
 			machine.SendLine("G49");
+		}
+
+		private void TextBoxManual_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			TextBoxPreview.Text = calculator.Evaluate(TextBoxManual.Text);
 		}
 	}
 }
