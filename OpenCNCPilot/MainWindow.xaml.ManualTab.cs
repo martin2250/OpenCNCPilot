@@ -45,7 +45,7 @@ namespace OpenCNCPilot
 		private void UpdateExpressionPreview()
 		{
 			if (Properties.Settings.Default.ManualUseExpressions)
-				TextBoxPreview.Text = calculator.Evaluate(TextBoxManual.Text, out ManualExpressionSuccess);
+				TextBoxPreview.Text = machine.Calculator.Evaluate(TextBoxManual.Text, out ManualExpressionSuccess);
 
 			TextBoxPreview.Background = ManualExpressionSuccess ? Brushes.LightYellow : Brushes.Red;
 		}

@@ -1,0 +1,3 @@
+[submodule "OpenCNCPilot/Submodules/Calculator"]
+	path = OpenCNCPilot/Submodules/Calculator
+	url = https://github.com/martin2250/Calculator

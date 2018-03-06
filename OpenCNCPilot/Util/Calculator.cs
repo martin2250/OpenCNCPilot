@@ -1,12 +1,9 @@
 ﻿using OpenCNCPilot.Communication;
 using System;
 using System.Text.RegularExpressions;
-using NCalc;
 using System.Text;
-using System.Threading.Tasks;
-using Jace;
 using System.Collections.Generic;
-using Hef.Math;
+using martin2250.Calculator;
 
 namespace OpenCNCPilot.Util
 {
@@ -14,8 +11,6 @@ namespace OpenCNCPilot.Util
 	{
 		private Machine machine;
 		private bool Success = true;
-		CalculationEngine engine = new CalculationEngine();
-		Interpreter interpreter = new Interpreter();
 
 		public Calculator(Machine machine)
 		{
@@ -26,50 +21,28 @@ namespace OpenCNCPilot.Util
 		private string ExpressionEvaluator(string input)
 		{
 			try
-			{/*
-				Expression exp = new Expression(input);
-
-				for(int i = 0; i < 3; i++)
-				{
-					exp.Parameters.Add("M" + Axes[i], machine.MachinePosition[i]);
-					exp.Parameters.Add("W" + Axes[i], machine.WorkPosition[i]);
-					exp.Parameters.Add("PM" + Axes[i], machine.LastProbePosMachine[i]);
-					exp.Parameters.Add("PW" + Axes[i], machine.LastProbePosWork[i]);
-				}
-
-				exp.Parameters.Add("TLO", machine.CurrentTLO);
-
-
-				object o = "ERR";
-
-				var task = Task.Run(() => { o = exp.Evaluate(); });
-				if (!task.Wait(TimeSpan.FromSeconds(0.005)))
-				{ 
-					throw new Exception("Timed out");
-				}
-
-				double res = Convert.ToDouble(o);
-				return res.ToString("0.###", Constants.DecimalOutputFormat);	*/
-				
+			{
 				Dictionary<string, double> variables = new Dictionary<string, double>();
 				for (int i = 0; i < 3; i++)
 				{
-					interpreter.SetVar("M" + Axes[i], machine.MachinePosition[i]);
-					interpreter.SetVar("W" + Axes[i], machine.WorkPosition[i]);
-					interpreter.SetVar("PM" + Axes[i], machine.LastProbePosMachine[i]);
-					interpreter.SetVar("PW" + Axes[i], machine.LastProbePosWork[i]);
+					variables.Add("M" + Axes[i], machine.MachinePosition[i]);
+					variables.Add("W" + Axes[i], machine.WorkPosition[i]);
+					variables.Add("PM" + Axes[i], machine.LastProbePosMachine[i]);
+					variables.Add("PW" + Axes[i], machine.LastProbePosWork[i]);
 				}
 
-				interpreter.SetVar("TLO", machine.CurrentTLO);
+				variables.Add("TLO", machine.CurrentTLO);
 
-				return interpreter.Calculate(input).ToString("0.###", Constants.DecimalOutputFormat);
+				Expression expression = Expression.Parse(input);
+				double value = expression.GetValue(variables);
 
+				return value.ToString("0.###", Constants.DecimalOutputFormat);
 			}
 			catch(Exception ex)
 			{
 				Success = false;
 				Console.WriteLine(ex.Message);
-				return "[ERR]";
+				return $"[{ex.Message}]";
 			}
 		}
 

@@ -12,7 +12,6 @@ namespace OpenCNCPilot
 	public partial class MainWindow : Window, INotifyPropertyChanged
 	{
 		Machine machine = new Machine();
-		Calculator calculator;
 
 		OpenFileDialog openFileDialogGCode = new OpenFileDialog() { Filter = Constants.FileFilterGCode };
 		SaveFileDialog saveFileDialogGCode = new SaveFileDialog() { Filter = Constants.FileFilterGCode };
@@ -34,7 +33,6 @@ namespace OpenCNCPilot
 		public MainWindow()
 		{
 			AppDomain.CurrentDomain.UnhandledException += UnhandledException;
-			calculator = new Calculator(machine);
 			InitializeComponent();
 
 			openFileDialogGCode.FileOk += OpenFileDialogGCode_FileOk;
