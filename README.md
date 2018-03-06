@@ -1,3 +1,12 @@
+## Manual Expression Branch
+
+This branch adds an interpreter for mathematical expressions to use with manual send and macros.
+To use it, enter your expression in parentheses, like so: "G0 X(2*MX - 1)".
+Available variables are:
+- MX, MY, MZ: machine position; WX, WY, WZ: work position
+- PMX, PMY, PMZ, PWX, PWY, PWZ: last probed position in machine/work coordinates
+- TLO: current tool length offset
+
 # OpenCNCPilot
 
 OpenCNCPilot is a GRBL compatible G-Code Sender.
