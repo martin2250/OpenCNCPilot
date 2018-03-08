@@ -132,8 +132,7 @@ namespace OpenCNCPilot.GCode
 			{
 				if (!ValidWords.Contains(Words[i].Command))
 				{
-					Words.RemoveAt(i);
-					continue;
+					throw new ParseException($"unknown word (letter): \"{Words[i].Command} {Words[i].Parameter}\"", lineNumber);
 				}
 
 				if (Words[i].Command != 'F')
@@ -142,7 +141,7 @@ namespace OpenCNCPilot.GCode
 				State.Feed = Words[i].Parameter;
 				if (State.Unit == ParseUnit.Imperial)
 					State.Feed *= 25.4;
-				Words.RemoveAt(i);
+				Words.RemoveAt(i--);
 				continue;
 			}
 
