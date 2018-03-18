@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2003
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCNCPilot", "OpenCNCPilot\OpenCNCPilot.csproj", "{BA3CA6C1-34A3-4582-9EE3-64DA5F144C3D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator", "OpenCNCPilot\Submodules\Calculator\Calculator\Calculator.csproj", "{6DEC6ED0-78A6-4F47-A98B-8FD859A4A9F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +15,6 @@ Global
 		{BA3CA6C1-34A3-4582-9EE3-64DA5F144C3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA3CA6C1-34A3-4582-9EE3-64DA5F144C3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA3CA6C1-34A3-4582-9EE3-64DA5F144C3D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6DEC6ED0-78A6-4F47-A98B-8FD859A4A9F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6DEC6ED0-78A6-4F47-A98B-8FD859A4A9F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6DEC6ED0-78A6-4F47-A98B-8FD859A4A9F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6DEC6ED0-78A6-4F47-A98B-8FD859A4A9F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

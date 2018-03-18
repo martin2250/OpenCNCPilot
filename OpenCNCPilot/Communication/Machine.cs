@@ -256,6 +256,8 @@ namespace OpenCNCPilot.Communication
 				DateTime LastFilePosUpdate = DateTime.Now;
 				bool filePosChanged = false;
 
+				bool SendMacroStatusReceived = false;
+
 				writer.Write("\n$G\n");
 				writer.Write("\n$#\n");
 				writer.Flush();
@@ -312,39 +314,48 @@ namespace OpenCNCPilot.Communication
 						}
 						else if (Mode == OperatingMode.SendMacro)
 						{
-							if(Status == "Idle" && BufferState == 0)
+							switch(Status)
 							{
-								string send_line = (string)ToSendMacro.Dequeue();
+								case "Idle":
+									if (BufferState == 0 && SendMacroStatusReceived)
+									{
+										SendMacroStatusReceived = false;
 
-								send_line = Calculator.Evaluate(send_line, out bool success);
+										string send_line = (string)ToSendMacro.Dequeue();
 
-								if(!success)
-								{
-									ReportError("Error while evaluating macro!");
-									ReportError(send_line);
+										send_line = Calculator.Evaluate(send_line, out bool success);
+										Console.WriteLine(DateTime.Now.ToLongTimeString());
 
+										if (!success)
+										{
+											ReportError("Error while evaluating macro!");
+											ReportError(send_line);
+
+											ToSendMacro.Clear();
+										}
+										else
+										{
+											writer.Write(send_line);
+											writer.Write('\n');
+											writer.Flush();
+
+											RecordLog("> " + send_line);
+
+											RaiseEvent(UpdateStatus, send_line);
+											RaiseEvent(LineSent, send_line);
+
+											BufferState += send_line.Length + 1;
+
+											Sent.Enqueue(send_line);
+										}
+									}
+									break;
+								case "Run":
+								case "Hold":
+									break;
+								default:	// grbl is in some kind of alarm state
 									ToSendMacro.Clear();
-								}
-								else
-								{
-									writer.Write(send_line);
-									writer.Write('\n');
-									writer.Flush();
-
-									RecordLog("> " + send_line);
-
-									RaiseEvent(UpdateStatus, send_line);
-									RaiseEvent(LineSent, send_line);
-
-									BufferState += send_line.Length + 1;
-
-									Sent.Enqueue(send_line);
-								}
-							}
-							else if(Status != "Run" && Status != "Hold")
-							{
-								// grbl is in some kind of alarm state
-								ToSendMacro.Clear();
+									break;
 							}
 
 							if (ToSendMacro.Count == 0)
@@ -428,7 +439,10 @@ namespace OpenCNCPilot.Communication
 							Mode = OperatingMode.Manual;
 						}
 						else if (line.StartsWith("<"))
+						{
 							RaiseEvent(ParseStatus, line);
+							SendMacroStatusReceived = true;
+						}
 						else if (line.StartsWith("[PRB:"))
 						{
 							RaiseEvent(ParseProbe, line);
@@ -615,7 +629,7 @@ namespace OpenCNCPilot.Communication
 			}
 
 			foreach (string line in lines)
-				ToSendMacro.Enqueue(line);
+				ToSendMacro.Enqueue(line.Trim());
 
 			Mode = OperatingMode.SendMacro;
 		}
