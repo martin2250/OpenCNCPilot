@@ -74,7 +74,7 @@ namespace OpenCNCPilot
 
 			settingsWindow.SendLine += machine.SendLine;
 
-			UpdateExpressionPreview();
+			CheckBoxUseExpressions_Changed(null, null);
 
 			UpdateCheck.CheckForUpdate();
 		}
