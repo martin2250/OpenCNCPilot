@@ -258,9 +258,15 @@ namespace OpenCNCPilot.GCode
 						}
 					}
 
-					Words.RemoveAt(i);  //unsupported G-Command
-					i--;
-					continue;
+					if (param == 54)
+					{
+						// discard G54
+						Words.RemoveAt(i);
+						i--;
+						continue;
+					}
+
+					throw new ParseException($"G{param} is not supported", lineNumber);
 					#endregion
 				}
 			}
