@@ -258,9 +258,9 @@ namespace OpenCNCPilot.GCode
 						}
 					}
 
-					if (param == 54)
+					if (param == 54 || param == 94 || param == 40)
 					{
-						// discard G54
+						// discard Gxx words
 						Words.RemoveAt(i);
 						i--;
 						continue;
