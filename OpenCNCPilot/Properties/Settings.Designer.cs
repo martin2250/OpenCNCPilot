@@ -418,5 +418,137 @@ namespace OpenCNCPilot.Properties {
                 this["ManualUseExpressions"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool FileExpanderOpen {
+            get {
+                return ((bool)(this["FileExpanderOpen"]));
+            }
+            set {
+                this["FileExpanderOpen"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string EditExpanderOpen {
+            get {
+                return ((string)(this["EditExpanderOpen"]));
+            }
+            set {
+                this["EditExpanderOpen"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool OverrideExpanderOpen {
+            get {
+                return ((bool)(this["OverrideExpanderOpen"]));
+            }
+            set {
+                this["OverrideExpanderOpen"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ProbingExpanderOpen {
+            get {
+                return ((bool)(this["ProbingExpanderOpen"]));
+            }
+            set {
+                this["ProbingExpanderOpen"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ManualExpanderOpen {
+            get {
+                return ((bool)(this["ManualExpanderOpen"]));
+            }
+            set {
+                this["ManualExpanderOpen"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ManualProbingExpanderOpen {
+            get {
+                return ((bool)(this["ManualProbingExpanderOpen"]));
+            }
+            set {
+                this["ManualProbingExpanderOpen"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MacroExpanderOpen {
+            get {
+                return ((bool)(this["MacroExpanderOpen"]));
+            }
+            set {
+                this["MacroExpanderOpen"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MachineExpanderOpen {
+            get {
+                return ((bool)(this["MachineExpanderOpen"]));
+            }
+            set {
+                this["MachineExpanderOpen"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AboutExpanderOpen {
+            get {
+                return ((bool)(this["AboutExpanderOpen"]));
+            }
+            set {
+                this["AboutExpanderOpen"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DebugExpanderOpen {
+            get {
+                return ((bool)(this["DebugExpanderOpen"]));
+            }
+            set {
+                this["DebugExpanderOpen"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Einstellung {
+            get {
+                return ((bool)(this["Einstellung"]));
+            }
+            set {
+                this["Einstellung"] = value;
+            }
+        }
     }
 }

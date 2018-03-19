@@ -51,7 +51,7 @@
             </Border>
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
                 <Border Style="{StaticResource stylePanelOut}">
-                    <Expander Header="File" Width="Auto">
+                    <Expander Header="File" Width="Auto" IsExpanded="{util:SettingBinding FileExpanderOpen}">
                         <Grid Width="210" Height="260">
                             <Button Name="ButtonFileOpen" Click="ButtonOpen_Click" Content="Open" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top"/>
                             <Button Name="ButtonFileSave" Click="ButtonSave_Click" Content="Save" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="48,5,0,0" VerticalAlignment="Top"/>
@@ -79,7 +79,7 @@
                     </Expander>
                 </Border>
                 <Border Style="{StaticResource stylePanelOut}">
-                    <Expander Header="Edit">
+                    <Expander Header="Edit" IsExpanded="{util:SettingBinding EditExpanderOpen}">
                         <WrapPanel Width="170">
                             <Button Name="ButtonEditSimplify" Click="ButtonEditSimplify_Click" Content="Simplify" Style="{StaticResource styleButton}" ToolTip="Simplifies GCode"/>
                             <Button Name="ButtonEditApplyHeightMap" Click="ButtonEditApplyHeightMap_Click" Content="Apply HeightMap" Style="{StaticResource styleButton}"/>
@@ -89,7 +89,7 @@
                     </Expander>
                 </Border>
                 <Border Style="{StaticResource stylePanelOut}">
-                    <Expander Header="Overrides">
+                    <Expander Header="Overrides" IsExpanded="{util:SettingBinding OverrideExpanderOpen}">
                         <StackPanel Name="StackPanelOverrides">
                             <TextBlock>
                                 <Run Text="Rapid:"/>
@@ -115,7 +115,7 @@
                     </Expander>
                 </Border>
                 <Border Style="{StaticResource stylePanelOut}">
-                    <Expander Header="Probing">
+                    <Expander Header="Probing" IsExpanded="{util:SettingBinding ProbingExpanderOpen}">
                         <Grid Width="200" Margin="0,0,0,5">
                             <Button Name="ButtonHeightMapCreateNew" Click="ButtonHeightmapCreateNew_Click" Content="Create New" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top"/>
                             <Button Name="ButtonHeightMapLoad" Click="ButtonHeightmapLoad_Click" Content="Load" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="81,5,0,0" VerticalAlignment="Top" Height="24"/>
@@ -138,7 +138,7 @@
                     </Expander>
                 </Border>
                 <Border Style="{StaticResource stylePanelOut}">
-                    <Expander Header="Manual">
+                    <Expander Header="Manual" IsExpanded="{util:SettingBinding ManualExpanderOpen}">
                         <StackPanel>
                             <Grid Margin="3,0,3,0">
                                 <TextBox Name="TextBoxManual" Height="23" HorizontalAlignment="Stretch" PreviewKeyDown="TextBoxManual_PreviewKeyDown" TextChanged="TextBoxManual_TextChanged" Margin="0,5,41,5"/>
@@ -185,7 +185,7 @@
                     </Expander>
                 </Border>
                 <Border Style="{StaticResource stylePanelOut}">
-                    <Expander Header="Manual Probing">
+                    <Expander Header="Manual Probing" IsExpanded="{util:SettingBinding ManualProbingExpanderOpen}">
                         <StackPanel>
                             <GroupBox Header="Last Probe Position">
                                 <StackPanel>
@@ -232,7 +232,7 @@
                     </Expander>
                 </Border>
                 <Border Style="{StaticResource stylePanelOut}">
-                    <Expander Header="Macros">
+                    <Expander Header="Macros" IsExpanded="{util:SettingBinding MacroExpanderOpen}">
                         <StackPanel>
                             <Button Content="Add Macro" Name="ButtonAddMacro" Click="ButtonAddMacro_Click" Margin="2"/>
                             <StackPanel MinWidth="120" Name="StackPanelMacros">
@@ -245,7 +245,7 @@
 
             <StackPanel Orientation="Vertical" HorizontalAlignment="Right" FlowDirection="RightToLeft">
                 <Border Style="{StaticResource stylePanelOut}">
-                    <Expander Header="Machine">
+                    <Expander Header="Machine" IsExpanded="{util:SettingBinding MachineExpanderOpen}">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Button Name="ButtonSettings" Content="Settings" Style="{StaticResource styleButton}" Click="ButtonSettings_Click"/>
@@ -269,7 +269,7 @@
                     </Expander>
                 </Border>
                 <Border Style="{StaticResource stylePanelOut}">
-                    <Expander Header="About">
+                    <Expander Header="About" IsExpanded="{util:SettingBinding AboutExpanderOpen}">
                         <StackPanel>
                             <TextBlock TextAlignment="Center" FontSize="14" Padding="5">
 								<Span FontWeight="Bold" FontSize="15">OpenCNCPilot <Run Text="{Binding Version,Mode=OneWay}"/> by martin2250</Span><LineBreak/>
@@ -280,7 +280,7 @@
                     </Expander>
                 </Border>
                 <Border Style="{StaticResource stylePanelOut}">
-                    <Expander Header="Debug">
+                    <Expander Header="Debug" IsExpanded="{util:SettingBinding DebugExpanderOpen}">
                         <StackPanel HorizontalAlignment="Left" Margin="0,0,0,5">
                             <CheckBox Content="Show Status Messages" IsChecked="{util:SettingBinding ShowStatusLines}" Margin="10,0,0,0"/>
                             <StackPanel Orientation="Horizontal">
