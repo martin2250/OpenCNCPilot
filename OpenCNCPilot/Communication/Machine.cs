@@ -282,7 +282,7 @@ namespace OpenCNCPilot.Communication
 						{
 							if (File.Count > FilePosition && (File[FilePosition].Length + 1) < (ControllerBufferSize - BufferState))
 							{
-								string send_line = File[FilePosition];
+								string send_line = File[FilePosition].Replace(" ", "");	// don't send whitespace to machine
 
 								writer.Write(send_line);
 								writer.Write('\n');
@@ -335,6 +335,8 @@ namespace OpenCNCPilot.Communication
 										}
 										else
 										{
+											send_line = send_line.Replace(" ", "");
+
 											writer.Write(send_line);
 											writer.Write('\n');
 											writer.Flush();
@@ -363,7 +365,7 @@ namespace OpenCNCPilot.Communication
 						}
 						else if (ToSend.Count > 0 && (((string)ToSend.Peek()).Length + 1) < (ControllerBufferSize - BufferState))
 						{
-							string send_line = (string)ToSend.Peek();
+							string send_line = ((string)ToSend.Dequeue()).Replace(" ", "");
 
 							writer.Write(send_line);
 							writer.Write('\n');
@@ -377,7 +379,6 @@ namespace OpenCNCPilot.Communication
 							BufferState += send_line.Length + 1;
 
 							Sent.Enqueue(send_line);
-							ToSend.Dequeue();
 						}
 
 

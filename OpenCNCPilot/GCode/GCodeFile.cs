@@ -200,11 +200,11 @@ namespace OpenCNCPilot.GCode
 					string code = l.Rapid ? "G0" : "G1";
 
 					if (State.Position.X != l.End.X)
-						code += string.Format(nfi, "X{0:0.###}", l.End.X);
+						code += string.Format(nfi, " X{0:0.###}", l.End.X);
 					if (State.Position.Y != l.End.Y)
-						code += string.Format(nfi, "Y{0:0.###}", l.End.Y);
+						code += string.Format(nfi, " Y{0:0.###}", l.End.Y);
 					if (State.Position.Z != l.End.Z)
-						code += string.Format(nfi, "Z{0:0.###}", l.End.Z);
+						code += string.Format(nfi, " Z{0:0.###}", l.End.Z);
 
 					GCode.Add(code);
 
@@ -237,20 +237,20 @@ namespace OpenCNCPilot.GCode
 					string code = a.Direction == ArcDirection.CW ? "G2" : "G3";
 
 					if (State.Position.X != a.End.X)
-						code += string.Format(nfi, "X{0:0.###}", a.End.X);
+						code += string.Format(nfi, " X{0:0.###}", a.End.X);
 					if (State.Position.Y != a.End.Y)
-						code += string.Format(nfi, "Y{0:0.###}", a.End.Y);
+						code += string.Format(nfi, " Y{0:0.###}", a.End.Y);
 					if (State.Position.Z != a.End.Z)
-						code += string.Format(nfi, "Z{0:0.###}", a.End.Z);
+						code += string.Format(nfi, " Z{0:0.###}", a.End.Z);
 
 					Vector3 Center = new Vector3(a.U, a.V, 0).RollComponents((int)a.Plane) - State.Position;
 
 					if (Center.X != 0 && a.Plane != ArcPlane.YZ)
-						code += string.Format(nfi, "I{0:0.###}", Center.X);
+						code += string.Format(nfi, " I{0:0.###}", Center.X);
 					if (Center.Y != 0 && a.Plane != ArcPlane.ZX)
-						code += string.Format(nfi, "J{0:0.###}", Center.Y);
+						code += string.Format(nfi, " J{0:0.###}", Center.Y);
 					if (Center.Z != 0 && a.Plane != ArcPlane.XY)
-						code += string.Format(nfi, "K{0:0.###}", Center.Z);
+						code += string.Format(nfi, " K{0:0.###}", Center.Z);
 
 					GCode.Add(code);
 					State.Position = a.End;
@@ -286,7 +286,7 @@ namespace OpenCNCPilot.GCode
 					if (!Settings.Default.GCodeIncludeDwell)
 						continue;
 
-					GCode.Add(string.Format(nfi, "G4P{0}", ((Dwell)c).Seconds));
+					GCode.Add(string.Format(nfi, "G4 P{0}", ((Dwell)c).Seconds));
 
 					continue;
 				}
