@@ -107,7 +107,7 @@ namespace OpenCNCPilot
 			if (machine.Mode != Machine.OperatingMode.Manual)
 				return;
 
-			TextBoxManual.Text = $"G10 L2 P0 X[MX] Y[MY] Z[MZ-TLO]";
+			TextBoxManual.Text = $"G10 L2 P0 X(MX) Y(MY) Z(MZ-TLO)";
 			CheckBoxUseExpressions.IsChecked = true;
 		}
 
