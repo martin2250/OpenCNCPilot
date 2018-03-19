@@ -139,16 +139,22 @@
                 </Border>
                 <Border Style="{StaticResource stylePanelOut}">
                     <Expander Header="Manual">
-                        <Grid Width="240" Height="174">
-                            <TextBox Name="TextBoxManual" Height="23" Margin="10,10,51,0" PreviewKeyDown="TextBoxManual_PreviewKeyDown" VerticalAlignment="Top"/>
-                            <Button Name="ButtonManualSend" Click="ButtonManualSend_Click" Style="{StaticResource styleButton}" Margin="0,10,10,0" Height="23" VerticalAlignment="Top" HorizontalAlignment="Right" Content="Send"/>
-                            <Button Name="ButtonManualSetG10Zero" Click="ButtonManualSetG10Zero_Click" Style="{StaticResource styleButton}" Margin="80,38,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Content="Zero (G10)"
-									ToolTip="Set Position to (0,0,0) with 'G10 L2 P0 XYZ' where XYZ are the current machine coordinates,&#x0a;this has the advantage that it will be persistent through a reset&#x0a;This button will NOT automatically send the command"/>
-                            <Button Name="ButtonManualSetG92Zero" Click="ButtonManualSetG92Zero_Click" Style="{StaticResource styleButton}" Margin="10,38,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Content="Zero (G92)"
-									ToolTip="Set Position to (0,0,0) with 'G92 X0 Y0 Z0',&#x0a;this has the disadvantage that it will NOT be persistent through a reset&#x0a;This button will NOT automatically send the command"/>
-                            <Button Name="ButtonManualResetG10" Click="ButtonManualResetG10_Click" Style="{StaticResource styleButton}" Margin="150,38,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Content="Reset (G10)"
-									ToolTip="Reset Work Coordinate System (G54) with 'G10 L2 P0 X0 Y0 Z0'&#x0a;This button will NOT automatically send the command"/>
-                            <GroupBox Margin="0,66,0,0">
+                        <StackPanel>
+                            <Grid Margin="3,0,3,0">
+                                <TextBox Name="TextBoxManual" Height="23" HorizontalAlignment="Stretch" PreviewKeyDown="TextBoxManual_PreviewKeyDown" TextChanged="TextBoxManual_TextChanged" Margin="0,5,41,5"/>
+                                <Button Name="ButtonManualSend" Click="ButtonManualSend_Click" Style="{StaticResource styleButton}" Height="23" Content="Send" HorizontalAlignment="Right"/>
+                            </Grid>
+                            <TextBox Name="TextBoxPreview" IsReadOnly="True" Margin="3,0,3,3" Background="LightYellow"/>
+                            <CheckBox Name="CheckBoxUseExpressions" Content="Use Expressions" Margin="3,0,3,3" IsChecked="{util:SettingBinding ManualUseExpressions}" Checked="CheckBoxUseExpressions_Changed" Unchecked="CheckBoxUseExpressions_Changed"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Name="ButtonManualSetG10Zero" Click="ButtonManualSetG10Zero_Click" Style="{StaticResource styleButton}" Content="Zero (G10)"
+									    ToolTip="Set Position to (0,0,0) with 'G10 L2 P0 XYZ' where XYZ are the current machine coordinates,&#x0a;this has the advantage that it will be persistent through a reset&#x0a;This button will NOT automatically send the command"/>
+                                <Button Name="ButtonManualSetG92Zero" Click="ButtonManualSetG92Zero_Click" Style="{StaticResource styleButton}" Content="Zero (G92)"
+									    ToolTip="Set Position to (0,0,0) with 'G92 X0 Y0 Z0',&#x0a;this has the disadvantage that it will NOT be persistent through a reset&#x0a;This button will NOT automatically send the command"/>
+                                <Button Name="ButtonManualResetG10" Click="ButtonManualResetG10_Click" Style="{StaticResource styleButton}" Content="Reset (G10)"
+									    ToolTip="Reset Work Coordinate System (G54) with 'G10 L2 P0 X0 Y0 Z0'&#x0a;This button will NOT automatically send the command"/>
+                            </StackPanel>
+                            <GroupBox>
                                 <GroupBox.Header>
                                     <CheckBox Name="CheckBoxEnableJog" Content="Enable Keyboard Jogging" Checked="CheckBoxEnableJog_Checked" Unchecked="CheckBoxEnableJog_Unchecked" VerticalAlignment="Top"/>
                                 </GroupBox.Header>
@@ -175,7 +181,7 @@
                                     <TextBox Name="TextBoxJogDistanceFine" Text="{util:SettingBinding JogDistanceCtrl}" VerticalContentAlignment="Center"  HorizontalAlignment="Right" Height="23" Margin="0,62,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="40"/>
                                 </Grid>
                             </GroupBox>
-                        </Grid>
+                        </StackPanel>
                     </Expander>
                 </Border>
                 <Border Style="{StaticResource stylePanelOut}">

@@ -99,5 +99,8 @@ G92Z0;</Value>
     <Setting Name="TLSUseActualPos" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="ManualUseExpressions" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

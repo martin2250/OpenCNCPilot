@@ -7,13 +7,15 @@ namespace OpenCNCPilot
 	{
 		public string MacroName { get; set; }
 		public string Commands { get; set; }
+		public bool UseMacros { get; set; }
 		public bool Ok { get; set; } = false;
 
-		public EditMacroItemWindow(string name, string commands)
+		public EditMacroItemWindow(string name, string commands, bool useMacros)
 		{
 			MacroName = name;
 			Commands = commands;
-			
+			UseMacros = useMacros;
+
 			InitializeComponent();
 		}
 

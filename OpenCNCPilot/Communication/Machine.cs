@@ -26,7 +26,8 @@ namespace OpenCNCPilot.Communication
 			Manual,
 			SendFile,
 			Probe,
-			Disconnected
+			Disconnected,
+			SendMacro
 		}
 
 		public event Action<Vector3, bool> ProbeFinished;
@@ -68,6 +69,9 @@ namespace OpenCNCPilot.Communication
 		public double SpindleSpeedRealtime { get; private set; } = 0;
 
 		public double CurrentTLO { get; private set; } = 0;
+
+		private Calculator _calculator;
+		public Calculator Calculator { get { return _calculator; } }
 
 		private ReadOnlyCollection<bool> _pauselines = new ReadOnlyCollection<bool>(new bool[0]);
 		public ReadOnlyCollection<bool> PauseLines
@@ -225,12 +229,13 @@ namespace OpenCNCPilot.Communication
 
 		public Machine()
 		{
-
+			_calculator = new Calculator(this);
 		}
 
 		Queue Sent = Queue.Synchronized(new Queue());
 		Queue ToSend = Queue.Synchronized(new Queue());
 		Queue ToSendPriority = Queue.Synchronized(new Queue()); //contains characters (for soft reset, feed hold etc)
+		Queue ToSendMacro = Queue.Synchronized(new Queue());
 
 		private void Work()
 		{
@@ -250,6 +255,8 @@ namespace OpenCNCPilot.Communication
 
 				DateTime LastFilePosUpdate = DateTime.Now;
 				bool filePosChanged = false;
+
+				bool SendMacroStatusReceived = false;
 
 				writer.Write("\n$G\n");
 				writer.Write("\n$#\n");
@@ -305,29 +312,74 @@ namespace OpenCNCPilot.Communication
 								continue;
 							}
 						}
-						else
+						else if (Mode == OperatingMode.SendMacro)
 						{
-							if (ToSend.Count > 0 && (((string)ToSend.Peek()).Length + 1) < (ControllerBufferSize - BufferState))
+							switch(Status)
 							{
-								string send_line = (string)ToSend.Peek();
+								case "Idle":
+									if (BufferState == 0 && SendMacroStatusReceived)
+									{
+										SendMacroStatusReceived = false;
 
-								writer.Write(send_line);
-								writer.Write('\n');
-								writer.Flush();
+										string send_line = (string)ToSendMacro.Dequeue();
 
-								RecordLog("> " + send_line);
+										send_line = Calculator.Evaluate(send_line, out bool success);
+										Console.WriteLine(DateTime.Now.ToLongTimeString());
 
-								RaiseEvent(UpdateStatus, send_line);
-								RaiseEvent(LineSent, send_line);
+										if (!success)
+										{
+											ReportError("Error while evaluating macro!");
+											ReportError(send_line);
 
-								BufferState += send_line.Length + 1;
+											ToSendMacro.Clear();
+										}
+										else
+										{
+											writer.Write(send_line);
+											writer.Write('\n');
+											writer.Flush();
 
-								Sent.Enqueue(send_line);
-								ToSend.Dequeue();
+											RecordLog("> " + send_line);
 
-								continue;
+											RaiseEvent(UpdateStatus, send_line);
+											RaiseEvent(LineSent, send_line);
+
+											BufferState += send_line.Length + 1;
+
+											Sent.Enqueue(send_line);
+										}
+									}
+									break;
+								case "Run":
+								case "Hold":
+									break;
+								default:	// grbl is in some kind of alarm state
+									ToSendMacro.Clear();
+									break;
 							}
+
+							if (ToSendMacro.Count == 0)
+								Mode = OperatingMode.Manual;
 						}
+						else if (ToSend.Count > 0 && (((string)ToSend.Peek()).Length + 1) < (ControllerBufferSize - BufferState))
+						{
+							string send_line = (string)ToSend.Peek();
+
+							writer.Write(send_line);
+							writer.Write('\n');
+							writer.Flush();
+
+							RecordLog("> " + send_line);
+
+							RaiseEvent(UpdateStatus, send_line);
+							RaiseEvent(LineSent, send_line);
+
+							BufferState += send_line.Length + 1;
+
+							Sent.Enqueue(send_line);
+							ToSend.Dequeue();
+						}
+
 
 						DateTime Now = DateTime.Now;
 
@@ -339,7 +391,7 @@ namespace OpenCNCPilot.Communication
 						}
 
 						//only update file pos every X ms
-						if(filePosChanged && (Now - LastFilePosUpdate).TotalMilliseconds > 500)
+						if (filePosChanged && (Now - LastFilePosUpdate).TotalMilliseconds > 500)
 						{
 							RaiseEvent(FilePositionChanged);
 							LastFilePosUpdate = Now;
@@ -387,7 +439,10 @@ namespace OpenCNCPilot.Communication
 							Mode = OperatingMode.Manual;
 						}
 						else if (line.StartsWith("<"))
+						{
 							RaiseEvent(ParseStatus, line);
+							SendMacroStatusReceived = true;
+						}
 						else if (line.StartsWith("[PRB:"))
 						{
 							RaiseEvent(ParseProbe, line);
@@ -451,7 +506,9 @@ namespace OpenCNCPilot.Communication
 			Connected = true;
 
 			ToSend.Clear();
+			ToSendPriority.Clear();
 			Sent.Clear();
+			ToSendMacro.Clear();
 
 			Mode = OperatingMode.Manual;
 
@@ -514,6 +571,7 @@ namespace OpenCNCPilot.Communication
 			ToSend.Clear();
 			ToSendPriority.Clear();
 			Sent.Clear();
+			ToSendMacro.Clear();
 		}
 
 		public void SendLine(string line)
@@ -546,6 +604,7 @@ namespace OpenCNCPilot.Communication
 			ToSend.Clear();
 			ToSendPriority.Clear();
 			Sent.Clear();
+			ToSendMacro.Clear();
 			ToSendPriority.Enqueue((char)0x18);
 
 			BufferState = 0;
@@ -559,6 +618,20 @@ namespace OpenCNCPilot.Communication
 
 			SendLine("$G");
 			SendLine("$#");
+		}
+
+		public void SendMacroLines(params string[] lines)
+		{
+			if(Mode != OperatingMode.Manual)
+			{
+				RaiseEvent(Info, "Not in Manual Mode");
+				return;
+			}
+
+			foreach (string line in lines)
+				ToSendMacro.Enqueue(line.Trim());
+
+			Mode = OperatingMode.SendMacro;
 		}
 
 		//probably shouldn't expose this, but adding overrides would be much more effort otherwise
@@ -765,7 +838,7 @@ namespace OpenCNCPilot.Communication
 			if (line.Contains("$J="))
 				return;
 
-			if(line.StartsWith("[TLO:"))
+			if (line.StartsWith("[TLO:"))
 			{
 				try
 				{
@@ -811,7 +884,7 @@ namespace OpenCNCPilot.Communication
 
 					if (code == 43.1)
 					{
-						if(mc.Count > (i + 1))
+						if (mc.Count > (i + 1))
 						{
 							if (mc[i + 1].Groups[1].Value == "Z")
 							{
@@ -854,7 +927,7 @@ namespace OpenCNCPilot.Communication
 					continue;
 				}
 
-				if(m.Groups[1].Value == "Ov")
+				if (m.Groups[1].Value == "Ov")
 				{
 					try
 					{
@@ -893,7 +966,7 @@ namespace OpenCNCPilot.Communication
 					catch { NonFatalException.Invoke(string.Format("Received Bad Status: '{0}'", line)); }
 				}
 
-				else if(m.Groups[1].Value == "Pn")
+				else if (m.Groups[1].Value == "Pn")
 				{
 					resetPins = false;
 
@@ -976,9 +1049,9 @@ namespace OpenCNCPilot.Communication
 			if (overrideUpdate && Connected && OverrideChanged != null)
 				OverrideChanged.Invoke();
 
-			if (resetPins)	//no pin state received in status -> all zero
+			if (resetPins)  //no pin state received in status -> all zero
 			{
-				pinStateUpdate = PinStateLimitX | PinStateLimitY | PinStateLimitZ | PinStateProbe;	//was any pin set before
+				pinStateUpdate = PinStateLimitX | PinStateLimitY | PinStateLimitZ | PinStateProbe;  //was any pin set before
 
 				PinStateLimitX = false;
 				PinStateLimitY = false;
@@ -1044,7 +1117,7 @@ namespace OpenCNCPilot.Communication
 			}
 
 			Version v = new Version(major, minor, (int)rev);
-			if(v < Constants.MinimumGrblVersion)
+			if (v < Constants.MinimumGrblVersion)
 			{
 				ReportError("Outdated version of grbl detected!");
 				ReportError($"Please upgrade to at least grbl v{Constants.MinimumGrblVersion.Major}.{Constants.MinimumGrblVersion.Minor}{(char)Constants.MinimumGrblVersion.Build}");

@@ -2,7 +2,9 @@
 using OpenCNCPilot.Util;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace OpenCNCPilot
 {
@@ -10,18 +12,53 @@ namespace OpenCNCPilot
 	{
 		private List<string> ManualCommands = new List<string>();	//pos 0 is the last command sent, pos1+ are older
 		private int ManualCommandIndex = -1;
+		private bool ManualExpressionSuccess = true;
 
 		void ManualSend()
 		{
 			if (machine.Mode != Machine.OperatingMode.Manual)
 				return;
 
-			machine.SendLine(TextBoxManual.Text);
+			string tosend;
 
-			ManualCommands.Insert(0, TextBoxManual.Text);
+			if (Properties.Settings.Default.ManualUseExpressions)
+			{
+				if (ManualExpressionSuccess)
+					tosend = TextBoxPreview.Text;
+				else
+				{
+					Machine_NonFatalException("Expression did not evaluate");
+					return;
+				}
+			}
+			else
+				tosend = TextBoxManual.Text;
+
+			machine.SendLine(tosend);
+
+			ManualCommands.Insert(0, tosend);
 			ManualCommandIndex = -1;
 
 			TextBoxManual.Text = "";
+		}
+
+		private void UpdateExpressionPreview()
+		{
+			if (Properties.Settings.Default.ManualUseExpressions)
+				TextBoxPreview.Text = machine.Calculator.Evaluate(TextBoxManual.Text, out ManualExpressionSuccess);
+
+			TextBoxPreview.Background = ManualExpressionSuccess ? Brushes.LightYellow : Brushes.Red;
+		}
+
+		private void TextBoxManual_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			UpdateExpressionPreview();
+		}
+
+		private void CheckBoxUseExpressions_Changed(object sender, RoutedEventArgs e)
+		{
+			TextBoxPreview.Visibility = Properties.Settings.Default.ManualUseExpressions ? Visibility.Visible : Visibility.Collapsed;
+			UpdateExpressionPreview();
 		}
 
 		private void ButtonManualSend_Click(object sender, RoutedEventArgs e)
@@ -70,7 +107,8 @@ namespace OpenCNCPilot
 			if (machine.Mode != Machine.OperatingMode.Manual)
 				return;
 
-			TextBoxManual.Text = $"G10 L2 P0 X{machine.MachinePosition.X.ToString("N", Constants.DecimalOutputFormat)} Y{machine.MachinePosition.Y.ToString("N", Constants.DecimalOutputFormat)} Z{(machine.MachinePosition.Z - machine.CurrentTLO).ToString("N", Constants.DecimalOutputFormat)}";
+			TextBoxManual.Text = $"G10 L2 P0 X[MX] Y[MY] Z[MZ-TLO]";
+			CheckBoxUseExpressions.IsChecked = true;
 		}
 
 		private void ButtonManualSetG92Zero_Click(object sender, RoutedEventArgs e)

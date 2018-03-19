@@ -33,7 +33,6 @@ namespace OpenCNCPilot
 		public MainWindow()
 		{
 			AppDomain.CurrentDomain.UnhandledException += UnhandledException;
-
 			InitializeComponent();
 
 			openFileDialogGCode.FileOk += OpenFileDialogGCode_FileOk;
@@ -74,6 +73,8 @@ namespace OpenCNCPilot
 			LoadMacros();
 
 			settingsWindow.SendLine += machine.SendLine;
+
+			CheckBoxUseExpressions_Changed(null, null);
 
 			UpdateCheck.CheckForUpdate();
 		}
@@ -314,5 +315,7 @@ namespace OpenCNCPilot
 
 			machine.SendLine("G49");
 		}
+
+		
 	}
 }
