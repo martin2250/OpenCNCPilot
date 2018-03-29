@@ -381,6 +381,7 @@ namespace OpenCNCPilot
 			ButtonFeedRateOvr.Content = $"Feed: {machine.FeedOverride}%";
 			RunFeedOvr.Text = $"{machine.FeedOverride}%";
 			RunRapidOvr.Text = $"{machine.RapidOverride}%";
+			RunSpindleOvr.Text = $"{machine.SpindleOverride}%";
 		}
 
 		private void Machine_PinStateChanged()

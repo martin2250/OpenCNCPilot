@@ -279,6 +279,33 @@ namespace OpenCNCPilot
 			}
 		}
 
+		private void ButtonSpindleOverride_Click(object sender, RoutedEventArgs e)
+		{
+			Button b = sender as Button;
+
+			if (b == null)
+				return;
+
+			switch (b.Tag as string)
+			{
+				case "100%":
+					machine.SendControl(0x99);
+					break;
+				case "+10%":
+					machine.SendControl(0x9A);
+					break;
+				case "-10%":
+					machine.SendControl(0x9B);
+					break;
+				case "+1%":
+					machine.SendControl(0x9C);
+					break;
+				case "-1%":
+					machine.SendControl(0x9D);
+					break;
+			}
+		}
+
 		private void ButtonResetViewport_Click(object sender, RoutedEventArgs e)
 		{
 			viewport.Camera.Position = new System.Windows.Media.Media3D.Point3D(50, -150, 250);

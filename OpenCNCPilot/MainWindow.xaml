@@ -111,6 +111,17 @@
                                 <Button Click="ButtonFeedOverride_Click" Content="-1%" Style="{StaticResource styleButton}" Tag="-1%"/>
                                 <Button Click="ButtonFeedOverride_Click" Content="-10%" Style="{StaticResource styleButton}" Tag="-10%"/>
                             </StackPanel>
+                            <TextBlock>
+                                <Run Text="Spindle:"/>
+                                <Run Name="RunSpindleOvr"/>
+                            </TextBlock>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Click="ButtonSpindleOverride_Click" Content="+10%" Style="{StaticResource styleButton}" Tag="+10%"/>
+                                <Button Click="ButtonSpindleOverride_Click" Content="+1%" Style="{StaticResource styleButton}" Tag="+1%"/>
+                                <Button Click="ButtonSpindleOverride_Click" Content="100%" Style="{StaticResource styleButton}" Tag="100%"/>
+                                <Button Click="ButtonSpindleOverride_Click" Content="-1%" Style="{StaticResource styleButton}" Tag="-1%"/>
+                                <Button Click="ButtonSpindleOverride_Click" Content="-10%" Style="{StaticResource styleButton}" Tag="-10%"/>
+                            </StackPanel>
                         </StackPanel>
                     </Expander>
                 </Border>
