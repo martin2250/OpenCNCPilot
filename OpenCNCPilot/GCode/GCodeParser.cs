@@ -130,6 +130,12 @@ namespace OpenCNCPilot.GCode
 
 			for (int i = 0; i < Words.Count; i++)
 			{
+				if (Words[i].Command == 'N')
+				{
+					Words.RemoveAt(i--);
+					continue;
+				}
+
 				if (!ValidWords.Contains(Words[i].Command))
 				{
 					throw new ParseException($"unknown word (letter): \"{Words[i].Command} {Words[i].Parameter}\"", lineNumber);
