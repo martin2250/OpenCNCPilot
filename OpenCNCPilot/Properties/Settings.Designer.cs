@@ -541,13 +541,25 @@ namespace OpenCNCPilot.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool Einstellung {
+        [global::System.Configuration.DefaultSettingValueAttribute("900")]
+        public int WindowWidth {
             get {
-                return ((bool)(this["Einstellung"]));
+                return ((int)(this["WindowWidth"]));
             }
             set {
-                this["Einstellung"] = value;
+                this["WindowWidth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
+        public int WindowHeight {
+            get {
+                return ((int)(this["WindowHeight"]));
+            }
+            set {
+                this["WindowHeight"] = value;
             }
         }
     }
