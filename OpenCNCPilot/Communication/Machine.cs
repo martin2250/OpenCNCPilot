@@ -308,8 +308,6 @@ namespace OpenCNCPilot.Communication
 								}
 
 								filePosChanged = true;
-
-								continue;
 							}
 						}
 						else if (Mode == OperatingMode.SendMacro)
@@ -324,7 +322,6 @@ namespace OpenCNCPilot.Communication
 										string send_line = (string)ToSendMacro.Dequeue();
 
 										send_line = Calculator.Evaluate(send_line, out bool success);
-										Console.WriteLine(DateTime.Now.ToLongTimeString());
 
 										if (!success)
 										{
@@ -458,6 +455,8 @@ namespace OpenCNCPilot.Communication
 						{
 							RaiseEvent(ReportError, line);
 							Mode = OperatingMode.Manual;
+							ToSend.Clear();
+							ToSendMacro.Clear();
 						}
 						else if (line.StartsWith("grbl"))
 						{
