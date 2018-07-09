@@ -562,5 +562,17 @@ namespace OpenCNCPilot.Properties {
                 this["WindowHeight"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool BackupHeightMap {
+            get {
+                return ((bool)(this["BackupHeightMap"]));
+            }
+            set {
+                this["BackupHeightMap"] = value;
+            }
+        }
     }
 }

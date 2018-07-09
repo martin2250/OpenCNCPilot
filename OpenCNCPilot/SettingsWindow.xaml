@@ -64,6 +64,8 @@
 
                 <TextBox Margin="10,145,0,0" Text="{util:SettingBinding ProbeXAxisWeight}"/>
                 <Label Content="Probe X-Axis Weight" HorizontalAlignment="Left" Margin="135,144,0,0" VerticalAlignment="Top"/>
+
+                <CheckBox Content="Auto-Backup HeightMap when complete" HorizontalAlignment="Left" Margin="116,175,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding BackupHeightMap}"/>
             </Grid>
         </TabItem>
 

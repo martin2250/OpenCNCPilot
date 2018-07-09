@@ -248,6 +248,25 @@ namespace OpenCNCPilot
 			{
 				machine.SendLine($"G0Z{Math.Max(Properties.Settings.Default.ProbeSafeHeight, position.Z).ToString(Constants.DecimalOutputFormat)}");
 				machine.ProbeStop();
+				Machine_Info("HeightMap complete!");
+
+				if (Properties.Settings.Default.BackupHeightMap)
+				{
+					try
+					{
+						string exepath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+						string backupdir = System.IO.Path.Combine(exepath, "HeightMapBackup");
+						string filepath = System.IO.Path.Combine(backupdir, DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".hmap");
+
+						System.IO.Directory.CreateDirectory(backupdir);
+
+						Map.Save(filepath);
+					}
+					catch
+					{
+						Machine_NonFatalException("Could not save backup of HeightMap");
+					}
+				}
 				return;
 			}
 
