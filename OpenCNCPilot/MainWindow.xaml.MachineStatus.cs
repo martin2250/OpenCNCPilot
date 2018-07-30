@@ -256,6 +256,9 @@ namespace OpenCNCPilot
 				ListViewFile.Items.Add(tb);
 			}
 
+			TextBlock tbFinal = new TextBlock() { Text = "-- FILE END --" };
+			ListViewFile.Items.Add(tbFinal);
+
 			if (ToolPath.ContainsMotion)
 			{
 				ModelFileBoundary.Points.Clear();
