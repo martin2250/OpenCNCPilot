@@ -42,7 +42,10 @@
                 <TextBox Margin="10,10,0,0" Text="{util:SettingBinding ViewportArcSplit}"/>
                 <Label Content="preview arc segment length (mm)" HorizontalAlignment="Left" Margin="135,9,0,0" VerticalAlignment="Top"/>
 
-                <CheckBox Content="Preview Toolpath" HorizontalAlignment="Left" Margin="116,40,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding EnableCodePreview}"/>
+                <TextBox Margin="10,38,0,0" Text="{util:SettingBinding HeightMapOpacity}"/>
+                <Label Content="height map opacity (0.0 - 1.0)" HorizontalAlignment="Left" Margin="135,37,0,0" VerticalAlignment="Top"/>
+
+                <CheckBox Content="Preview Toolpath" HorizontalAlignment="Left" Margin="116,80,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding EnableCodePreview}"/>
             </Grid>
         </TabItem>
 

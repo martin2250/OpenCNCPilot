@@ -574,5 +574,17 @@ namespace OpenCNCPilot.Properties {
                 this["BackupHeightMap"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.8")]
+        public float HeightMapOpacity {
+            get {
+                return ((float)(this["HeightMapOpacity"]));
+            }
+            set {
+                this["HeightMapOpacity"] = value;
+            }
+        }
     }
 }

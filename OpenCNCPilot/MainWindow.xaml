@@ -341,7 +341,7 @@
                     <MaterialGroup>
                         <DiffuseMaterial>
                             <DiffuseMaterial.Brush>
-                                <LinearGradientBrush StartPoint="0,0" EndPoint="0, 1">
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0, 1" Opacity="{util:SettingBinding HeightMapOpacity}">
                                     <LinearGradientBrush.GradientStops>
                                         <GradientStop Color="Blue" Offset="0"/>
                                         <GradientStop Color="Cyan" Offset="0.2"/>
