@@ -51,5 +51,20 @@ namespace OpenCNCPilot
 			if (!Ok && User_Cancel != null)
 				User_Cancel.Invoke();
 		}
+
+		private void textBox_PreviewKeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Key == Key.Enter)
+			{
+				e.Handled = true;
+				((TextBox)sender).GetBindingExpression(TextBox.TextProperty).UpdateSource();
+				buttonOk_Click(null, null);
+			}
+			else if (e.Key == Key.Escape)
+			{
+				e.Handled = true;
+				buttonCancel_Click(null, null);
+			}
+		}
 	}
 }

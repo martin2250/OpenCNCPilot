@@ -11,7 +11,7 @@
         Title="EnterNumberWindow" Height="110" Width="286"
 		FocusManager.FocusedElement="{Binding ElementName=textBox}">
     <Grid>
-        <TextBox x:Name="textBox" Margin="10,10,10,38" Text="{Binding Value}" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+        <TextBox Name="textBox" Margin="10,10,10,38" Text="{Binding Value}" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" PreviewKeyDown="textBox_PreviewKeyDown"/>
         <Button Name="buttonOk" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,54,10" Height="23" Content="Accept" Click="buttonOk_Click"/>
         <Button Name="buttonCancel" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0, 0, 10, 10" Height="23" Content="Cancel" Click="buttonCancel_Click"/>
     </Grid>
