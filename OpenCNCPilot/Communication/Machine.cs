@@ -471,7 +471,7 @@ namespace OpenCNCPilot.Communication
 			catch (Exception ex)
 			{
 				RaiseEvent(ReportError, $"Fatal Error in Work Loop: {ex.Message}");
-				Disconnect();
+				RaiseEvent(() => Disconnect());
 			}
 		}
 
@@ -522,9 +522,6 @@ namespace OpenCNCPilot.Communication
 
 		public void Disconnect()
 		{
-			if (!Connected)
-				throw new Exception("Can't Disconnect: Not Connected");
-
 			if (Log != null)
 				Log.Close();
 			Log = null;
@@ -533,7 +530,12 @@ namespace OpenCNCPilot.Communication
 
 			WorkerThread.Join();
 
-			Connection.Close();
+			try
+			{
+				Connection.Close();
+			}
+			catch { }
+
 			Connection.Dispose();
 			Connection = null;
 
