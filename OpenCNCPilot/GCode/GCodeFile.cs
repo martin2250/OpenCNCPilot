@@ -41,8 +41,8 @@ namespace OpenCNCPilot.GCode
 			{
 				TravelDistance += m.Length;
 
-				if(m is Line && !((Line)m).Rapid && ((Line)m).Feed > 0.0)
-					TotalTime += TimeSpan.FromMinutes(m.Length/m.Feed);
+				if (m is Line && !((Line)m).Rapid && ((Line)m).Feed > 0.0)
+					TotalTime += TimeSpan.FromMinutes(m.Length / m.Feed);
 
 				ContainsMotion = true;
 
@@ -261,7 +261,7 @@ namespace OpenCNCPilot.GCode
 				if (c is MCode)
 				{
 					int code = ((MCode)c).Code;
-                    if (!Settings.Default.GCodeIncludeMEnd)
+					if (!Settings.Default.GCodeIncludeMEnd)
 					{
 						if (code == 2 || code == 30)
 							continue;
@@ -271,7 +271,7 @@ namespace OpenCNCPilot.GCode
 					continue;
 				}
 
-				if(c is Spindle)
+				if (c is Spindle)
 				{
 					if (!Settings.Default.GCodeIncludeSpindle)
 						continue;
@@ -281,7 +281,7 @@ namespace OpenCNCPilot.GCode
 					continue;
 				}
 
-				if(c is Dwell)
+				if (c is Dwell)
 				{
 					if (!Settings.Default.GCodeIncludeDwell)
 						continue;
@@ -322,7 +322,7 @@ namespace OpenCNCPilot.GCode
 			{
 				if (c is Arc)
 				{
-					foreach(Arc segment in ((Arc)c).Split(length).Cast<Arc>())
+					foreach (Arc segment in ((Arc)c).Split(length).Cast<Arc>())
 					{
 						Line l = new Line();
 						l.Start = segment.Start;

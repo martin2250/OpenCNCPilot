@@ -282,7 +282,7 @@ namespace OpenCNCPilot.Communication
 						{
 							if (File.Count > FilePosition && (File[FilePosition].Length + 1) < (ControllerBufferSize - BufferState))
 							{
-								string send_line = File[FilePosition].Replace(" ", "");	// don't send whitespace to machine
+								string send_line = File[FilePosition].Replace(" ", ""); // don't send whitespace to machine
 
 								writer.Write(send_line);
 								writer.Write('\n');
@@ -312,7 +312,7 @@ namespace OpenCNCPilot.Communication
 						}
 						else if (Mode == OperatingMode.SendMacro)
 						{
-							switch(Status)
+							switch (Status)
 							{
 								case "Idle":
 									if (BufferState == 0 && SendMacroStatusReceived)
@@ -352,7 +352,7 @@ namespace OpenCNCPilot.Communication
 								case "Run":
 								case "Hold":
 									break;
-								default:	// grbl is in some kind of alarm state
+								default:    // grbl is in some kind of alarm state
 									ToSendMacro.Clear();
 									break;
 							}
@@ -624,7 +624,7 @@ namespace OpenCNCPilot.Communication
 
 		public void SendMacroLines(params string[] lines)
 		{
-			if(Mode != OperatingMode.Manual)
+			if (Mode != OperatingMode.Manual)
 			{
 				RaiseEvent(Info, "Not in Manual Mode");
 				return;

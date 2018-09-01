@@ -10,7 +10,7 @@ namespace OpenCNCPilot
 {
 	partial class MainWindow
 	{
-		private List<string> ManualCommands = new List<string>();	//pos 0 is the last command sent, pos1+ are older
+		private List<string> ManualCommands = new List<string>();   //pos 0 is the last command sent, pos1+ are older
 		private int ManualCommandIndex = -1;
 		private bool ManualExpressionSuccess = true;
 
@@ -117,7 +117,7 @@ namespace OpenCNCPilot
 				return;
 
 			TextBoxManual.Text = "G92 X0 Y0 Z0";
-        }
+		}
 
 		private void ButtonManualResetG10_Click(object sender, RoutedEventArgs e)
 		{
@@ -125,11 +125,11 @@ namespace OpenCNCPilot
 				return;
 
 			TextBoxManual.Text = "G10 L2 P0 X0 Y0 Z0";
-        }
+		}
 
 		private void CheckBoxEnableJog_Checked(object sender, RoutedEventArgs e)
 		{
-			if(machine.Mode != Machine.OperatingMode.Manual)
+			if (machine.Mode != Machine.OperatingMode.Manual)
 			{
 				CheckBoxEnableJog.IsChecked = false;
 				return;

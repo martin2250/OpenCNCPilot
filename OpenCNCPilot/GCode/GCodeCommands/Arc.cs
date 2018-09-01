@@ -8,7 +8,7 @@ namespace OpenCNCPilot.GCode.GCodeCommands
 	{
 		XY = 0,
 		YZ = 1,
-        ZX = 2
+		ZX = 2
 	}
 
 	public enum ArcDirection
@@ -21,7 +21,7 @@ namespace OpenCNCPilot.GCode.GCodeCommands
 	{
 		public ArcPlane Plane;
 		public ArcDirection Direction;
-		public double U;	//absolute position of center in first axis of plane
+		public double U;    //absolute position of center in first axis of plane
 		public double V;    //absolute position of center in second axis of plane
 
 		public override double Length
@@ -113,7 +113,7 @@ namespace OpenCNCPilot.GCode.GCodeCommands
 
 			Vector3 lastEnd = Start;
 
-			for(int i = 1; i <= divisions; i++)
+			for (int i = 1; i <= divisions; i++)
 			{
 				Vector3 end = Interpolate(((double)i) / divisions);
 

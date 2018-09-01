@@ -17,7 +17,7 @@ namespace OpenCNCPilot.Util
 			this.machine = machine;
 		}
 
-		private static string[] Axes = new string[] {"X", "Y", "Z"};
+		private static string[] Axes = new string[] { "X", "Y", "Z" };
 		private string ExpressionEvaluator(string input)
 		{
 			try
@@ -38,7 +38,7 @@ namespace OpenCNCPilot.Util
 
 				return value.ToString("0.###", Constants.DecimalOutputFormat);
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				Success = false;
 				Console.WriteLine(ex.Message);

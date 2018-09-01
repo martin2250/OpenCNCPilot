@@ -22,7 +22,7 @@ namespace OpenCNCPilot.Util
 			client.Proxy = null;
 			client.DownloadStringCompleted += Client_DownloadStringCompleted;
 			client.DownloadStringAsync(new Uri("https://api.github.com/repos/martin2250/OpenCNCPilot/releases/latest"));
-        }
+		}
 
 		private static void Client_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
 		{
@@ -68,7 +68,7 @@ namespace OpenCNCPilot.Util
 						System.Diagnostics.Process.Start(url);
 				}
 			}
-			catch { }	//update check is non-critical and should never interrupt normal application operation
+			catch { }   //update check is non-critical and should never interrupt normal application operation
 		}
 	}
 }

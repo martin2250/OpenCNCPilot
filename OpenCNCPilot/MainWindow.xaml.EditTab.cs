@@ -19,7 +19,7 @@ namespace OpenCNCPilot
 			if (machine.Mode == Machine.OperatingMode.SendFile)
 				return;
 
-			if(Map == null || Map.NotProbed.Count > 0)
+			if (Map == null || Map.NotProbed.Count > 0)
 			{
 				MessageBox.Show("HeightMap is not ready");
 				return;
@@ -30,11 +30,11 @@ namespace OpenCNCPilot
 				machine.SetFile(ToolPath.ApplyHeightMap(Map).GetGCode());
 				Machine_OperatingMode_Changed();
 			}
-			catch(IndexOutOfRangeException)
+			catch (IndexOutOfRangeException)
 			{
-                MessageBox.Show("The Toolpath is not contained in the HeightMap");	
+				MessageBox.Show("The Toolpath is not contained in the HeightMap");
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				MessageBox.Show(ex.Message);
 			}

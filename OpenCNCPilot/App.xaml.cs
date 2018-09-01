@@ -16,7 +16,7 @@ namespace OpenCNCPilot
 	{
 		private void Application_Startup(object sender, StartupEventArgs e)
 		{
-			if(Settings.Default.SettingsUpdateRequired)
+			if (Settings.Default.SettingsUpdateRequired)
 			{
 				Settings.Default.Upgrade();
 				Settings.Default.SettingsUpdateRequired = false;

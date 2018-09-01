@@ -8,16 +8,16 @@ using System.Windows.Controls;
 namespace OpenCNCPilot
 {
 	public partial class GrblSettingsWindow : Window
-    {
+	{
 		Dictionary<int, double> CurrentSettings = new Dictionary<int, double>();
 		Dictionary<int, TextBox> SettingsBoxes = new Dictionary<int, TextBox>();
 
 		public event Action<string> SendLine;
 
-        public GrblSettingsWindow()
-        {
-            InitializeComponent();
-        }
+		public GrblSettingsWindow()
+		{
+			InitializeComponent();
+		}
 
 		static Regex settingParser = new Regex(@"\$([0-9]+)=([0-9\.]+)");
 		public void LineReceived(string line)
@@ -97,7 +97,7 @@ namespace OpenCNCPilot
 		{
 			List<Tuple<int, double>> ToSend = new List<Tuple<int, double>>();
 
-			foreach(KeyValuePair<int, double> kvp in CurrentSettings)
+			foreach (KeyValuePair<int, double> kvp in CurrentSettings)
 			{
 				double newval;
 

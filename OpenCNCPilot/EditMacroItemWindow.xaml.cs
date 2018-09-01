@@ -21,14 +21,14 @@ namespace OpenCNCPilot
 
 		private void ButtonOk_Click(object sender, RoutedEventArgs e)
 		{
-			if(MacroName.Contains(':') || MacroName.Contains(';') || Commands.Contains(':') || Commands.Contains(';'))
+			if (MacroName.Contains(':') || MacroName.Contains(';') || Commands.Contains(':') || Commands.Contains(';'))
 			{
 				MessageBox.Show("Name and Commands can't include ':' or ';'");
 				return;
 			}
 			Ok = true;
 			Close();
-        }
+		}
 
 		private void ButtonCancel_Click(object sender, RoutedEventArgs e)
 		{

@@ -67,7 +67,7 @@ namespace OpenCNCPilot.GCode
 			SizeX = pointsX;
 			SizeY = pointsY;
 
-			
+
 			for (int x = 0; x < SizeX; x++)
 			{
 				for (int y = 0; y < SizeY; y++)

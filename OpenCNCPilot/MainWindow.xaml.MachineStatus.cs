@@ -42,7 +42,7 @@ namespace OpenCNCPilot
 
 			if (machine.Status == "Alarm")
 				ButtonStatus.Foreground = Brushes.Red;
-			else if(machine.Status == "Hold")
+			else if (machine.Status == "Hold")
 				ButtonStatus.Foreground = Brushes.Yellow;
 			else if (machine.Status == "Run")
 				ButtonStatus.Foreground = Brushes.Green;
@@ -77,7 +77,7 @@ namespace OpenCNCPilot
 
 			TextBoxCurrentTLO.Text = machine.CurrentTLO.ToString("N", nfi);
 
-			if(machine.Mode == Machine.OperatingMode.Manual)
+			if (machine.Mode == Machine.OperatingMode.Manual)
 				UpdateExpressionPreview();
 		}
 
@@ -103,7 +103,7 @@ namespace OpenCNCPilot
 			if (machine.Mode != Machine.OperatingMode.Manual)
 				return;
 
-			if(machine.Plane != GCode.GCodeCommands.ArcPlane.XY)
+			if (machine.Plane != GCode.GCodeCommands.ArcPlane.XY)
 				machine.SendLine("G17");
 		}
 
@@ -206,7 +206,7 @@ namespace OpenCNCPilot
 
 			if (ListViewFile.SelectedItem is TextBlock)
 			{
-				if(ListViewFile.SelectedIndex >= 0 && machine.PauseLines[ListViewFile.SelectedIndex])
+				if (ListViewFile.SelectedIndex >= 0 && machine.PauseLines[ListViewFile.SelectedIndex])
 					((TextBlock)ListViewFile.SelectedItem).Background = Brushes.YellowGreen;
 				else
 					((TextBlock)ListViewFile.SelectedItem).Background = Brushes.Transparent;
@@ -227,12 +227,12 @@ namespace OpenCNCPilot
 				ToolPath = GCodeFile.FromList(machine.File);
 				GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced); // prevents considerable increase in memory usage
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				MessageBox.Show("Could not parse GCode File, no preview/editing available\nrun this file at your own risk\n" + ex.Message);
 			}
 
-			if(Properties.Settings.Default.EnableCodePreview)
+			if (Properties.Settings.Default.EnableCodePreview)
 				ToolPath.GetModel(ModelLine, ModelRapid, ModelArc);
 
 			RunFileLength.Text = machine.File.Count.ToString();
@@ -246,7 +246,7 @@ namespace OpenCNCPilot
 
 			ListViewFile.Items.Clear();
 
-			for(int line = 0; line < machine.File.Count; line++)
+			for (int line = 0; line < machine.File.Count; line++)
 			{
 				TextBlock tb = new TextBlock() { Text = $"{(line + 1).ToString(format)} : {machine.File[line]}" };
 

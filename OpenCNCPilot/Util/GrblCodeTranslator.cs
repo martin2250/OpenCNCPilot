@@ -99,7 +99,7 @@ namespace OpenCNCPilot.Util
 
 		public static string GetErrorMessage(int errorCode, bool alarm = false)
 		{
-			if(!alarm)
+			if (!alarm)
 			{
 				if (Errors.ContainsKey(errorCode))
 					return Errors[errorCode];

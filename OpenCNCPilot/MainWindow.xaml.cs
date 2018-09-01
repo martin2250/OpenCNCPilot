@@ -224,7 +224,7 @@ namespace OpenCNCPilot
 
 		private void viewport_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
 		{
-			if(e.Key == System.Windows.Input.Key.Space)
+			if (e.Key == System.Windows.Input.Key.Space)
 			{
 				machine.FeedHold();
 				e.Handled = true;
@@ -238,7 +238,7 @@ namespace OpenCNCPilot
 			if (b == null)
 				return;
 
-			switch(b.Content as string)
+			switch (b.Content as string)
 			{
 				case "100%":
 					machine.SendControl(0x95);
@@ -343,6 +343,6 @@ namespace OpenCNCPilot
 			machine.SendLine("G49");
 		}
 
-		
+
 	}
 }

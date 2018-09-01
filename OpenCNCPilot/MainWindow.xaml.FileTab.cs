@@ -19,7 +19,7 @@ namespace OpenCNCPilot
 			{
 				machine.SetFile(System.IO.File.ReadAllLines(openFileDialogGCode.FileName));
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				MessageBox.Show(ex.Message);
 			}

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace OpenCNCPilot.GCode.GCodeCommands
 {
 	abstract class Motion : Command
-	{ 
+	{
 		public Vector3 Start;
 		public Vector3 End;
 		public double Feed;

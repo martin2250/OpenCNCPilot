@@ -26,7 +26,7 @@ namespace OpenCNCPilot.GCode.GCodeCommands
 
 		public override IEnumerable<Motion> Split(double length)
 		{
-			if (Rapid)	//don't split up rapid motions
+			if (Rapid)  //don't split up rapid motions
 			{
 				yield return this;
 				yield break;

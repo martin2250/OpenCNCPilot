@@ -597,7 +597,7 @@ namespace OpenCNCPilot.Util
 				(
 					new Vector3
 					(
-					// multiply each component by the inverse of the magnitude
+						// multiply each component by the inverse of the magnitude
 						v1.X * inverse,
 						v1.Y * inverse,
 						v1.Z * inverse
@@ -1569,7 +1569,7 @@ namespace OpenCNCPilot.Util
 		{
 			Vector3 roll = new Vector3();
 
-			for(int i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++)
 			{
 				roll[i] = this[(i - turns + 300) % 3];
 			}

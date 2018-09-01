@@ -151,7 +151,7 @@ namespace OpenCNCPilot.GCode
 				continue;
 			}
 
-			for(int i = 0; i < Words.Count; i++)
+			for (int i = 0; i < Words.Count; i++)
 			{
 				if (Words[i].Command == 'M')
 				{
