@@ -55,6 +55,7 @@ namespace OpenCNCPilot.GCode
 		public static Regex GCodeSplitter = new Regex(@"([A-Z])\s*(\-?\d+\.?\d*)", RegexOptions.Compiled);
 		private static double[] MotionCommands = new double[] { 0, 1, 2, 3 };
 		private static string ValidWords = "GMXYZIJKFRSP";
+		private static string IgnoreAxes = "ABC";
 		public static List<Command> Commands;
 
 		public static void Reset()
@@ -131,6 +132,12 @@ namespace OpenCNCPilot.GCode
 			for (int i = 0; i < Words.Count; i++)
 			{
 				if (Words[i].Command == 'N')
+				{
+					Words.RemoveAt(i--);
+					continue;
+				}
+
+				if (IgnoreAxes.Contains(Words[i].Command) && Properties.Settings.Default.IgnoreAdditionalAxes)
 				{
 					Words.RemoveAt(i--);
 					continue;

@@ -946,7 +946,19 @@ namespace OpenCNCPilot.Communication
 				{
 					try
 					{
-						WorkOffset = Vector3.Parse(m.Groups[2].Value);
+						string OffsetString = m.Groups[2].Value;
+
+						if (Properties.Settings.Default.IgnoreAdditionalAxes)
+						{
+							string[] parts = OffsetString.Split(',');
+							if (parts.Length > 3)
+							{
+								Array.Resize(ref parts, 3);
+								OffsetString = string.Join(",", parts);
+							}
+						}
+
+						WorkOffset = Vector3.Parse(OffsetString);
 						posUpdate = true;
 					}
 					catch { NonFatalException.Invoke(string.Format("Received Bad Status: '{0}'", line)); }
@@ -1029,7 +1041,19 @@ namespace OpenCNCPilot.Communication
 				{
 					try
 					{
-						NewMachinePosition = Vector3.Parse(m.Groups[2].Value);
+						string PositionString = m.Groups[2].Value;
+
+						if (Properties.Settings.Default.IgnoreAdditionalAxes)
+						{
+							string[] parts = PositionString.Split(',');
+							if (parts.Length > 3)
+							{
+								Array.Resize(ref parts, 3);
+								PositionString = string.Join(",", parts);
+							}
+						}
+
+						NewMachinePosition = Vector3.Parse(PositionString);
 
 						if (m.Groups[1].Value == "WPos")
 							NewMachinePosition += WorkOffset;
@@ -1089,7 +1113,19 @@ namespace OpenCNCPilot.Communication
 				return;
 			}
 
-			Vector3 ProbePos = Vector3.Parse(pos.Value);
+			string PositionString = pos.Value;
+
+			if (Properties.Settings.Default.IgnoreAdditionalAxes)
+			{
+				string[] parts = PositionString.Split(',');
+				if (parts.Length > 3)
+				{
+					Array.Resize(ref parts, 3);
+					PositionString = string.Join(",", parts);
+				}
+			}
+
+			Vector3 ProbePos = Vector3.Parse(PositionString);
 			LastProbePosMachine = ProbePos;
 
 			ProbePos -= WorkOffset;

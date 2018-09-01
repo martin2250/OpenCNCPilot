@@ -33,6 +33,7 @@
                 <Label Content="Status Poll Interval (ms)" HorizontalAlignment="Left" Margin="135,115,0,0" VerticalAlignment="Top"/>
 
                 <CheckBox Content="Log traffic to file" HorizontalAlignment="Left" Margin="116,144,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding LogTraffic}" ToolTip="Restart required to take effect"/>
+                <CheckBox Content="Ignore Additional Axes in Status Messages" HorizontalAlignment="Left" Margin="116,164,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding IgnoreAdditionalAxes}" ToolTip="Compatibility with custom GRBL versions which report 4+ axes in status reports"/>
 
             </Grid>
         </TabItem>

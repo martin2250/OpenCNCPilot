@@ -598,5 +598,17 @@ namespace OpenCNCPilot.Properties {
                 this["EnableEscapeSoftReset"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IgnoreAdditionalAxes {
+            get {
+                return ((bool)(this["IgnoreAdditionalAxes"]));
+            }
+            set {
+                this["IgnoreAdditionalAxes"] = value;
+            }
+        }
     }
 }
