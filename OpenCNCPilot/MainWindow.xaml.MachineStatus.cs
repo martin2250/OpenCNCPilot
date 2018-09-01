@@ -206,7 +206,7 @@ namespace OpenCNCPilot
 
 			if (ListViewFile.SelectedItem is TextBlock)
 			{
-				if (ListViewFile.SelectedIndex >= 0 && machine.PauseLines[ListViewFile.SelectedIndex])
+				if (ListViewFile.SelectedIndex >= 0 && ListViewFile.SelectedIndex < machine.File.Count && machine.PauseLines[ListViewFile.SelectedIndex])
 					((TextBlock)ListViewFile.SelectedItem).Background = Brushes.YellowGreen;
 				else
 					((TextBlock)ListViewFile.SelectedItem).Background = Brushes.Transparent;
