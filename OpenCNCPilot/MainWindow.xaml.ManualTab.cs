@@ -149,7 +149,12 @@ namespace OpenCNCPilot
 				return;
 
 			if (e.Key == Key.Escape)
-				machine.SoftReset();
+			{
+				if (Properties.Settings.Default.EnableEscapeSoftReset)
+					machine.SoftReset();
+				else
+					machine.JogCancel();
+			}
 
 			if (!CheckBoxEnableJog.IsChecked.Value)
 				return;
@@ -214,7 +219,7 @@ namespace OpenCNCPilot
 
 		private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
 		{
-			if (machine.Connected && e.Key == System.Windows.Input.Key.Escape)
+			if (machine.Connected && e.Key == Key.Escape && Properties.Settings.Default.EnableEscapeSoftReset)
 				machine.SoftReset();
 		}
 	}

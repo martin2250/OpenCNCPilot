@@ -46,6 +46,7 @@
                 <Label Content="height map opacity (0.0 - 1.0)" HorizontalAlignment="Left" Margin="135,37,0,0" VerticalAlignment="Top"/>
 
                 <CheckBox Content="Preview Toolpath" HorizontalAlignment="Left" Margin="116,80,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding EnableCodePreview}"/>
+                <CheckBox Content="Send Soft Reset on Escape Key press" HorizontalAlignment="Left" Margin="116,100,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding EnableEscapeSoftReset}"/>
             </Grid>
         </TabItem>
 
