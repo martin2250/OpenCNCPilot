@@ -353,6 +353,13 @@ namespace OpenCNCPilot.GCode
 				{
 					Motion m = (Motion)command;
 
+					if (m is Arc)
+					{
+						Arc a = m as Arc;
+						if (a.Plane != ArcPlane.XY)
+							throw new Exception("GCode contains arcs in YZ or XZ plane (G18/19), can't apply HeightMap. Use Arcs to Lines if you really need this.");
+					}
+
 					foreach (Motion subMotion in m.Split(segmentLength))
 					{
 						subMotion.Start.Z += map.InterpolateZ(subMotion.Start.X, subMotion.Start.Y);

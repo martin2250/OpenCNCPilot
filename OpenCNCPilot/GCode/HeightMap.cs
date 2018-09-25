@@ -6,6 +6,7 @@ using System.Windows;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using martin2250.Calculator;
 
 namespace OpenCNCPilot.GCode
 {
@@ -244,17 +245,18 @@ namespace OpenCNCPilot.GCode
 
 		public void FillWithTestPattern(string pattern)
 		{
-			DataTable t = new DataTable();
+			martin2250.Calculator.Expression expr = martin2250.Calculator.Expression.Parse(pattern);
 
 			for (int x = 0; x < SizeX; x++)
 			{
 				for (int y = 0; y < SizeY; y++)
 				{
-					double X = (x * (Max.X - Min.X)) / (SizeX - 1) + Min.X;
-					double Y = (y * (Max.Y - Min.Y)) / (SizeY - 1) + Min.Y;
+					Dictionary<string, double> variables = new Dictionary<string, double>();
 
-					decimal d = (decimal)t.Compute(pattern.Replace("x", X.ToString()).Replace("y", Y.ToString()), "");
-					AddPoint(x, y, (double)d);
+					variables.Add("X", (x * (Max.X - Min.X)) / (SizeX - 1) + Min.X);
+					variables.Add("Y", (y * (Max.Y - Min.Y)) / (SizeY - 1) + Min.Y);
+
+					AddPoint(x, y, expr.GetValue(variables));
 				}
 			}
 		}
