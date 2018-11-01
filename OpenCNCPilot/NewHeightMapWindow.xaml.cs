@@ -157,11 +157,11 @@ namespace OpenCNCPilot
 
 		private void ButtonSizeFromCode_Click(object sender, RoutedEventArgs e)
 		{
-			MinX = ToolPathMin.X;
-			MinY = ToolPathMin.Y;
+			MinX = Math.Floor(ToolPathMin.X * 100) / 100.0;
+			MinY = Math.Floor(ToolPathMin.Y * 100) / 100.0;
 
-			MaxX = ToolPathMax.X;
-			MaxY = ToolPathMax.Y;
+			MaxX = Math.Ceiling(ToolPathMax.X * 100) / 100.0;
+			MaxY = Math.Ceiling(ToolPathMax.Y * 100) / 100.0;
 
 			foreach (TextBox tb in new TextBox[] { TextBoxMinX, TextBoxMaxX, TextBoxMinY, TextBoxMaxY })
 			{
