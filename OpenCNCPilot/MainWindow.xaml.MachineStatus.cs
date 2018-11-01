@@ -236,8 +236,9 @@ namespace OpenCNCPilot
 				ToolPath.GetModel(ModelLine, ModelRapid, ModelArc);
 
 			RunFileLength.Text = machine.File.Count.ToString();
-			RunFileDuration.Text = ToolPath.TotalTime.ToString(@"hh\:mm\:ss");
 			FileRunTime = TimeSpan.Zero;
+			RunFileDuration.Text = ToolPath.TotalTime.ToString(@"hh\:mm\:ss");
+			RunFileRunTime.Text = "00:00:00";
 
 			int digits = (int)Math.Ceiling(Math.Log10(machine.File.Count));
 
