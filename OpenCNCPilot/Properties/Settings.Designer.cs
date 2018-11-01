@@ -610,5 +610,17 @@ namespace OpenCNCPilot.Properties {
                 this["IgnoreAdditionalAxes"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.1")]
+        public float GridThickness {
+            get {
+                return ((float)(this["GridThickness"]));
+            }
+            set {
+                this["GridThickness"] = value;
+            }
+        }
     }
 }

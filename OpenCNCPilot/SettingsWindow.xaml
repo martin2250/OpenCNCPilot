@@ -46,8 +46,11 @@
                 <TextBox Margin="10,38,0,0" Text="{util:SettingBinding HeightMapOpacity}"/>
                 <Label Content="height map opacity (0.0 - 1.0)" HorizontalAlignment="Left" Margin="135,37,0,0" VerticalAlignment="Top" Height="26" Width="165"/>
 
-                <CheckBox Content="Preview Toolpath" HorizontalAlignment="Left" Margin="116,80,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding EnableCodePreview}" Height="15" Width="110"/>
-                <CheckBox Content="Send Soft Reset on Escape Key press" HorizontalAlignment="Left" Margin="116,100,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding EnableEscapeSoftReset}" Height="15" Width="213"/>
+                <TextBox Margin="10,66,0,0" Text="{util:SettingBinding GridThickness}"/>
+                <Label Content="grid thickness (0.1 default)" HorizontalAlignment="Left" Margin="135,65,0,0" VerticalAlignment="Top" Height="26" Width="165"/>
+
+                <CheckBox Content="Preview Toolpath" HorizontalAlignment="Left" Margin="116,107,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding EnableCodePreview}" Height="15" Width="110"/>
+                <CheckBox Content="Send Soft Reset on Escape Key press" HorizontalAlignment="Left" Margin="116,127,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding EnableEscapeSoftReset}" Height="15" Width="213"/>
             </Grid>
         </TabItem>
 

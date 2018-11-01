@@ -334,7 +334,8 @@
             <h:ArrowVisual3D x:Name="ModelTool" Direction="0,0,-10"/>
             <h:GridLinesVisual3D 
 				x:Name="ModelGrid"
-				Width="500" Length="500"/>
+				Width="500" Length="500"
+                Thickness="{util:SettingBinding GridThickness}"/>
             <h:MeshGeometryVisual3D
 				x:Name="ModelHeightMap">
                 <h:MeshGeometryVisual3D.Material>

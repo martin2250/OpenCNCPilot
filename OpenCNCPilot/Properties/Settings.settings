@@ -147,8 +147,11 @@ G92Z0;</Value>
     <Setting Name="EnableEscapeSoftReset" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-	<Setting Name="IgnoreAdditionalAxes" Type="System.Boolean" Scope="User">
+    <Setting Name="IgnoreAdditionalAxes" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="GridThickness" Type="System.Single" Scope="User">
+      <Value Profile="(Default)">0.1</Value>
     </Setting>
   </Settings>
 </SettingsFile>
