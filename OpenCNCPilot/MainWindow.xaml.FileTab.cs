@@ -10,6 +10,18 @@ namespace OpenCNCPilot
 {
 	partial class MainWindow
 	{
+		private string _currentFileName = "";
+
+		public string CurrentFileName
+		{
+			get => _currentFileName;
+			set
+			{
+				_currentFileName = value;
+				this.GetBindingExpression(Window.TitleProperty).UpdateTarget();
+			}
+		}
+
 		private void OpenFileDialogGCode_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			if (machine.Mode == Machine.OperatingMode.SendFile)
@@ -18,6 +30,7 @@ namespace OpenCNCPilot
 			try
 			{
 				machine.SetFile(System.IO.File.ReadAllLines(openFileDialogGCode.FileName));
+				CurrentFileName = System.IO.Path.GetFileName(openFileDialogGCode.FileName);
 			}
 			catch (Exception ex)
 			{
@@ -62,6 +75,7 @@ namespace OpenCNCPilot
 				return;
 
 			machine.ClearFile();
+			CurrentFileName = "";
 		}
 
 		private void ButtonFileStart_Click(object sender, RoutedEventArgs e)

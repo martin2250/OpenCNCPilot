@@ -155,6 +155,17 @@ namespace OpenCNCPilot
 			}
 		}
 
+		public string WindowTitle
+		{
+			get
+			{
+				if (CurrentFileName.Length < 1)
+					return $"OpenCNCPilot v{Version} by martin2250";
+				else
+					return $"OpenCNCPilot v{Version} by martin2250 - {CurrentFileName}";
+			}
+		}
+
 		private void Window_Drop(object sender, DragEventArgs e)
 		{
 			if (e.Data.GetDataPresent(DataFormats.FileDrop))
