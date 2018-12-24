@@ -74,6 +74,21 @@ namespace OpenCNCPilot
 			enw.Show();
 		}
 
+		private void ButtonEditRotateCW_Click(object sender, RoutedEventArgs e)
+		{
+			if (machine.Mode == Machine.OperatingMode.SendFile)
+				return;
+
+			try
+			{
+				machine.SetFile(ToolPath.RotateCW().GetGCode());
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message);
+			}
+		}
+
 		private void Enw_User_Ok_Split(double value)
 		{
 			Properties.Settings.Default.SplitSegmentLength = value;

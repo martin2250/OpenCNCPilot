@@ -377,5 +377,61 @@ namespace OpenCNCPilot.GCode
 
 			return new GCodeFile(newToolPath);
 		}
+
+		public GCodeFile RotateCW()
+		{
+			List<Command> newFile = new List<Command>();
+
+			foreach (Command oldCommand in Toolpath)
+			{
+				if (oldCommand is Motion)
+				{
+					Motion oldMotion = (Motion)oldCommand;
+					Motion newMotion;
+
+					if (oldCommand is Arc)
+					{
+						Arc oldArc = (Arc)oldMotion;
+						Arc newArc = new Arc();
+
+						// would be possible, but I'm too lazy to implement this properly
+						if (oldArc.Plane != ArcPlane.XY)
+							throw new Exception("GCode contains arcs in YZ or XZ plane (G18/19), can't rotate gcode. Use Arcs to Lines if you really need this.");
+
+						newArc.Direction = oldArc.Direction;
+						newArc.Plane = oldArc.Plane;
+						newArc.U = oldArc.V;
+						newArc.V = -oldArc.U;
+						newMotion = newArc;
+					}
+					else if (oldCommand is Line)
+					{
+						Line oldLine = (Line)oldMotion;
+						Line newLine = new Line();
+						newLine.Rapid = oldLine.Rapid;
+						newMotion = newLine;
+					}
+					else
+						throw new Exception("this shouldn't happen, please contact the autor on GitHub");
+
+					newMotion.Start = oldMotion.Start;
+					newMotion.End = oldMotion.End;
+					newMotion.Start.X = oldMotion.Start.Y;
+					newMotion.Start.Y = -oldMotion.Start.X;
+					newMotion.End.X = oldMotion.End.Y;
+					newMotion.End.Y = -oldMotion.End.X;
+
+					newMotion.Feed = oldMotion.Feed;
+
+					newFile.Add(newMotion);
+				}
+				else
+				{
+					newFile.Add(oldCommand);
+				}
+			}
+
+			return new GCodeFile(newFile);
+		}
 	}
 }

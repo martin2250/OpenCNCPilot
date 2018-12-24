@@ -342,6 +342,7 @@ namespace OpenCNCPilot
 			ButtonEditSimplify.IsEnabled = machine.Mode != Machine.OperatingMode.SendFile;
 			ButtonEditArcToLines.IsEnabled = machine.Mode != Machine.OperatingMode.SendFile;
 			ButtonEditSplit.IsEnabled = machine.Mode != Machine.OperatingMode.SendFile;
+			ButtonEditRotateCW.IsEnabled = machine.Mode != Machine.OperatingMode.SendFile;
 
 			ModelTool.Visible = machine.Connected;
 

@@ -13,213 +13,214 @@
 		DataContext="{Binding RelativeSource={RelativeSource Self}}"
         PreviewKeyDown="Window_PreviewKeyDown"
         Title="{Binding WindowTitle,Mode=OneWay}" Height="{util:SettingBinding WindowHeight}" Width="{util:SettingBinding WindowWidth}" Closing="Window_Closing">
-    <Window.Resources>
-        <ResourceDictionary Source="MainWindow.Resources.xaml"/>
-    </Window.Resources>
-    <Grid>
-        <Grid Panel.ZIndex="1">
-            <Border Style="{StaticResource stylePanelOut}" VerticalAlignment="Top" HorizontalAlignment="Center">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Button Name="ButtonDistanceMode" Content="Absolute" Click="ButtonDistanceMode_Click" Style="{StaticResource styleButton}" Margin="5,5,0,5" ToolTip="Distance Mode - Click to Toggle"/>
-                        <Button Name="ButtonArcPlane" Content="XY-Plane" Click="ButtonArcPlane_Click" Style="{StaticResource styleButton}" Margin="5,5,0,5" ToolTip="Arc Plane - Click to Reset to XY"/>
-                        <Button Name="ButtonUnit" Content="Metric" Click="ButtonUnit_Click" Style="{StaticResource styleButton}" Margin="5,5,0,5"  ToolTip="Unit System - Click to Toggle"/>
-                        <Button Name="ButtonStatus" Content="Disconnected" Click="ButtonStatus_Click" Style="{StaticResource styleButton}" Margin="5,5,0,5"  ToolTip="Machine Status - Click to send $X to unlock"/>
-                        <Button Name="ButtonFeedRateOvr" Content="Feed: 100%" Click="ButtonFeedOverride_Click" Tag="100%" Style="{StaticResource styleButton}" Margin="5,5,0,5"  ToolTip="Feed Rate Override - Click to reset"/>
+	<Window.Resources>
+		<ResourceDictionary Source="MainWindow.Resources.xaml"/>
+	</Window.Resources>
+	<Grid>
+		<Grid Panel.ZIndex="1">
+			<Border Style="{StaticResource stylePanelOut}" VerticalAlignment="Top" HorizontalAlignment="Center">
+				<StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<Button Name="ButtonDistanceMode" Content="Absolute" Click="ButtonDistanceMode_Click" Style="{StaticResource styleButton}" Margin="5,5,0,5" ToolTip="Distance Mode - Click to Toggle"/>
+						<Button Name="ButtonArcPlane" Content="XY-Plane" Click="ButtonArcPlane_Click" Style="{StaticResource styleButton}" Margin="5,5,0,5" ToolTip="Arc Plane - Click to Reset to XY"/>
+						<Button Name="ButtonUnit" Content="Metric" Click="ButtonUnit_Click" Style="{StaticResource styleButton}" Margin="5,5,0,5"  ToolTip="Unit System - Click to Toggle"/>
+						<Button Name="ButtonStatus" Content="Disconnected" Click="ButtonStatus_Click" Style="{StaticResource styleButton}" Margin="5,5,0,5"  ToolTip="Machine Status - Click to send $X to unlock"/>
+						<Button Name="ButtonFeedRateOvr" Content="Feed: 100%" Click="ButtonFeedOverride_Click" Tag="100%" Style="{StaticResource styleButton}" Margin="5,5,0,5"  ToolTip="Feed Rate Override - Click to reset"/>
 
-                        <Button Name="ButtonFeedHold" Click="ButtonFeedHold_Click" Content="Hold" Style="{StaticResource styleButton}" Margin="35,5,0,5"/>
-                        <Button Name="ButtonCycleStart" Click="ButtonCycleStart_Click" Content="Start" Style="{StaticResource styleButton}" Margin="5,5,0,5"/>
-                        <Button Name="ButtonSoftReset" Click="ButtonSoftReset_Click" Content="Soft Reset" Style="{StaticResource styleButton}" Margin="5,5,0,5"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text=" X: " VerticalAlignment="Center"/>
-                        <TextBox Name="LabelPosX" Width="55" Text="0.0" IsReadOnly="True" VerticalContentAlignment="Center" Height="22"/>
-                        <TextBlock Text=" Y: " VerticalAlignment="Center"/>
-                        <TextBox Name="LabelPosY" Width="55" Text="0.0" IsReadOnly="True" VerticalContentAlignment="Center" Height="22"/>
-                        <TextBlock Text=" Z: " VerticalAlignment="Center"/>
-                        <TextBox Name="LabelPosZ" Width="55" Text="0.0" IsReadOnly="True" VerticalContentAlignment="Center" Height="22"/>
-                        <TextBlock Text="   MX: " VerticalAlignment="Center"/>
-                        <TextBox Name="LabelPosMX" Width="55" Text="0.0" IsReadOnly="True" VerticalContentAlignment="Center" Height="22"/>
-                        <TextBlock Text=" MY: " VerticalAlignment="Center"/>
-                        <TextBox Name="LabelPosMY" Width="55" Text="0.0" IsReadOnly="True" VerticalContentAlignment="Center" Height="22"/>
-                        <TextBlock Text=" MZ: " VerticalAlignment="Center"/>
-                        <TextBox Name="LabelPosMZ" Width="55" Text="0.0" IsReadOnly="True" VerticalContentAlignment="Center" Height="22"/>
-                        <TextBlock Text=" F:" VerticalAlignment="Center"/>
-                        <TextBlock Name="LabelFeedRateRealtime" Width="45" Text="0" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </StackPanel>
-            </Border>
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-                <Border Style="{StaticResource stylePanelOut}">
-                    <Expander Header="File" Width="Auto" IsExpanded="{util:SettingBinding FileExpanderOpen}">
-                        <Grid Width="210" Height="260">
-                            <Button Name="ButtonFileOpen" Click="ButtonOpen_Click" Content="Open" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top"/>
-                            <Button Name="ButtonFileSave" Click="ButtonSave_Click" Content="Save" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="48,5,0,0" VerticalAlignment="Top"/>
-                            <Button Name="ButtonFileClear" Click="ButtonClear_Click" Content="Clear" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="87,5,0,0" VerticalAlignment="Top"/>
-                            <TextBlock  VerticalAlignment="Top" Margin="128,9,0,0">
+						<Button Name="ButtonFeedHold" Click="ButtonFeedHold_Click" Content="Hold" Style="{StaticResource styleButton}" Margin="35,5,0,5"/>
+						<Button Name="ButtonCycleStart" Click="ButtonCycleStart_Click" Content="Start" Style="{StaticResource styleButton}" Margin="5,5,0,5"/>
+						<Button Name="ButtonSoftReset" Click="ButtonSoftReset_Click" Content="Soft Reset" Style="{StaticResource styleButton}" Margin="5,5,0,5"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text=" X: " VerticalAlignment="Center"/>
+						<TextBox Name="LabelPosX" Width="55" Text="0.0" IsReadOnly="True" VerticalContentAlignment="Center" Height="22"/>
+						<TextBlock Text=" Y: " VerticalAlignment="Center"/>
+						<TextBox Name="LabelPosY" Width="55" Text="0.0" IsReadOnly="True" VerticalContentAlignment="Center" Height="22"/>
+						<TextBlock Text=" Z: " VerticalAlignment="Center"/>
+						<TextBox Name="LabelPosZ" Width="55" Text="0.0" IsReadOnly="True" VerticalContentAlignment="Center" Height="22"/>
+						<TextBlock Text="   MX: " VerticalAlignment="Center"/>
+						<TextBox Name="LabelPosMX" Width="55" Text="0.0" IsReadOnly="True" VerticalContentAlignment="Center" Height="22"/>
+						<TextBlock Text=" MY: " VerticalAlignment="Center"/>
+						<TextBox Name="LabelPosMY" Width="55" Text="0.0" IsReadOnly="True" VerticalContentAlignment="Center" Height="22"/>
+						<TextBlock Text=" MZ: " VerticalAlignment="Center"/>
+						<TextBox Name="LabelPosMZ" Width="55" Text="0.0" IsReadOnly="True" VerticalContentAlignment="Center" Height="22"/>
+						<TextBlock Text=" F:" VerticalAlignment="Center"/>
+						<TextBlock Name="LabelFeedRateRealtime" Width="45" Text="0" VerticalAlignment="Center"/>
+					</StackPanel>
+				</StackPanel>
+			</Border>
+			<StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+				<Border Style="{StaticResource stylePanelOut}">
+					<Expander Header="File" Width="Auto" IsExpanded="{util:SettingBinding FileExpanderOpen}">
+						<Grid Width="210" Height="260">
+							<Button Name="ButtonFileOpen" Click="ButtonOpen_Click" Content="Open" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top"/>
+							<Button Name="ButtonFileSave" Click="ButtonSave_Click" Content="Save" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="48,5,0,0" VerticalAlignment="Top"/>
+							<Button Name="ButtonFileClear" Click="ButtonClear_Click" Content="Clear" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="87,5,0,0" VerticalAlignment="Top"/>
+							<TextBlock  VerticalAlignment="Top" Margin="128,9,0,0">
                                 <Run Name="RunFilePosition" Text="0"/>
                                 <Run Text="/"/>
                                 <Run Name="RunFileLength"  Text="0"/>
-                            </TextBlock>
+							</TextBlock>
 
-                            <ListView Name="ListViewFile"  Margin="0,53" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent"/>
+							<ListView Name="ListViewFile"  Margin="0,53" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent"/>
 
-                            <Button Name="ButtonFileStart" Click="ButtonFileStart_Click" Content="Start" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="5,0,0,25" Height="23" VerticalAlignment="Bottom"/>
-                            <Button Name="ButtonFilePause" Click="ButtonFilePause_Click" Content="Pause" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="48,0,0,25" Height="23" VerticalAlignment="Bottom"/>
-                            <Button Name="ButtonFileGoto" Click="ButtonFileGoto_Click" Content="Go To" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="93,0,0,25" Height="23" VerticalAlignment="Bottom"/>
-                            <CheckBox Name="CheckBoxPauseOnM0" Content="Pause" ToolTip="Pause the Program on M0/M1/M30" IsChecked="{util:SettingBinding PauseFileOnHold}" HorizontalAlignment="Left" Margin="138,0,-24,20" Height="23" VerticalAlignment="Bottom"/>
+							<Button Name="ButtonFileStart" Click="ButtonFileStart_Click" Content="Start" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="5,0,0,25" Height="23" VerticalAlignment="Bottom"/>
+							<Button Name="ButtonFilePause" Click="ButtonFilePause_Click" Content="Pause" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="48,0,0,25" Height="23" VerticalAlignment="Bottom"/>
+							<Button Name="ButtonFileGoto" Click="ButtonFileGoto_Click" Content="Go To" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="93,0,0,25" Height="23" VerticalAlignment="Bottom"/>
+							<CheckBox Name="CheckBoxPauseOnM0" Content="Pause" ToolTip="Pause the Program on M0/M1/M30" IsChecked="{util:SettingBinding PauseFileOnHold}" HorizontalAlignment="Left" Margin="138,0,-24,20" Height="23" VerticalAlignment="Bottom"/>
 
-                            <TextBlock  VerticalAlignment="Bottom" Margin="10,0,0,4" HorizontalAlignment="Left">
+							<TextBlock  VerticalAlignment="Bottom" Margin="10,0,0,4" HorizontalAlignment="Left">
                                 <Run Text="Runtime:"/>
                                 <Run Name="RunFileRunTime" Text="00:00:00"/>
                                 <Run Text="/"/>
                                 <Run Name="RunFileDuration" Text="00:00:00"/>
-                            </TextBlock>
-                        </Grid>
-                    </Expander>
-                </Border>
-                <Border Style="{StaticResource stylePanelOut}">
-                    <Expander Header="Edit" IsExpanded="{util:SettingBinding EditExpanderOpen}">
-                        <WrapPanel Width="170">
-                            <Button Name="ButtonEditSimplify" Click="ButtonEditSimplify_Click" Content="Simplify" Style="{StaticResource styleButton}" ToolTip="Simplifies GCode"/>
-                            <Button Name="ButtonEditApplyHeightMap" Click="ButtonEditApplyHeightMap_Click" Content="Apply HeightMap" Style="{StaticResource styleButton}"/>
-                            <Button Name="ButtonEditArcToLines" Click="ButtonEditArcToLines_Click" Content="ArcsToLines" Style="{StaticResource styleButton}" ToolTip="Replaces all Arcs with G1 straight moves"/>
-                            <Button Name="ButtonEditSplit" Click="ButtonEditSplit_Click" Content="Split" Style="{StaticResource styleButton}" ToolTip="Splits all motions into motions with a maximum user-selectable length"/>
-                        </WrapPanel>
-                    </Expander>
-                </Border>
-                <Border Style="{StaticResource stylePanelOut}">
-                    <Expander Header="Overrides" IsExpanded="{util:SettingBinding OverrideExpanderOpen}">
-                        <StackPanel Name="StackPanelOverrides">
-                            <TextBlock>
+							</TextBlock>
+						</Grid>
+					</Expander>
+				</Border>
+				<Border Style="{StaticResource stylePanelOut}">
+					<Expander Header="Edit" IsExpanded="{util:SettingBinding EditExpanderOpen}">
+						<WrapPanel Width="180">
+							<Button Name="ButtonEditSimplify" Click="ButtonEditSimplify_Click" Content="Simplify" Style="{StaticResource styleButton}" ToolTip="Simplifies GCode"/>
+							<Button Name="ButtonEditApplyHeightMap" Click="ButtonEditApplyHeightMap_Click" Content="Apply HeightMap" Style="{StaticResource styleButton}"/>
+							<Button Name="ButtonEditArcToLines" Click="ButtonEditArcToLines_Click" Content="ArcsToLines" Style="{StaticResource styleButton}" ToolTip="Replaces all Arcs with G1 straight moves"/>
+							<Button Name="ButtonEditSplit" Click="ButtonEditSplit_Click" Content="Split" Style="{StaticResource styleButton}" ToolTip="Splits all motions into motions with a maximum user-selectable length"/>
+							<Button Name="ButtonEditRotateCW" Click="ButtonEditRotateCW_Click" Content="RotateCW" Style="{StaticResource styleButton}" ToolTip="rotates the toolpath by 90° in the XY plane, doesn't support G18/G19"/>
+						</WrapPanel>
+					</Expander>
+				</Border>
+				<Border Style="{StaticResource stylePanelOut}">
+					<Expander Header="Overrides" IsExpanded="{util:SettingBinding OverrideExpanderOpen}">
+						<StackPanel Name="StackPanelOverrides">
+							<TextBlock>
                                 <Run Text="Rapid:"/>
                                 <Run Name="RunRapidOvr"/>
-                            </TextBlock>
-                            <StackPanel Orientation="Horizontal">
-                                <Button Click="ButtonRapidOverride_Click" Content="100%" Style="{StaticResource styleButton}" Tag="100"/>
-                                <Button Click="ButtonRapidOverride_Click" Content="50%" Style="{StaticResource styleButton}"  Tag="50"/>
-                                <Button Click="ButtonRapidOverride_Click" Content="25%" Style="{StaticResource styleButton}" Tag="25"/>
-                            </StackPanel>
-                            <TextBlock>
+							</TextBlock>
+							<StackPanel Orientation="Horizontal">
+								<Button Click="ButtonRapidOverride_Click" Content="100%" Style="{StaticResource styleButton}" Tag="100"/>
+								<Button Click="ButtonRapidOverride_Click" Content="50%" Style="{StaticResource styleButton}"  Tag="50"/>
+								<Button Click="ButtonRapidOverride_Click" Content="25%" Style="{StaticResource styleButton}" Tag="25"/>
+							</StackPanel>
+							<TextBlock>
                                 <Run Text="Feed:"/>
                                 <Run Name="RunFeedOvr"/>
-                            </TextBlock>
-                            <StackPanel Orientation="Horizontal">
-                                <Button Click="ButtonFeedOverride_Click" Content="+10%" Style="{StaticResource styleButton}" Tag="+10%"/>
-                                <Button Click="ButtonFeedOverride_Click" Content="+1%" Style="{StaticResource styleButton}" Tag="+1%"/>
-                                <Button Click="ButtonFeedOverride_Click" Content="100%" Style="{StaticResource styleButton}" Tag="100%"/>
-                                <Button Click="ButtonFeedOverride_Click" Content="-1%" Style="{StaticResource styleButton}" Tag="-1%"/>
-                                <Button Click="ButtonFeedOverride_Click" Content="-10%" Style="{StaticResource styleButton}" Tag="-10%"/>
-                            </StackPanel>
-                            <TextBlock>
+							</TextBlock>
+							<StackPanel Orientation="Horizontal">
+								<Button Click="ButtonFeedOverride_Click" Content="+10%" Style="{StaticResource styleButton}" Tag="+10%"/>
+								<Button Click="ButtonFeedOverride_Click" Content="+1%" Style="{StaticResource styleButton}" Tag="+1%"/>
+								<Button Click="ButtonFeedOverride_Click" Content="100%" Style="{StaticResource styleButton}" Tag="100%"/>
+								<Button Click="ButtonFeedOverride_Click" Content="-1%" Style="{StaticResource styleButton}" Tag="-1%"/>
+								<Button Click="ButtonFeedOverride_Click" Content="-10%" Style="{StaticResource styleButton}" Tag="-10%"/>
+							</StackPanel>
+							<TextBlock>
                                 <Run Text="Spindle:"/>
                                 <Run Name="RunSpindleOvr"/>
-                            </TextBlock>
-                            <StackPanel Orientation="Horizontal">
-                                <Button Click="ButtonSpindleOverride_Click" Content="+10%" Style="{StaticResource styleButton}" Tag="+10%"/>
-                                <Button Click="ButtonSpindleOverride_Click" Content="+1%" Style="{StaticResource styleButton}" Tag="+1%"/>
-                                <Button Click="ButtonSpindleOverride_Click" Content="100%" Style="{StaticResource styleButton}" Tag="100%"/>
-                                <Button Click="ButtonSpindleOverride_Click" Content="-1%" Style="{StaticResource styleButton}" Tag="-1%"/>
-                                <Button Click="ButtonSpindleOverride_Click" Content="-10%" Style="{StaticResource styleButton}" Tag="-10%"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </Expander>
-                </Border>
-                <Border Style="{StaticResource stylePanelOut}">
-                    <Expander Header="Probing" IsExpanded="{util:SettingBinding ProbingExpanderOpen}">
-                        <Grid Width="200" Margin="0,0,0,5">
-                            <Button Name="ButtonHeightMapCreateNew" Click="ButtonHeightmapCreateNew_Click" Content="Create New" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top"/>
-                            <Button Name="ButtonHeightMapLoad" Click="ButtonHeightmapLoad_Click" Content="Load" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="81,5,0,0" VerticalAlignment="Top" Height="24"/>
-                            <Button Name="ButtonHeightMapSave" Click="ButtonHeightmapSave_Click" Content="Save" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="121,5,0,0" VerticalAlignment="Top"/>
-                            <Button Name="ButtonHeightMapClear" Click="ButtonHeightmapClear_Click" Content="Clear" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="160,5,0,0" VerticalAlignment="Top"/>
+							</TextBlock>
+							<StackPanel Orientation="Horizontal">
+								<Button Click="ButtonSpindleOverride_Click" Content="+10%" Style="{StaticResource styleButton}" Tag="+10%"/>
+								<Button Click="ButtonSpindleOverride_Click" Content="+1%" Style="{StaticResource styleButton}" Tag="+1%"/>
+								<Button Click="ButtonSpindleOverride_Click" Content="100%" Style="{StaticResource styleButton}" Tag="100%"/>
+								<Button Click="ButtonSpindleOverride_Click" Content="-1%" Style="{StaticResource styleButton}" Tag="-1%"/>
+								<Button Click="ButtonSpindleOverride_Click" Content="-10%" Style="{StaticResource styleButton}" Tag="-10%"/>
+							</StackPanel>
+						</StackPanel>
+					</Expander>
+				</Border>
+				<Border Style="{StaticResource stylePanelOut}">
+					<Expander Header="Probing" IsExpanded="{util:SettingBinding ProbingExpanderOpen}">
+						<Grid Width="200" Margin="0,0,0,5">
+							<Button Name="ButtonHeightMapCreateNew" Click="ButtonHeightmapCreateNew_Click" Content="Create New" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top"/>
+							<Button Name="ButtonHeightMapLoad" Click="ButtonHeightmapLoad_Click" Content="Load" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="81,5,0,0" VerticalAlignment="Top" Height="24"/>
+							<Button Name="ButtonHeightMapSave" Click="ButtonHeightmapSave_Click" Content="Save" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="121,5,0,0" VerticalAlignment="Top"/>
+							<Button Name="ButtonHeightMapClear" Click="ButtonHeightmapClear_Click" Content="Clear" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="160,5,0,0" VerticalAlignment="Top"/>
 
-                            <Grid Name="GridProbingControls" Margin="0,33,0,0">
-                                <Label Content="Points:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-                                <Label Name="LabelHeightMapProgress" Content="0/0" HorizontalAlignment="Left" Margin="55,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.667,0.538"/>
-                                <Button Name="ButtonHeightMapStart" Content=" Run " Click="ButtonHeightMapStart_Click" Style="{StaticResource styleButton}" HorizontalAlignment="Right" Margin="0,10,55,0" VerticalAlignment="Top"/>
-                                <Button Name="ButtonHeightMapPause" Content="Pause" Click="ButtonHeightMapPause_Click" Style="{StaticResource styleButton}" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top"/>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,32,0,0" VerticalAlignment="Top">
-                                    <Label Content="MinZ:" Width="40"/>
-                                    <Label Content="0" Width="40" Name="LabelHeightMapMinZ"/>
-                                    <Label Content="MaxZ:" Width="43"/>
-                                    <Label Content="0" Width="40" Name="LabelHeightMapMaxZ"/>
-                                </StackPanel>
-                            </Grid>
-                        </Grid>
-                    </Expander>
-                </Border>
-                <Border Style="{StaticResource stylePanelOut}">
-                    <Expander Header="Manual" IsExpanded="{util:SettingBinding ManualExpanderOpen}">
-                        <StackPanel>
-                            <Grid Margin="3,0,3,0">
-                                <TextBox Name="TextBoxManual" Height="23" HorizontalAlignment="Stretch" PreviewKeyDown="TextBoxManual_PreviewKeyDown" TextChanged="TextBoxManual_TextChanged" Margin="0,5,41,5"/>
-                                <Button Name="ButtonManualSend" Click="ButtonManualSend_Click" Style="{StaticResource styleButton}" Height="23" Content="Send" HorizontalAlignment="Right"/>
-                            </Grid>
-                            <TextBox Name="TextBoxPreview" IsReadOnly="True" Margin="3,0,3,3" Background="LightYellow"/>
-                            <CheckBox Name="CheckBoxUseExpressions" Content="Use Expressions" Margin="3,0,3,3" IsChecked="{util:SettingBinding ManualUseExpressions}" Checked="CheckBoxUseExpressions_Changed" Unchecked="CheckBoxUseExpressions_Changed"/>
-                            <StackPanel Orientation="Horizontal">
-                                <Button Name="ButtonManualSetG10Zero" Click="ButtonManualSetG10Zero_Click" Style="{StaticResource styleButton}" Content="Zero (G10)"
+							<Grid Name="GridProbingControls" Margin="0,33,0,0">
+								<Label Content="Points:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+								<Label Name="LabelHeightMapProgress" Content="0/0" HorizontalAlignment="Left" Margin="55,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.667,0.538"/>
+								<Button Name="ButtonHeightMapStart" Content=" Run " Click="ButtonHeightMapStart_Click" Style="{StaticResource styleButton}" HorizontalAlignment="Right" Margin="0,10,55,0" VerticalAlignment="Top"/>
+								<Button Name="ButtonHeightMapPause" Content="Pause" Click="ButtonHeightMapPause_Click" Style="{StaticResource styleButton}" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top"/>
+								<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,32,0,0" VerticalAlignment="Top">
+									<Label Content="MinZ:" Width="40"/>
+									<Label Content="0" Width="40" Name="LabelHeightMapMinZ"/>
+									<Label Content="MaxZ:" Width="43"/>
+									<Label Content="0" Width="40" Name="LabelHeightMapMaxZ"/>
+								</StackPanel>
+							</Grid>
+						</Grid>
+					</Expander>
+				</Border>
+				<Border Style="{StaticResource stylePanelOut}">
+					<Expander Header="Manual" IsExpanded="{util:SettingBinding ManualExpanderOpen}">
+						<StackPanel>
+							<Grid Margin="3,0,3,0">
+								<TextBox Name="TextBoxManual" Height="23" HorizontalAlignment="Stretch" PreviewKeyDown="TextBoxManual_PreviewKeyDown" TextChanged="TextBoxManual_TextChanged" Margin="0,5,41,5"/>
+								<Button Name="ButtonManualSend" Click="ButtonManualSend_Click" Style="{StaticResource styleButton}" Height="23" Content="Send" HorizontalAlignment="Right"/>
+							</Grid>
+							<TextBox Name="TextBoxPreview" IsReadOnly="True" Margin="3,0,3,3" Background="LightYellow"/>
+							<CheckBox Name="CheckBoxUseExpressions" Content="Use Expressions" Margin="3,0,3,3" IsChecked="{util:SettingBinding ManualUseExpressions}" Checked="CheckBoxUseExpressions_Changed" Unchecked="CheckBoxUseExpressions_Changed"/>
+							<StackPanel Orientation="Horizontal">
+								<Button Name="ButtonManualSetG10Zero" Click="ButtonManualSetG10Zero_Click" Style="{StaticResource styleButton}" Content="Zero (G10)"
 									    ToolTip="Set Position to (0,0,0) with 'G10 L2 P0 XYZ' where XYZ are the current machine coordinates,&#x0a;this has the advantage that it will be persistent through a reset&#x0a;This button will NOT automatically send the command"/>
-                                <Button Name="ButtonManualSetG92Zero" Click="ButtonManualSetG92Zero_Click" Style="{StaticResource styleButton}" Content="Zero (G92)"
+								<Button Name="ButtonManualSetG92Zero" Click="ButtonManualSetG92Zero_Click" Style="{StaticResource styleButton}" Content="Zero (G92)"
 									    ToolTip="Set Position to (0,0,0) with 'G92 X0 Y0 Z0',&#x0a;this has the disadvantage that it will NOT be persistent through a reset&#x0a;This button will NOT automatically send the command"/>
-                                <Button Name="ButtonManualResetG10" Click="ButtonManualResetG10_Click" Style="{StaticResource styleButton}" Content="Reset (G10)"
+								<Button Name="ButtonManualResetG10" Click="ButtonManualResetG10_Click" Style="{StaticResource styleButton}" Content="Reset (G10)"
 									    ToolTip="Reset Work Coordinate System (G54) with 'G10 L2 P0 X0 Y0 Z0'&#x0a;This button will NOT automatically send the command"/>
-                            </StackPanel>
-                            <GroupBox>
-                                <GroupBox.Header>
-                                    <CheckBox Name="CheckBoxEnableJog" Content="Enable Keyboard Jogging" Checked="CheckBoxEnableJog_Checked" Unchecked="CheckBoxEnableJog_Unchecked" VerticalAlignment="Top"/>
-                                </GroupBox.Header>
-                                <Grid IsEnabled="{Binding ElementName=CheckBoxEnableJog, Path=IsChecked}">
-                                    <TextBox Name="TextBoxJog" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Height="23" Margin="10,5,0,0" Text="Jogging Keyboard Focus" VerticalAlignment="Top" Width="208" VerticalContentAlignment="Center"
+							</StackPanel>
+							<GroupBox>
+								<GroupBox.Header>
+									<CheckBox Name="CheckBoxEnableJog" Content="Enable Keyboard Jogging" Checked="CheckBoxEnableJog_Checked" Unchecked="CheckBoxEnableJog_Unchecked" VerticalAlignment="Top"/>
+								</GroupBox.Header>
+								<Grid IsEnabled="{Binding ElementName=CheckBoxEnableJog, Path=IsChecked}">
+									<TextBox Name="TextBoxJog" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Height="23" Margin="10,5,0,0" Text="Jogging Keyboard Focus" VerticalAlignment="Top" Width="208" VerticalContentAlignment="Center"
 											 PreviewKeyDown="Jogging_KeyDown" PreviewKeyUp="Jogging_KeyUp" LostKeyboardFocus="Jogging_LostKeyboardFocus">
-                                        <TextBox.ToolTip>
-                                            <TextBlock>
+										<TextBox.ToolTip>
+											<TextBlock>
 												You can only Jog as long as this textbox has the keyboard focus<LineBreak/>
 												Use the arrow keys for XY movement (Right/Up is the positive direction for X/Y)<LineBreak/>
 												Use PgUp/Down for Z movement<LineBreak/>
 												The motion will stop when you release the button (not 100% stable at the moment)<LineBreak/>
 												Esc will issue a soft reset
-                                            </TextBlock>
-                                        </TextBox.ToolTip>
-                                    </TextBox>
-                                    <Label Content="Feed" HorizontalAlignment="Left" Margin="12,33,0,0" VerticalAlignment="Top"/>
-                                    <TextBox Name="TextBoxJogFeed" Text="{util:SettingBinding JogFeed}" VerticalContentAlignment="Center" HorizontalAlignment="Left" Height="23" Margin="50,34,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="40"/>
-                                    <Label Content="Max Distance" HorizontalAlignment="Left" Margin="90,33,0,0" VerticalAlignment="Top"/>
-                                    <TextBox Name="TextBoxJogDistance" Text="{util:SettingBinding JogDistance}" VerticalContentAlignment="Center"  HorizontalAlignment="Right" Height="23" Margin="0,34,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="40"/>
-                                    <Label Content="CtrlFeed" HorizontalAlignment="Left" Margin="10,61,0,0" VerticalAlignment="Top"/>
-                                    <TextBox Name="TextBoxJogFeedFine" Text="{util:SettingBinding JogFeedCtrl}" VerticalContentAlignment="Center" HorizontalAlignment="Left" Height="23" Margin="69,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="40"/>
-                                    <Label Content="Distance" HorizontalAlignment="Left" Margin="116,61,0,0" VerticalAlignment="Top"/>
-                                    <TextBox Name="TextBoxJogDistanceFine" Text="{util:SettingBinding JogDistanceCtrl}" VerticalContentAlignment="Center"  HorizontalAlignment="Right" Height="23" Margin="0,62,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="40"/>
-                                </Grid>
-                            </GroupBox>
-                        </StackPanel>
-                    </Expander>
-                </Border>
-                <Border Style="{StaticResource stylePanelOut}">
-                    <Expander Header="Manual Probing" IsExpanded="{util:SettingBinding ManualProbingExpanderOpen}">
-                        <StackPanel>
-                            <GroupBox Header="Last Probe Position">
-                                <StackPanel>
-                                    <Label Content="Machine:"/>
-                                    <StackPanel  Orientation="Horizontal">
-                                        <TextBox Width="60" Margin="5,0,0,0" IsReadOnly="True" Text="{Binding LastProbePosMachine.X, StringFormat=N3}"/>
-                                        <TextBox Width="60" Margin="5,0,0,0" IsReadOnly="True" Text="{Binding LastProbePosMachine.Y, StringFormat=N3}"/>
-                                        <TextBox Width="60" Margin="5,0,5,0" IsReadOnly="True" Text="{Binding LastProbePosMachine.Z, StringFormat=N3}"/>
-                                    </StackPanel>
-                                    <Label Content="Work:"/>
-                                    <StackPanel  Orientation="Horizontal">
-                                        <TextBox Width="60" Margin="5,0,0,0" IsReadOnly="True" Text="{Binding LastProbePosWork.X, StringFormat=N3}"/>
-                                        <TextBox Width="60" Margin="5,0,0,0" IsReadOnly="True" Text="{Binding LastProbePosWork.Y, StringFormat=N3}"/>
-                                        <TextBox Width="60" Margin="5,0,5,0" IsReadOnly="True" Text="{Binding LastProbePosWork.Z, StringFormat=N3}"/>
-                                    </StackPanel>
-                                </StackPanel>
-                            </GroupBox>
-                            <GroupBox Header="Tool Length Offset" Name="groupBoxTLO">
-                                <Grid>
-                                    <CheckBox Content="Use Actual Position vs Probe" IsChecked="{util:SettingBinding TLSUseActualPos}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0"/>
-                                    <Button Content="Save Pos" HorizontalAlignment="Left" VerticalAlignment="Top"  Style="{StaticResource styleButton}" Click="ButtonSaveTLOPos_Click" Margin="5,25,0,0">
-                                        <Button.ToolTip>
-                                            <TextBlock>
+											</TextBlock>
+										</TextBox.ToolTip>
+									</TextBox>
+									<Label Content="Feed" HorizontalAlignment="Left" Margin="12,33,0,0" VerticalAlignment="Top"/>
+									<TextBox Name="TextBoxJogFeed" Text="{util:SettingBinding JogFeed}" VerticalContentAlignment="Center" HorizontalAlignment="Left" Height="23" Margin="50,34,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="40"/>
+									<Label Content="Max Distance" HorizontalAlignment="Left" Margin="90,33,0,0" VerticalAlignment="Top"/>
+									<TextBox Name="TextBoxJogDistance" Text="{util:SettingBinding JogDistance}" VerticalContentAlignment="Center"  HorizontalAlignment="Right" Height="23" Margin="0,34,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="40"/>
+									<Label Content="CtrlFeed" HorizontalAlignment="Left" Margin="10,61,0,0" VerticalAlignment="Top"/>
+									<TextBox Name="TextBoxJogFeedFine" Text="{util:SettingBinding JogFeedCtrl}" VerticalContentAlignment="Center" HorizontalAlignment="Left" Height="23" Margin="69,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="40"/>
+									<Label Content="Distance" HorizontalAlignment="Left" Margin="116,61,0,0" VerticalAlignment="Top"/>
+									<TextBox Name="TextBoxJogDistanceFine" Text="{util:SettingBinding JogDistanceCtrl}" VerticalContentAlignment="Center"  HorizontalAlignment="Right" Height="23" Margin="0,62,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="40"/>
+								</Grid>
+							</GroupBox>
+						</StackPanel>
+					</Expander>
+				</Border>
+				<Border Style="{StaticResource stylePanelOut}">
+					<Expander Header="Manual Probing" IsExpanded="{util:SettingBinding ManualProbingExpanderOpen}">
+						<StackPanel>
+							<GroupBox Header="Last Probe Position">
+								<StackPanel>
+									<Label Content="Machine:"/>
+									<StackPanel  Orientation="Horizontal">
+										<TextBox Width="60" Margin="5,0,0,0" IsReadOnly="True" Text="{Binding LastProbePosMachine.X, StringFormat=N3}"/>
+										<TextBox Width="60" Margin="5,0,0,0" IsReadOnly="True" Text="{Binding LastProbePosMachine.Y, StringFormat=N3}"/>
+										<TextBox Width="60" Margin="5,0,5,0" IsReadOnly="True" Text="{Binding LastProbePosMachine.Z, StringFormat=N3}"/>
+									</StackPanel>
+									<Label Content="Work:"/>
+									<StackPanel  Orientation="Horizontal">
+										<TextBox Width="60" Margin="5,0,0,0" IsReadOnly="True" Text="{Binding LastProbePosWork.X, StringFormat=N3}"/>
+										<TextBox Width="60" Margin="5,0,0,0" IsReadOnly="True" Text="{Binding LastProbePosWork.Y, StringFormat=N3}"/>
+										<TextBox Width="60" Margin="5,0,5,0" IsReadOnly="True" Text="{Binding LastProbePosWork.Z, StringFormat=N3}"/>
+									</StackPanel>
+								</StackPanel>
+							</GroupBox>
+							<GroupBox Header="Tool Length Offset" Name="groupBoxTLO">
+								<Grid>
+									<CheckBox Content="Use Actual Position vs Probe" IsChecked="{util:SettingBinding TLSUseActualPos}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0"/>
+									<Button Content="Save Pos" HorizontalAlignment="Left" VerticalAlignment="Top"  Style="{StaticResource styleButton}" Click="ButtonSaveTLOPos_Click" Margin="5,25,0,0">
+										<Button.ToolTip>
+											<TextBlock>
                                                 Tool Length Offsets:<LineBreak/>
                                                 1) load inital tool<LineBreak/>
                                                 2) move machine to tool length sensor<LineBreak/>
@@ -229,140 +230,140 @@
                                                 6) change tool<LineBreak/>
                                                 7) move to TLS and touch off again (new tool needs to be at same height as initial tool)<LineBreak/>
                                                 8) hit 'Apply TLO', this will use the position of the last received probe message and the saved position from earlier to compute the correct offset
-                                            </TextBlock>
-                                        </Button.ToolTip>
-                                    </Button>
-                                    <TextBlock Text="@MZ: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="65,29,0,0"/>
-                                    <TextBlock Text="{util:SettingBinding ToolLengthSetterPos, StringFormat=N3}" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="105,29,0,0" Width="60"/>
-                                    <Button Content="Apply TLO" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource styleButton}" Margin="5,53,0,0" Click="ButtonApplyTLO_Click"/>
-                                    <Button Content="Clear TLO" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource styleButton}" Margin="73,53,0,0" Click="ButtonClearTLO_Click"/>
-                                    <TextBox Name="TextBoxCurrentTLO" Text="0.000" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="138,53,0,0" Width="52" Height="23" VerticalContentAlignment="Center" IsReadOnly="True" ToolTip="Current TLO (Z)"/>
-                                </Grid>
-                            </GroupBox>
-                        </StackPanel>
-                    </Expander>
-                </Border>
-                <Border Style="{StaticResource stylePanelOut}">
-                    <Expander Header="Macros" IsExpanded="{util:SettingBinding MacroExpanderOpen}">
-                        <StackPanel>
-                            <Button Content="Add Macro" Name="ButtonAddMacro" Click="ButtonAddMacro_Click" Margin="2"/>
-                            <StackPanel MinWidth="120" Name="StackPanelMacros">
+											</TextBlock>
+										</Button.ToolTip>
+									</Button>
+									<TextBlock Text="@MZ: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="65,29,0,0"/>
+									<TextBlock Text="{util:SettingBinding ToolLengthSetterPos, StringFormat=N3}" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="105,29,0,0" Width="60"/>
+									<Button Content="Apply TLO" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource styleButton}" Margin="5,53,0,0" Click="ButtonApplyTLO_Click"/>
+									<Button Content="Clear TLO" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource styleButton}" Margin="73,53,0,0" Click="ButtonClearTLO_Click"/>
+									<TextBox Name="TextBoxCurrentTLO" Text="0.000" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="138,53,0,0" Width="52" Height="23" VerticalContentAlignment="Center" IsReadOnly="True" ToolTip="Current TLO (Z)"/>
+								</Grid>
+							</GroupBox>
+						</StackPanel>
+					</Expander>
+				</Border>
+				<Border Style="{StaticResource stylePanelOut}">
+					<Expander Header="Macros" IsExpanded="{util:SettingBinding MacroExpanderOpen}">
+						<StackPanel>
+							<Button Content="Add Macro" Name="ButtonAddMacro" Click="ButtonAddMacro_Click" Margin="2"/>
+							<StackPanel MinWidth="120" Name="StackPanelMacros">
 
-                            </StackPanel>
-                        </StackPanel>
-                    </Expander>
-                </Border>
-            </StackPanel>
+							</StackPanel>
+						</StackPanel>
+					</Expander>
+				</Border>
+			</StackPanel>
 
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Right" FlowDirection="RightToLeft">
-                <Border Style="{StaticResource stylePanelOut}">
-                    <Expander Header="Machine" IsExpanded="{util:SettingBinding MachineExpanderOpen}">
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Button Name="ButtonSettings" Content="Settings" Style="{StaticResource styleButton}" Click="ButtonSettings_Click"/>
-                                <Button Name="ButtonConnect" Content="Connect" Style="{StaticResource styleButton}" Click="ButtonConnect_Click"/>
-                                <Button Name="ButtonDisconnect" Visibility="Collapsed" Content="Disconnect" Style="{StaticResource styleButton}" Click="ButtonDisconnect_Click"/>
-                            </StackPanel>
-                            <Button Name="ButtonSyncBuffer" Click="ButtonSyncBuffer_Click" Margin="0,0,0,3" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FlowDirection="LeftToRight" ToolTip="Sync Buffer Status&#xA;(requires bit 1 of $10 to be set)">
-                                <Grid Margin="-2" IsHitTestVisible="False">
-                                    <ProgressBar Name="ProgressBarBufferCapacity" Maximum="{util:SettingBinding ControllerBufferSize}" Background="Transparent"/>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
-                                        <Label Name="LabelBufferState" Content="0" Margin="0,0,-6,0"/>
-                                        <Label Content="/"/>
-                                        <Label Content="{util:SettingBinding ControllerBufferSize}" Margin="-8,0,0,0"/>
-                                    </StackPanel>
-                                </Grid>
-                            </Button>
-                            <StackPanel Orientation="Horizontal">
-                                <Button Content="GRBL Settings" Style="{StaticResource styleButton}" Click="ShowGrblSettings_Click" Name="ButtonGrblSettings"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </Expander>
-                </Border>
-                <Border Style="{StaticResource stylePanelOut}">
-                    <Expander Header="About" IsExpanded="{util:SettingBinding AboutExpanderOpen}">
-                        <StackPanel>
-                            <TextBlock TextAlignment="Center" FontSize="14" Padding="5">
+			<StackPanel Orientation="Vertical" HorizontalAlignment="Right" FlowDirection="RightToLeft">
+				<Border Style="{StaticResource stylePanelOut}">
+					<Expander Header="Machine" IsExpanded="{util:SettingBinding MachineExpanderOpen}">
+						<StackPanel>
+							<StackPanel Orientation="Horizontal">
+								<Button Name="ButtonSettings" Content="Settings" Style="{StaticResource styleButton}" Click="ButtonSettings_Click"/>
+								<Button Name="ButtonConnect" Content="Connect" Style="{StaticResource styleButton}" Click="ButtonConnect_Click"/>
+								<Button Name="ButtonDisconnect" Visibility="Collapsed" Content="Disconnect" Style="{StaticResource styleButton}" Click="ButtonDisconnect_Click"/>
+							</StackPanel>
+							<Button Name="ButtonSyncBuffer" Click="ButtonSyncBuffer_Click" Margin="0,0,0,3" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FlowDirection="LeftToRight" ToolTip="Sync Buffer Status&#xA;(requires bit 1 of $10 to be set)">
+								<Grid Margin="-2" IsHitTestVisible="False">
+									<ProgressBar Name="ProgressBarBufferCapacity" Maximum="{util:SettingBinding ControllerBufferSize}" Background="Transparent"/>
+									<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+										<Label Name="LabelBufferState" Content="0" Margin="0,0,-6,0"/>
+										<Label Content="/"/>
+										<Label Content="{util:SettingBinding ControllerBufferSize}" Margin="-8,0,0,0"/>
+									</StackPanel>
+								</Grid>
+							</Button>
+							<StackPanel Orientation="Horizontal">
+								<Button Content="GRBL Settings" Style="{StaticResource styleButton}" Click="ShowGrblSettings_Click" Name="ButtonGrblSettings"/>
+							</StackPanel>
+						</StackPanel>
+					</Expander>
+				</Border>
+				<Border Style="{StaticResource stylePanelOut}">
+					<Expander Header="About" IsExpanded="{util:SettingBinding AboutExpanderOpen}">
+						<StackPanel>
+							<TextBlock TextAlignment="Center" FontSize="14" Padding="5">
 								<Span FontWeight="Bold" FontSize="15">OpenCNCPilot <Run Text="{Binding Version,Mode=OneWay}"/> by martin2250</Span><LineBreak/>
 								<Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="https://github.com/martin2250/OpenCNCPilot">Project Page</Hyperlink>
 								<Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="https://github.com/martin2250/OpenCNCPilot/issues">Help</Hyperlink>
-                            </TextBlock>
-                        </StackPanel>
-                    </Expander>
-                </Border>
-                <Border Style="{StaticResource stylePanelOut}">
-                    <Expander Header="Debug" IsExpanded="{util:SettingBinding DebugExpanderOpen}">
-                        <StackPanel HorizontalAlignment="Left" Margin="0,0,0,5">
-                            <CheckBox Content="Show Status Messages" IsChecked="{util:SettingBinding ShowStatusLines}" Margin="10,0,0,0"/>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBox Text="{util:SettingBinding ConsoleFadeTime}" VerticalContentAlignment="Center" Width="40" Margin="10,3,0,3"/>
-                                <Label Content="Console Fade Time (s)" FlowDirection="LeftToRight"/>
-                            </StackPanel>
-                            <Button Style="{StaticResource styleButton}" Content="Reset 3D Viewport" HorizontalAlignment="Left" Margin="10,0,0,0" Click="ButtonResetViewport_Click"/>
-                        </StackPanel>
-                    </Expander>
-                </Border>
-            </StackPanel>
+							</TextBlock>
+						</StackPanel>
+					</Expander>
+				</Border>
+				<Border Style="{StaticResource stylePanelOut}">
+					<Expander Header="Debug" IsExpanded="{util:SettingBinding DebugExpanderOpen}">
+						<StackPanel HorizontalAlignment="Left" Margin="0,0,0,5">
+							<CheckBox Content="Show Status Messages" IsChecked="{util:SettingBinding ShowStatusLines}" Margin="10,0,0,0"/>
+							<StackPanel Orientation="Horizontal">
+								<TextBox Text="{util:SettingBinding ConsoleFadeTime}" VerticalContentAlignment="Center" Width="40" Margin="10,3,0,3"/>
+								<Label Content="Console Fade Time (s)" FlowDirection="LeftToRight"/>
+							</StackPanel>
+							<Button Style="{StaticResource styleButton}" Content="Reset 3D Viewport" HorizontalAlignment="Left" Margin="10,0,0,0" Click="ButtonResetViewport_Click"/>
+						</StackPanel>
+					</Expander>
+				</Border>
+			</StackPanel>
 
-            <ListBox Name="ListBoxHistory" HorizontalContentAlignment="Right"  HorizontalAlignment="Right" VerticalAlignment="Bottom" IsHitTestVisible="False" BorderThickness="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <VirtualizingStackPanel VerticalAlignment="Bottom"/>
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-            </ListBox>
-        </Grid>
-        <StackPanel Panel.ZIndex="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" Orientation="Horizontal">
-            <Label Name="LabelStateProbe" Content="Probe" FontWeight="ExtraBold" FontSize="40" Foreground="Red" Visibility="Collapsed"/>
-            <Label Name="LabelStateLimitX" Content="LimitX" FontWeight="ExtraBold" FontSize="40" Foreground="Red" Visibility="Collapsed"/>
-            <Label Name="LabelStateLimitY" Content="LimitY" FontWeight="ExtraBold" FontSize="40" Foreground="Red" Visibility="Collapsed"/>
-            <Label Name="LabelStateLimitZ" Content="LimitZ" FontWeight="ExtraBold" FontSize="40" Foreground="Red" Visibility="Collapsed"/>
-        </StackPanel>
-        <h:HelixViewport3D Name="viewport" ShowViewCube="False" Panel.ZIndex="0" PreviewKeyDown="viewport_PreviewKeyDown">
-            <h:HelixViewport3D.Camera>
-                <PerspectiveCamera
+			<ListBox Name="ListBoxHistory" HorizontalContentAlignment="Right"  HorizontalAlignment="Right" VerticalAlignment="Bottom" IsHitTestVisible="False" BorderThickness="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+				<ListBox.ItemsPanel>
+					<ItemsPanelTemplate>
+						<VirtualizingStackPanel VerticalAlignment="Bottom"/>
+					</ItemsPanelTemplate>
+				</ListBox.ItemsPanel>
+			</ListBox>
+		</Grid>
+		<StackPanel Panel.ZIndex="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" Orientation="Horizontal">
+			<Label Name="LabelStateProbe" Content="Probe" FontWeight="ExtraBold" FontSize="40" Foreground="Red" Visibility="Collapsed"/>
+			<Label Name="LabelStateLimitX" Content="LimitX" FontWeight="ExtraBold" FontSize="40" Foreground="Red" Visibility="Collapsed"/>
+			<Label Name="LabelStateLimitY" Content="LimitY" FontWeight="ExtraBold" FontSize="40" Foreground="Red" Visibility="Collapsed"/>
+			<Label Name="LabelStateLimitZ" Content="LimitZ" FontWeight="ExtraBold" FontSize="40" Foreground="Red" Visibility="Collapsed"/>
+		</StackPanel>
+		<h:HelixViewport3D Name="viewport" ShowViewCube="False" Panel.ZIndex="0" PreviewKeyDown="viewport_PreviewKeyDown">
+			<h:HelixViewport3D.Camera>
+				<PerspectiveCamera
 					Position="50, -150, 250"
 					LookDirection="-50, 150,-250"
 					UpDirection="0,0,1"/>
-            </h:HelixViewport3D.Camera>
+			</h:HelixViewport3D.Camera>
 
-            <h:DefaultLights/>
-            <h:CoordinateSystemVisual3D ArrowLengths="5"/>
-            <h:LinesVisual3D Thickness="0.5" Color="Gray" x:Name="ModelRapid"/>
-            <h:LinesVisual3D Thickness="1" Color="Black" x:Name="ModelLine"/>
-            <h:LinesVisual3D Thickness="1" Color="Blue" x:Name="ModelArc"/>
-            <h:ArrowVisual3D x:Name="ModelTool" Direction="0,0,-10"/>
-            <h:GridLinesVisual3D 
+			<h:DefaultLights/>
+			<h:CoordinateSystemVisual3D ArrowLengths="5"/>
+			<h:LinesVisual3D Thickness="0.5" Color="Gray" x:Name="ModelRapid"/>
+			<h:LinesVisual3D Thickness="1" Color="Black" x:Name="ModelLine"/>
+			<h:LinesVisual3D Thickness="1" Color="Blue" x:Name="ModelArc"/>
+			<h:ArrowVisual3D x:Name="ModelTool" Direction="0,0,-10"/>
+			<h:GridLinesVisual3D 
 				x:Name="ModelGrid"
 				Width="500" Length="500"
                 Thickness="{util:SettingBinding GridThickness}"/>
-            <h:MeshGeometryVisual3D
+			<h:MeshGeometryVisual3D
 				x:Name="ModelHeightMap">
-                <h:MeshGeometryVisual3D.Material>
-                    <MaterialGroup>
-                        <DiffuseMaterial>
-                            <DiffuseMaterial.Brush>
-                                <LinearGradientBrush StartPoint="0,0" EndPoint="0, 1" Opacity="{util:SettingBinding HeightMapOpacity}">
-                                    <LinearGradientBrush.GradientStops>
-                                        <GradientStop Color="Blue" Offset="0"/>
-                                        <GradientStop Color="Cyan" Offset="0.2"/>
-                                        <GradientStop Color="Green" Offset="0.4"/>
-                                        <GradientStop Color="Yellow" Offset="0.6"/>
-                                        <GradientStop Color="Red" Offset="0.8"/>
-                                        <GradientStop Color="Purple" Offset="1"/>
-                                    </LinearGradientBrush.GradientStops>
-                                </LinearGradientBrush>
-                            </DiffuseMaterial.Brush>
-                        </DiffuseMaterial>
-                    </MaterialGroup>
-                </h:MeshGeometryVisual3D.Material>
-            </h:MeshGeometryVisual3D>
-            <h:LinesVisual3D x:Name="ModelHeightMapBoundary" Thickness="2" Color="Lime"/>
-            <h:PointsVisual3D x:Name="ModelHeightMapPoints" Color="Red" Size="4"/>
-            <h:LinesVisual3D x:Name="ModelFileBoundary" Color="GreenYellow" Thickness="2.5"/>
-            <h:PointsVisual3D x:Name="ModelFileBoundaryPoints" Color="Green" Size="8"/>
-            <h:TextVisual3D x:Name="ModelTextMinPoint" UpDirection="0,1,0" Height="7" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-            <h:TextVisual3D x:Name="ModelTextMaxPoint" UpDirection="0,1,0" Height="7" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
-        </h:HelixViewport3D>
-    </Grid>
+				<h:MeshGeometryVisual3D.Material>
+					<MaterialGroup>
+						<DiffuseMaterial>
+							<DiffuseMaterial.Brush>
+								<LinearGradientBrush StartPoint="0,0" EndPoint="0, 1" Opacity="{util:SettingBinding HeightMapOpacity}">
+									<LinearGradientBrush.GradientStops>
+										<GradientStop Color="Blue" Offset="0"/>
+										<GradientStop Color="Cyan" Offset="0.2"/>
+										<GradientStop Color="Green" Offset="0.4"/>
+										<GradientStop Color="Yellow" Offset="0.6"/>
+										<GradientStop Color="Red" Offset="0.8"/>
+										<GradientStop Color="Purple" Offset="1"/>
+									</LinearGradientBrush.GradientStops>
+								</LinearGradientBrush>
+							</DiffuseMaterial.Brush>
+						</DiffuseMaterial>
+					</MaterialGroup>
+				</h:MeshGeometryVisual3D.Material>
+			</h:MeshGeometryVisual3D>
+			<h:LinesVisual3D x:Name="ModelHeightMapBoundary" Thickness="2" Color="Lime"/>
+			<h:PointsVisual3D x:Name="ModelHeightMapPoints" Color="Red" Size="4"/>
+			<h:LinesVisual3D x:Name="ModelFileBoundary" Color="GreenYellow" Thickness="2.5"/>
+			<h:PointsVisual3D x:Name="ModelFileBoundaryPoints" Color="Green" Size="8"/>
+			<h:TextVisual3D x:Name="ModelTextMinPoint" UpDirection="0,1,0" Height="7" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+			<h:TextVisual3D x:Name="ModelTextMaxPoint" UpDirection="0,1,0" Height="7" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+		</h:HelixViewport3D>
+	</Grid>
 </Window>
