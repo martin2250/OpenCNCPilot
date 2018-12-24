@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using OpenCNCPilot.GCode.GCodeCommands;
-using System.IO;
-using System.Text.RegularExpressions;
+﻿using OpenCNCPilot.GCode.GCodeCommands;
 using OpenCNCPilot.Util;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace OpenCNCPilot.GCode
 {

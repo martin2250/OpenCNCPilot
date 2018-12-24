@@ -1,11 +1,11 @@
-﻿using System;
-using System.Windows;
+﻿using Microsoft.Win32;
 using OpenCNCPilot.Communication;
-using OpenCNCPilot.Util;
-using Microsoft.Win32;
 using OpenCNCPilot.GCode;
-using System.Windows.Controls;
+using OpenCNCPilot.Util;
+using System;
 using System.ComponentModel;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace OpenCNCPilot
 {

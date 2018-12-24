@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections;
-using System.Threading.Tasks;
+﻿using OpenCNCPilot.GCode;
+using OpenCNCPilot.GCode.GCodeCommands;
 using OpenCNCPilot.Util;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.IO.Ports;
-using System.Threading;
-using System.Windows;
 using System.Text.RegularExpressions;
-using OpenCNCPilot.GCode;
-using OpenCNCPilot.GCode.GCodeCommands;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace OpenCNCPilot.Communication
 {

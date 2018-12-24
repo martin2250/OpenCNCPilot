@@ -1,9 +1,5 @@
 ﻿using OpenCNCPilot.Communication;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace OpenCNCPilot
@@ -18,7 +14,7 @@ namespace OpenCNCPilot
 			set
 			{
 				_currentFileName = value;
-				this.GetBindingExpression(Window.TitleProperty).UpdateTarget();
+				GetBindingExpression(Window.TitleProperty).UpdateTarget();
 			}
 		}
 

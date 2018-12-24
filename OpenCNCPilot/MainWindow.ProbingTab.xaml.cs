@@ -2,7 +2,6 @@
 using OpenCNCPilot.GCode;
 using OpenCNCPilot.Util;
 using System;
-using System.Data;
 using System.Windows;
 
 namespace OpenCNCPilot

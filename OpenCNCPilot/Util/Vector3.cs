@@ -1,8 +1,8 @@
 ﻿#region Imports
 
 using System;
-using System.Xml.Serialization;         // for various Xml attributes
 using System.Windows.Media.Media3D;
+using System.Xml.Serialization;         // for various Xml attributes
 
 #endregion
 
@@ -87,9 +87,9 @@ namespace OpenCNCPilot.Util
 		{
 			// Pre-initialisation initialisation
 			// Implemented because a struct's variables always have to be set in the constructor before moving control
-			this.x = 0;
-			this.y = 0;
-			this.z = 0;
+			x = 0;
+			y = 0;
+			z = 0;
 
 			// Initialisation
 			Array = xyz;
@@ -106,9 +106,9 @@ namespace OpenCNCPilot.Util
 		{
 			// Pre-initialisation initialisation
 			// Implemented because a struct's variables always have to be set in the constructor before moving control
-			this.x = 0;
-			this.y = 0;
-			this.z = 0;
+			x = 0;
+			y = 0;
+			z = 0;
 
 			// Initialisation
 			X = v1.X;
@@ -990,7 +990,7 @@ namespace OpenCNCPilot.Util
 		/// </implementation>
 		public double Abs()
 		{
-			return this.Magnitude;
+			return Magnitude;
 		}
 
 		#endregion

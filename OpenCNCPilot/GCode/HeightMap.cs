@@ -1,12 +1,10 @@
 ﻿using HelixToolkit.Wpf;
 using OpenCNCPilot.Util;
-using System.Xml;
-using System.Windows.Media.Media3D;
-using System.Windows;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using martin2250.Calculator;
+using System.Windows;
+using System.Windows.Media.Media3D;
+using System.Xml;
 
 namespace OpenCNCPilot.GCode
 {

@@ -1,14 +1,14 @@
-﻿using OpenCNCPilot.GCode.GCodeCommands;
-using System.Collections.Generic;
-using System.Linq;
-using HelixToolkit.Wpf;
-using System.Windows.Media.Media3D;
+﻿using HelixToolkit.Wpf;
+using OpenCNCPilot.GCode.GCodeCommands;
 using OpenCNCPilot.Properties;
+using OpenCNCPilot.Util;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
-using OpenCNCPilot.Util;
-using System.Collections.ObjectModel;
-using System;
+using System.Linq;
+using System.Windows.Media.Media3D;
 
 namespace OpenCNCPilot.GCode
 {

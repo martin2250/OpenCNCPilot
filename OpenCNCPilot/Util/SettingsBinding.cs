@@ -17,8 +17,8 @@ namespace OpenCNCPilot.Util
 
 		private void Initialize()
 		{
-			this.Source = Properties.Settings.Default;
-			this.Mode = BindingMode.TwoWay;
+			Source = Properties.Settings.Default;
+			Mode = BindingMode.TwoWay;
 		}
 	}
 }
