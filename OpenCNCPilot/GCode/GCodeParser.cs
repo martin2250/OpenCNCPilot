@@ -23,6 +23,7 @@ namespace OpenCNCPilot.GCode
 	class ParserState
 	{
 		public Vector3 Position;
+		public bool[] PositionValid;    // true if the position for this coordinate was previously specified in absolute terms, to prevent the start point of (0, 0, 0) to influence the output file
 		public ArcPlane Plane;
 		public double Feed;
 		public ParseDistanceMode DistanceMode;
@@ -32,7 +33,8 @@ namespace OpenCNCPilot.GCode
 
 		public ParserState()
 		{
-			Position = new Vector3();
+			Position = Vector3.MinValue;
+			PositionValid = new bool[] { false, false, false };
 			Plane = ArcPlane.XY;
 			Feed = 0;
 			DistanceMode = ParseDistanceMode.Absolute;
@@ -100,7 +102,7 @@ namespace OpenCNCPilot.GCode
 
 			sw.Stop();
 
-			Console.WriteLine("Parsing the GCode File took {0} ms", sw.ElapsedMilliseconds);
+			Console.WriteLine("parsing the G code file took {0} ms", sw.ElapsedMilliseconds);
 		}
 
 		static string CleanupLine(string line, int lineNumber)
@@ -152,7 +154,7 @@ namespace OpenCNCPilot.GCode
 
 				if (!ValidWords.Contains(Words[i].Command))
 				{
-					Warnings.Add($"ignoring unknown word (letter): \"{Words[i]}\" in line {lineNumber}");
+					Warnings.Add($"ignoring unknown word (letter): \"{Words[i]}\". (line {lineNumber})");
 					Words.RemoveAt(i--);
 					continue;
 				}
@@ -174,7 +176,7 @@ namespace OpenCNCPilot.GCode
 					int param = (int)Words[i].Parameter;
 
 					if (param != Words[i].Parameter || param < 0)
-						throw new ParseException("MCode can only have integer parameters", lineNumber);
+						throw new ParseException("M code can only have positive integer parameters", lineNumber);
 
 					Commands.Add(new MCode() { Code = param });
 
@@ -188,7 +190,7 @@ namespace OpenCNCPilot.GCode
 					double param = Words[i].Parameter;
 
 					if (param < 0)
-						Warnings.Add($"Spindle Speed must be positive in line {lineNumber}");
+						Warnings.Add($"spindle speed must be positive. (line {lineNumber})");
 
 					Commands.Add(new Spindle() { Speed = Math.Abs(param) });
 
@@ -270,7 +272,7 @@ namespace OpenCNCPilot.GCode
 						if (Words.Count >= 2 && Words[i + 1].Command == 'P')
 						{
 							if (Words[i + 1].Parameter < 0)
-								Warnings.Add($"Dwell time must be positive in line {lineNumber}");
+								Warnings.Add($"dwell time must be positive. (line {lineNumber})");
 
 							Commands.Add(new Dwell() { Seconds = Math.Abs(Words[i + 1].Parameter) });
 							Words.RemoveAt(i + 1);
@@ -280,7 +282,7 @@ namespace OpenCNCPilot.GCode
 						}
 					}
 
-					Warnings.Add($"ignoring unknown command G{param} in line {lineNumber}");
+					Warnings.Add($"ignoring unknown command G{param}. (line {lineNumber})");
 					Words.RemoveAt(i--);
 					#endregion
 				}
@@ -299,11 +301,21 @@ namespace OpenCNCPilot.GCode
 			}
 
 			if (MotionMode < 0)
-				throw new ParseException("No Motion Mode active", lineNumber);
+				throw new ParseException("no motion mode active", lineNumber);
 
 			double UnitMultiplier = (State.Unit == ParseUnit.Metric) ? 1 : 25.4;
 
 			Vector3 EndPos = State.Position;
+
+			if (State.DistanceMode == ParseDistanceMode.Incremental && State.PositionValid.Any(isValid => !isValid))
+			{
+				throw new ParseException("incremental motion is only allowed after an absolute position has been established (eg. with \"G90 G0 X0 Y0 Z5\")", lineNumber);
+			}
+
+			if ((MotionMode == 2 || MotionMode == 3) && State.PositionValid.Any(isValid => !isValid))
+			{
+				throw new ParseException("arcs (G2/G3) are only allowed after an absolute position has been established (eg. with \"G90 G0 X0 Y0 Z5\")", lineNumber);
+			}
 
 			#region FindEndPos
 			{
@@ -315,6 +327,7 @@ namespace OpenCNCPilot.GCode
 						continue;
 					EndPos.X = Words[i].Parameter * UnitMultiplier + Incremental * EndPos.X;
 					Words.RemoveAt(i);
+					State.PositionValid[0] = true;
 					break;
 				}
 
@@ -324,6 +337,7 @@ namespace OpenCNCPilot.GCode
 						continue;
 					EndPos.Y = Words[i].Parameter * UnitMultiplier + Incremental * EndPos.Y;
 					Words.RemoveAt(i);
+					State.PositionValid[1] = true;
 					break;
 				}
 
@@ -333,6 +347,7 @@ namespace OpenCNCPilot.GCode
 						continue;
 					EndPos.Z = Words[i].Parameter * UnitMultiplier + Incremental * EndPos.Z;
 					Words.RemoveAt(i);
+					State.PositionValid[2] = true;
 					break;
 				}
 			}
@@ -340,19 +355,25 @@ namespace OpenCNCPilot.GCode
 
 			if (MotionMode != 0 && State.Feed <= 0)
 			{
-				throw new ParseException("Feed Rate Undefined", lineNumber);
+				throw new ParseException("feed rate undefined", lineNumber);
+			}
+
+			if (MotionMode == 1 && State.PositionValid.Any(isValid => !isValid))
+			{
+				Warnings.Add($"a feed move is used before an absolute position is established, height maps will not be applied to this motion. (line {lineNumber})");
 			}
 
 			if (MotionMode <= 1)
 			{
 				if (Words.Count > 0)
-					Warnings.Add($"Motion Command must be last in line (ignoring unused Words {string.Join(" ", Words)} in Block) in line {lineNumber}");
+					Warnings.Add($"motion command must be last in line (ignoring unused words {string.Join(" ", Words)} in block). (line {lineNumber})");
 
 				Line motion = new Line();
 				motion.Start = State.Position;
 				motion.End = EndPos;
 				motion.Feed = State.Feed;
 				motion.Rapid = MotionMode == 0;
+				State.PositionValid.CopyTo(motion.PositionValid, 0);
 
 				Commands.Add(motion);
 				State.Position = EndPos;
@@ -394,7 +415,7 @@ namespace OpenCNCPilot.GCode
 							U = Words[i].Parameter * UnitMultiplier + ArcIncremental * State.Position.X;
 							break;
 						case ArcPlane.YZ:
-							throw new ParseException("Current Plane is YZ, I word is invalid", lineNumber);
+							throw new ParseException("current plane is YZ, I word is invalid", lineNumber);
 						case ArcPlane.ZX:
 							V = Words[i].Parameter * UnitMultiplier + ArcIncremental * State.Position.X;
 							break;
@@ -419,7 +440,7 @@ namespace OpenCNCPilot.GCode
 							U = Words[i].Parameter * UnitMultiplier + ArcIncremental * State.Position.Y;
 							break;
 						case ArcPlane.ZX:
-							throw new ParseException("Current Plane is ZX, J word is invalid", lineNumber);
+							throw new ParseException("current plane is ZX, J word is invalid", lineNumber);
 					}
 
 					IJKused = true;
@@ -435,7 +456,7 @@ namespace OpenCNCPilot.GCode
 					switch (State.Plane)
 					{
 						case ArcPlane.XY:
-							throw new ParseException("Current Plane is XY, K word is invalid", lineNumber);
+							throw new ParseException("current plane is XY, K word is invalid", lineNumber);
 						case ArcPlane.YZ:
 							V = Words[i].Parameter * UnitMultiplier + ArcIncremental * State.Position.Z;
 							break;
@@ -458,7 +479,7 @@ namespace OpenCNCPilot.GCode
 					continue;
 
 				if (IJKused)
-					throw new ParseException("Both IJK and R notation used", lineNumber);
+					throw new ParseException("both IJK and R notation used", lineNumber);
 
 				if (State.Position == EndPos)
 					throw new ParseException("arcs in R-notation must have non-coincident start and end points", lineNumber);
@@ -466,7 +487,7 @@ namespace OpenCNCPilot.GCode
 				double Radius = Words[i].Parameter * UnitMultiplier;
 
 				if (Radius == 0)
-					throw new ParseException("Radius can't be zero", lineNumber);
+					throw new ParseException("radius can't be zero", lineNumber);
 
 				double A, B;
 
@@ -512,7 +533,7 @@ namespace OpenCNCPilot.GCode
 			#endregion
 
 			if (Words.Count > 0)
-				Warnings.Add($"Motion Command must be last in line (ignoring unused Words {string.Join(" ", Words)} in Block) in line {lineNumber}");
+				Warnings.Add($"motion command must be last in line (ignoring unused words {string.Join(" ", Words)} in block). (line {lineNumber})");
 
 			Arc arc = new Arc();
 			arc.Start = State.Position;

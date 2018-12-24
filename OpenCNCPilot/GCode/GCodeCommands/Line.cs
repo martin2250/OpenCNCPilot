@@ -1,12 +1,16 @@
 ﻿using OpenCNCPilot.Util;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OpenCNCPilot.GCode.GCodeCommands
 {
 	class Line : Motion
 	{
 		public bool Rapid;
+		// PositionValid[i] is true if the corresponding coordinate of the end position was defined in the file.
+		// eg. for a file with "G0 Z15" as the first line, X and Y would still be false
+		public bool[] PositionValid = new bool[] { false, false, false };
 
 		public override double Length
 		{
@@ -23,7 +27,7 @@ namespace OpenCNCPilot.GCode.GCodeCommands
 
 		public override IEnumerable<Motion> Split(double length)
 		{
-			if (Rapid)  //don't split up rapid motions
+			if (Rapid || PositionValid.Any(isValid => !isValid))  //don't split up rapid or not fully defined motions
 			{
 				yield return this;
 				yield break;
@@ -44,6 +48,7 @@ namespace OpenCNCPilot.GCode.GCodeCommands
 				immediate.Start = lastEnd;
 				immediate.End = end;
 				immediate.Feed = Feed;
+				immediate.PositionValid = new bool[] { true, true, true };
 
 				yield return immediate;
 

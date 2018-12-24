@@ -55,34 +55,34 @@ namespace OpenCNCPilot.GCode
 			Vector3 min = Vector3.MaxValue, max = Vector3.MinValue;
 			Vector3 minfeed = Vector3.MaxValue, maxfeed = Vector3.MinValue;
 
-			foreach (Motion m in Enumerable.Concat(Toolpath.OfType<Line>(), Toolpath.OfType<Arc>().SelectMany(a => a.Split(0.1))))
+			foreach (Command c in Toolpath)
 			{
-				TravelDistance += m.Length;
-
-				if (m is Line && !((Line)m).Rapid && ((Line)m).Feed > 0.0)
-					TotalTime += TimeSpan.FromMinutes(m.Length / m.Feed);
-
-				ContainsMotion = true;
-
-				for (int i = 0; i < 3; i++)
+				if (c is Line)
 				{
-					if (m.End[i] > max[i])
-						max[i] = m.End[i];
-
-					if (m.End[i] < min[i])
-						min[i] = m.End[i];
+					Line l = (Line)c;
+					if (l.PositionValid.Any(isValid => !isValid))
+						continue;
 				}
 
-				if (m is Line && (m as Line).Rapid)
-					continue;
-
-				for (int i = 0; i < 3; i++)
+				if (c is Motion)
 				{
-					if (m.End[i] > maxfeed[i])
-						maxfeed[i] = m.End[i];
+					ContainsMotion = true;
 
-					if (m.End[i] < minfeed[i])
-						minfeed[i] = m.End[i];
+					Motion m = (Motion)c;
+
+					TravelDistance += m.Length;
+
+					if (m is Line && !((Line)m).Rapid && ((Line)m).Feed > 0.0)
+						TotalTime += TimeSpan.FromMinutes(m.Length / m.Feed);
+
+					min = Vector3.ElementwiseMin(min, m.End);
+					max = Vector3.ElementwiseMax(max, m.End);
+
+					if (m is Line && (m as Line).Rapid)
+						continue;
+
+					minfeed = Vector3.ElementwiseMin(minfeed, m.End);
+					maxfeed = Vector3.ElementwiseMax(maxfeed, m.End);
 				}
 			}
 
@@ -97,7 +97,6 @@ namespace OpenCNCPilot.GCode
 			}
 
 			Size = size;
-
 
 			MaxFeed = maxfeed;
 			MinFeed = minfeed;
@@ -169,6 +168,7 @@ namespace OpenCNCPilot.GCode
 						linePoints.Add(l.Start.ToPoint3D());
 						linePoints.Add(l.End.ToPoint3D());
 					}
+
 					continue;
 				}
 
@@ -189,7 +189,7 @@ namespace OpenCNCPilot.GCode
 			arc.Points = arcPoints;
 
 			sw.Stop();
-			Console.WriteLine("Generating the Toolpath Model took {0} ms", sw.ElapsedMilliseconds);
+			Console.WriteLine("Generating the toolpath model took {0} ms", sw.ElapsedMilliseconds);
 		}
 
 		public List<string> GetGCode()
@@ -221,11 +221,11 @@ namespace OpenCNCPilot.GCode
 
 					string code = l.Rapid ? "G0" : "G1";
 
-					if (State.Position.X != l.End.X)
+					if (State.Position.X != l.End.X && l.PositionValid[0])
 						code += string.Format(nfi, " X{0:0.###}", l.End.X);
-					if (State.Position.Y != l.End.Y)
+					if (State.Position.Y != l.End.Y && l.PositionValid[1])
 						code += string.Format(nfi, " Y{0:0.###}", l.End.Y);
-					if (State.Position.Z != l.End.Z)
+					if (State.Position.Z != l.End.Z && l.PositionValid[2])
 						code += string.Format(nfi, " Z{0:0.###}", l.End.Z);
 
 					GCode.Add(code);
@@ -351,6 +351,7 @@ namespace OpenCNCPilot.GCode
 						l.End = segment.End;
 						l.Feed = segment.Feed;
 						l.Rapid = false;
+						l.PositionValid = new bool[] { true, true, true };
 						newFile.Add(l);
 					}
 				}
@@ -379,7 +380,19 @@ namespace OpenCNCPilot.GCode
 					{
 						Arc a = m as Arc;
 						if (a.Plane != ArcPlane.XY)
-							throw new Exception("GCode contains arcs in YZ or XZ plane (G18/19), can't apply HeightMap. Use Arcs to Lines if you really need this.");
+							throw new Exception("GCode contains arcs in YZ or XZ plane (G18/19), can't apply height map. Use 'Arcs to Lines' if you really need this.");
+					}
+
+					if (m is Line)
+					{
+						Line l = (Line)m;
+
+						// do not split up or modify any lines that are rapid or not fully defined
+						if (l.PositionValid.Any(isValid => !isValid) || l.Rapid)
+						{
+							newToolPath.Add(l);
+							continue;
+						}
 					}
 
 					foreach (Motion subMotion in m.Split(segmentLength))
@@ -418,7 +431,7 @@ namespace OpenCNCPilot.GCode
 
 						// would be possible, but I'm too lazy to implement this properly
 						if (oldArc.Plane != ArcPlane.XY)
-							throw new Exception("GCode contains arcs in YZ or XZ plane (G18/19), can't rotate gcode. Use Arcs to Lines if you really need this.");
+							throw new Exception("GCode contains arcs in YZ or XZ plane (G18/19), can't rotate gcode. Use 'Arcs to Lines' if you really need this.");
 
 						newArc.Direction = oldArc.Direction;
 						newArc.Plane = oldArc.Plane;
@@ -431,6 +444,7 @@ namespace OpenCNCPilot.GCode
 						Line oldLine = (Line)oldMotion;
 						Line newLine = new Line();
 						newLine.Rapid = oldLine.Rapid;
+						newLine.PositionValid = oldLine.PositionValid;
 						newMotion = newLine;
 					}
 					else
