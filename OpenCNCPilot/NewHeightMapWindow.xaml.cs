@@ -108,7 +108,11 @@ namespace OpenCNCPilot
 
 			InitializeComponent();
 
+			UpdateTextboxes();
+
 			EventManager.RegisterClassHandler(typeof(System.Windows.Controls.TextBox), GotKeyboardFocusEvent, new KeyboardFocusChangedEventHandler(OnGotKeyboardFocus));
+
+			FocusManager.SetFocusedElement(this, TextBoxMinX);
 			TextBoxMinX.SelectAll();
 		}
 
@@ -117,11 +121,19 @@ namespace OpenCNCPilot
 
 		}
 
+		void UpdateTextboxes()
+		{
+			foreach (TextBox tb in new TextBox[] { TextBoxMinX, TextBoxMaxX, TextBoxMinY, TextBoxMaxY, TextBoxGridSize })
+			{
+				tb.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+			}
+		}
+
 		void OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
 		{
-			var textBox = sender as System.Windows.Controls.TextBox;
+			var textBox = sender as TextBox;
 
-			if (textBox != null && !textBox.IsReadOnly && e.KeyboardDevice.IsKeyDown(Key.Tab))
+			if (textBox != null && !textBox.IsReadOnly && (e.KeyboardDevice.IsKeyDown(Key.Tab) || e.KeyboardDevice.IsKeyDown(Key.Enter)))
 				textBox.SelectAll();
 		}
 
@@ -163,9 +175,27 @@ namespace OpenCNCPilot
 			MaxX = Math.Ceiling(ToolPathMax.X * 100) / 100.0;
 			MaxY = Math.Ceiling(ToolPathMax.Y * 100) / 100.0;
 
-			foreach (TextBox tb in new TextBox[] { TextBoxMinX, TextBoxMaxX, TextBoxMinY, TextBoxMaxY })
+			UpdateTextboxes();
+		}
+
+		private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+		{
+			TextBox textBox = (TextBox)sender;
+			string newText = e.Text;
+
+			if (newText == "\r")
 			{
-				tb.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+				var request = new TraversalRequest(FocusNavigationDirection.Next);
+				request.Wrapped = true;
+				((TextBox)sender).MoveFocus(request);
+			}
+
+			if (textBox.Text.Contains(",") || newText.Contains(","))
+			{
+				int cursorPos = textBox.SelectionStart;
+				textBox.Text = textBox.Text.Replace(',', '.') + newText.Replace(',', '.');
+				textBox.SelectionStart = cursorPos + 1;
+				e.Handled = true;
 			}
 		}
 	}
