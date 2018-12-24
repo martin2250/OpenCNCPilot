@@ -1,4 +1,5 @@
 ﻿using OpenCNCPilot.Communication;
+using OpenCNCPilot.GCode;
 using System;
 using System.Windows;
 
@@ -22,6 +23,9 @@ namespace OpenCNCPilot
 		{
 			if (machine.Mode == Machine.OperatingMode.SendFile)
 				return;
+
+			CurrentFileName = "";
+			ToolPath = GCodeFile.Empty;
 
 			try
 			{

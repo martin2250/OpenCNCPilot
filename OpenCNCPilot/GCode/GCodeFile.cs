@@ -30,8 +30,26 @@ namespace OpenCNCPilot.GCode
 		public double TravelDistance { get; private set; } = 0;
 		public TimeSpan TotalTime { get; private set; } = TimeSpan.Zero;
 
+		public List<string> Warnings = new List<string>();
+
 		private GCodeFile(List<Command> toolpath)
 		{
+			for (int i = 0; i < toolpath.Count; i++)
+			{
+				Command c = toolpath[i];
+
+				if (c is Motion)
+				{
+					Motion m = (Motion)c;
+
+					if (m.Start == m.End)
+					{
+						Warnings.Add($"ignoring empty move at position {i} (not equal to line number)");
+						toolpath.RemoveAt(i--);
+					}
+				}
+			}
+
 			Toolpath = new ReadOnlyCollection<Command>(toolpath);
 
 			Vector3 min = Vector3.MaxValue, max = Vector3.MinValue;
@@ -99,7 +117,9 @@ namespace OpenCNCPilot.GCode
 			GCodeParser.Reset();
 			GCodeParser.ParseFile(path);
 
-			return new GCodeFile(GCodeParser.Commands) { FileName = path.Substring(path.LastIndexOf('\\') + 1) };
+			GCodeFile gcodeFile = new GCodeFile(GCodeParser.Commands) { FileName = path.Substring(path.LastIndexOf('\\') + 1) };
+			gcodeFile.Warnings.InsertRange(0, GCodeParser.Warnings);
+			return gcodeFile;
 		}
 
 		public static GCodeFile FromList(IEnumerable<string> file)
@@ -107,7 +127,9 @@ namespace OpenCNCPilot.GCode
 			GCodeParser.Reset();
 			GCodeParser.Parse(file);
 
-			return new GCodeFile(GCodeParser.Commands) { FileName = "output.nc" };
+			GCodeFile gcodeFile = new GCodeFile(GCodeParser.Commands) { FileName = "output.nc" };
+			gcodeFile.Warnings.InsertRange(0, GCodeParser.Warnings);
+			return gcodeFile;
 		}
 
 		public static GCodeFile Empty

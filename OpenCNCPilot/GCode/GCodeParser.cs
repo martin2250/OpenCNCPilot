@@ -46,6 +46,11 @@ namespace OpenCNCPilot.GCode
 	{
 		public char Command;
 		public double Parameter;
+
+		public override string ToString()
+		{
+			return $"{Command}{Parameter}";
+		}
 	}
 
 	static class GCodeParser
@@ -57,11 +62,13 @@ namespace OpenCNCPilot.GCode
 		private static string ValidWords = "GMXYZIJKFRSP";
 		private static string IgnoreAxes = "ABC";
 		public static List<Command> Commands;
+		public static List<string> Warnings;
 
 		public static void Reset()
 		{
 			State = new ParserState();
 			Commands = new List<Command>(); //don't reuse, might be used elsewhere
+			Warnings = new List<string>();
 		}
 
 		static GCodeParser()
@@ -145,7 +152,9 @@ namespace OpenCNCPilot.GCode
 
 				if (!ValidWords.Contains(Words[i].Command))
 				{
-					throw new ParseException($"unknown word (letter): \"{Words[i].Command} {Words[i].Parameter}\"", lineNumber);
+					Warnings.Add($"ignoring unknown word (letter): \"{Words[i]}\" in line {lineNumber}");
+					Words.RemoveAt(i--);
+					continue;
 				}
 
 				if (Words[i].Command != 'F')
@@ -179,9 +188,9 @@ namespace OpenCNCPilot.GCode
 					double param = Words[i].Parameter;
 
 					if (param < 0)
-						throw new ParseException("Spindle Speed must be positive", lineNumber);
+						Warnings.Add($"Spindle Speed must be positive in line {lineNumber}");
 
-					Commands.Add(new Spindle() { Speed = param });
+					Commands.Add(new Spindle() { Speed = Math.Abs(param) });
 
 					Words.RemoveAt(i);
 					i--;
@@ -261,9 +270,9 @@ namespace OpenCNCPilot.GCode
 						if (Words.Count >= 2 && Words[i + 1].Command == 'P')
 						{
 							if (Words[i + 1].Parameter < 0)
-								throw new ParseException("Negative dwell time", lineNumber);
+								Warnings.Add($"Dwell time must be positive in line {lineNumber}");
 
-							Commands.Add(new Dwell() { Seconds = Words[i + 1].Parameter });
+							Commands.Add(new Dwell() { Seconds = Math.Abs(Words[i + 1].Parameter) });
 							Words.RemoveAt(i + 1);
 							Words.RemoveAt(i);
 							i--;
@@ -271,15 +280,8 @@ namespace OpenCNCPilot.GCode
 						}
 					}
 
-					if (param == 54 || param == 94 || param == 40)
-					{
-						// discard Gxx words
-						Words.RemoveAt(i);
-						i--;
-						continue;
-					}
-
-					throw new ParseException($"G{param} is not supported", lineNumber);
+					Warnings.Add($"ignoring unknown command G{param} in line {lineNumber}");
+					Words.RemoveAt(i--);
 					#endregion
 				}
 			}
@@ -344,7 +346,7 @@ namespace OpenCNCPilot.GCode
 			if (MotionMode <= 1)
 			{
 				if (Words.Count > 0)
-					throw new ParseException("Motion Command must be last in line (unused Words in Block)", lineNumber);
+					Warnings.Add($"Motion Command must be last in line (ignoring unused Words {string.Join(" ", Words)} in Block) in line {lineNumber}");
 
 				Line motion = new Line();
 				motion.Start = State.Position;
@@ -487,29 +489,6 @@ namespace OpenCNCPilot.GCode
 				A -= U;     //(AB) = vector from start to end of arc along the axes of the current plane
 				B -= V;
 
-				/*
-				double C = -B;  //(UV) = vector perpendicular to (AB)
-				double D = A;
-
-				{   //normalize perpendicular vector
-					double perpLength = Math.Sqrt(C * C + D * D);
-					C /= perpLength;
-					D /= perpLength;
-				}
-
-				double PerpSquare = (Radius * Radius) - ((A * A + B * B) / 4);
-
-				if (PerpSquare < 0)
-					throw new ParseException("arc radius too small to reach both ends", lineNumber);
-
-				double PerpLength = Math.Sqrt(PerpSquare);
-
-				if (MotionMode == 3 ^ Radius < 0)
-					PerpLength = -PerpLength;
-
-				U += (A / 2) + C * (PerpLength);
-				V += (B / 2) + (D * PerpLength);
-				*/
 				//see grbl/gcode.c
 				double h_x2_div_d = 4.0 * (Radius * Radius) - (A * A + B * B);
 				if (h_x2_div_d < 0)
@@ -531,6 +510,9 @@ namespace OpenCNCPilot.GCode
 				break;
 			}
 			#endregion
+
+			if (Words.Count > 0)
+				Warnings.Add($"Motion Command must be last in line (ignoring unused Words {string.Join(" ", Words)} in Block) in line {lineNumber}");
 
 			Arc arc = new Arc();
 			arc.Start = State.Position;

@@ -229,7 +229,15 @@ namespace OpenCNCPilot
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show("Could not parse GCode File, no preview/editing available\nrun this file at your own risk\n" + ex.Message);
+				MessageBox.Show("Could not parse GCode File, no preview/editing available\nrun this file at your own risk\n" + ex.Message + "\n\n\ninternal:\n" + ex.StackTrace);
+			}
+
+			if (ToolPath.Warnings.Count > 0)
+			{
+				MessageBox.Show(@"Warning! There were some errors while parsing this file!
+Do not use OpenCNCPilot's edit functions unless you are sure that these warnings can be ignored!
+If you use edit functions, check the output file for errors before running the gcode!
+Be aware that the affected lines will likely move when using edit functions" + "\n\n >" + string.Join("\n >", ToolPath.Warnings));
 			}
 
 			if (Properties.Settings.Default.EnableCodePreview)
