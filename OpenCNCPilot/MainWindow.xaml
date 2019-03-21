@@ -277,6 +277,9 @@
 							<StackPanel Orientation="Horizontal">
 								<Button Content="GRBL Settings" Style="{StaticResource styleButton}" Click="ShowGrblSettings_Click" Name="ButtonGrblSettings"/>
 							</StackPanel>
+							<StackPanel Orientation="Horizontal" Margin="0,-5,0,0">
+								<Button Content="Home Machine" Style="{StaticResource styleButton}" Click="ButtonMachineHome_Click" Name="ButtonMachineHome"/>
+							</StackPanel>
 						</StackPanel>
 					</Expander>
 				</Border>
@@ -313,13 +316,13 @@
 				</ListBox.ItemsPanel>
 			</ListBox>
 		</Grid>
-		<StackPanel Panel.ZIndex="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" Orientation="Horizontal">
+		<StackPanel Panel.ZIndex="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" Orientation="Horizontal" Margin="446,0,420,0">
 			<Label Name="LabelStateProbe" Content="Probe" FontWeight="ExtraBold" FontSize="40" Foreground="Red" Visibility="Collapsed"/>
 			<Label Name="LabelStateLimitX" Content="LimitX" FontWeight="ExtraBold" FontSize="40" Foreground="Red" Visibility="Collapsed"/>
 			<Label Name="LabelStateLimitY" Content="LimitY" FontWeight="ExtraBold" FontSize="40" Foreground="Red" Visibility="Collapsed"/>
 			<Label Name="LabelStateLimitZ" Content="LimitZ" FontWeight="ExtraBold" FontSize="40" Foreground="Red" Visibility="Collapsed"/>
 		</StackPanel>
-		<h:HelixViewport3D Name="viewport" ShowViewCube="False" Panel.ZIndex="0" PreviewKeyDown="viewport_PreviewKeyDown">
+		<h:HelixViewport3D Name="viewport" ShowViewCube="False" Panel.ZIndex="0" PreviewKeyDown="viewport_PreviewKeyDown" Grid.ColumnSpan="2">
 			<h:HelixViewport3D.Camera>
 				<PerspectiveCamera
 					Position="50, -150, 250"

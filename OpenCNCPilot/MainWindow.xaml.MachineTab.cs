@@ -68,5 +68,13 @@ namespace OpenCNCPilot
 			machine.SendLine("$$");
 			settingsWindow.ShowDialog();
 		}
+
+		private void ButtonMachineHome_Click(object sender, RoutedEventArgs e)
+		{
+			if (machine.Mode != Communication.Machine.OperatingMode.Manual)
+				return;
+
+			machine.SendLine("$H");
+		}
 	}
 }
