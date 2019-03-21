@@ -153,5 +153,8 @@ G92Z0;</Value>
     <Setting Name="GridThickness" Type="System.Single" Scope="User">
       <Value Profile="(Default)">0.1</Value>
     </Setting>
+    <Setting Name="SerialPortDTR" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -26,6 +26,8 @@
 				<TextBox Margin="10,37,0,0" Text="{util:SettingBinding SerialPortBaud}"/>
 				<Label Content="BaudRate" HorizontalAlignment="Left" Margin="135,36,0,0" VerticalAlignment="Top"/>
 
+				<CheckBox Content="Reset grbl when connecting" HorizontalAlignment="Left" Margin="116,65,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding SerialPortDTR}" ToolTip="the DTR signal is used to reset grbl when the connection is established, set by default on many other gcode senders"/>
+
 				<TextBox Margin="10,88,0,0" Text="{util:SettingBinding ControllerBufferSize}"/>
 				<Label Content="Controller Buffer" HorizontalAlignment="Left" Margin="135,87,0,0" VerticalAlignment="Top"/>
 

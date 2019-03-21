@@ -484,6 +484,7 @@ namespace OpenCNCPilot.Communication
 			{
 				case ConnectionType.Serial:
 					SerialPort port = new SerialPort(Properties.Settings.Default.SerialPortName, Properties.Settings.Default.SerialPortBaud);
+					port.DtrEnable = Properties.Settings.Default.SerialPortDTR;
 					port.Open();
 					Connection = port.BaseStream;
 					break;
