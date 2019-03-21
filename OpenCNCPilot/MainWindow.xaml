@@ -302,7 +302,9 @@
 								<TextBox Text="{util:SettingBinding ConsoleFadeTime}" VerticalContentAlignment="Center" Width="40" Margin="10,3,0,3"/>
 								<Label Content="Console Fade Time (s)" FlowDirection="LeftToRight"/>
 							</StackPanel>
-							<Button Style="{StaticResource styleButton}" Content="Reset 3D Viewport" HorizontalAlignment="Left" Margin="10,0,0,0" Click="ButtonResetViewport_Click"/>
+							<Button Style="{StaticResource styleButton}" Content="Save Viewport Orientation" HorizontalAlignment="Left" Margin="10,3,0,0" Click="ButtonSaveViewport_Click" ToolTip="Save viewport orientation, persistent across restarts "/>
+							<Button Style="{StaticResource styleButton}" Content="Restore Viewport" HorizontalAlignment="Left" Margin="10,5,0,0" Click="ButtonRestoreViewport_Click" ToolTip="Restore viewport from settings"/>
+							<Button Style="{StaticResource styleButton}" Content="Reset 3D Viewport" HorizontalAlignment="Left" Margin="10,5,0,0" Click="ButtonResetViewport_Click" ToolTip="Restore viewport to factory default"/>
 						</StackPanel>
 					</Expander>
 				</Border>

@@ -634,5 +634,17 @@ namespace OpenCNCPilot.Properties {
                 this["SerialPortDTR"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50;-150;250;-50;150;-250")]
+        public string ViewPortPos {
+            get {
+                return ((string)(this["ViewPortPos"]));
+            }
+            set {
+                this["ViewPortPos"] = value;
+            }
+        }
     }
 }

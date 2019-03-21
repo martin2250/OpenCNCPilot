@@ -156,5 +156,8 @@ G92Z0;</Value>
     <Setting Name="SerialPortDTR" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="ViewPortPos" Type="System.String" Scope="User">
+      <Value Profile="(Default)">50;-150;250;-50;150;-250</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -3,7 +3,9 @@ using OpenCNCPilot.Communication;
 using OpenCNCPilot.GCode;
 using OpenCNCPilot.Util;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -75,6 +77,7 @@ namespace OpenCNCPilot
 			settingsWindow.SendLine += machine.SendLine;
 
 			CheckBoxUseExpressions_Changed(null, null);
+			ButtonRestoreViewport_Click(null, null);
 
 			UpdateCheck.CheckForUpdate();
 		}
@@ -322,6 +325,34 @@ namespace OpenCNCPilot
 			viewport.Camera.Position = new System.Windows.Media.Media3D.Point3D(50, -150, 250);
 			viewport.Camera.LookDirection = new System.Windows.Media.Media3D.Vector3D(-50, 150, -250);
 			viewport.Camera.UpDirection = new System.Windows.Media.Media3D.Vector3D(0, 0, 1);
+		}
+
+		private void ButtonRestoreViewport_Click(object sender, RoutedEventArgs e)
+		{
+			string[] scoords = Properties.Settings.Default.ViewPortPos.Split(';');
+
+			try
+			{
+				IEnumerable<double> coords = scoords.Select(s => double.Parse(s));
+
+				viewport.Camera.Position = new Vector3(coords.Take(3).ToArray()).ToPoint3D();
+				viewport.Camera.LookDirection = new Vector3(coords.Skip(3).ToArray()).ToVector3D();
+				viewport.Camera.UpDirection = new System.Windows.Media.Media3D.Vector3D(0, 0, 1);
+			}
+			catch
+			{
+				ButtonResetViewport_Click(null, null);
+			}
+		}
+
+		private void ButtonSaveViewport_Click(object sender, RoutedEventArgs e)
+		{
+			List<double> coords = new List<double>();
+
+			coords.AddRange(new Vector3(viewport.Camera.Position).Array);
+			coords.AddRange(new Vector3(viewport.Camera.LookDirection).Array);
+
+			Properties.Settings.Default.ViewPortPos = string.Join(";", coords.Select(d => d.ToString()));
 		}
 
 		private void ButtonSaveTLOPos_Click(object sender, RoutedEventArgs e)

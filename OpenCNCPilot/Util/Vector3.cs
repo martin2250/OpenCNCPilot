@@ -1559,6 +1559,23 @@ namespace OpenCNCPilot.Util
 		{
 			return new Point3D(X, Y, Z);
 		}
+		public Vector3(Point3D point)
+		{
+			x = point.X;
+			y = point.Y;
+			z = point.Z;
+		}
+
+		public Vector3D ToVector3D()
+		{
+			return new Vector3D(X, Y, Z);
+		}
+		public Vector3(Vector3D vector)
+		{
+			x = vector.X;
+			y = vector.Y;
+			z = vector.Z;
+		}
 
 		public Vector2 GetXY()
 		{
