@@ -1,7 +1,7 @@
 ﻿namespace OpenCNCPilot.GCode.GCodeCommands
 {
-	public interface Command
+	public abstract class Command
 	{
-
+		public int LineNumber = -1;
 	}
 }

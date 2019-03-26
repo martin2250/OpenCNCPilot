@@ -178,7 +178,7 @@ namespace OpenCNCPilot.GCode
 					if (param != Words[i].Parameter || param < 0)
 						throw new ParseException("M code can only have positive integer parameters", lineNumber);
 
-					Commands.Add(new MCode() { Code = param });
+					Commands.Add(new MCode() { Code = param, LineNumber = lineNumber });
 
 					Words.RemoveAt(i);
 					i--;
@@ -192,7 +192,7 @@ namespace OpenCNCPilot.GCode
 					if (param < 0)
 						Warnings.Add($"spindle speed must be positive. (line {lineNumber})");
 
-					Commands.Add(new Spindle() { Speed = Math.Abs(param) });
+					Commands.Add(new Spindle() { Speed = Math.Abs(param), LineNumber = lineNumber });
 
 					Words.RemoveAt(i);
 					i--;
@@ -274,7 +274,7 @@ namespace OpenCNCPilot.GCode
 							if (Words[i + 1].Parameter < 0)
 								Warnings.Add($"dwell time must be positive. (line {lineNumber})");
 
-							Commands.Add(new Dwell() { Seconds = Math.Abs(Words[i + 1].Parameter) });
+							Commands.Add(new Dwell() { Seconds = Math.Abs(Words[i + 1].Parameter), LineNumber = lineNumber });
 							Words.RemoveAt(i + 1);
 							Words.RemoveAt(i);
 							i--;
@@ -373,6 +373,7 @@ namespace OpenCNCPilot.GCode
 				motion.End = EndPos;
 				motion.Feed = State.Feed;
 				motion.Rapid = MotionMode == 0;
+				motion.LineNumber = lineNumber;
 				State.PositionValid.CopyTo(motion.PositionValid, 0);
 
 				Commands.Add(motion);
@@ -542,6 +543,7 @@ namespace OpenCNCPilot.GCode
 			arc.Direction = (MotionMode == 2) ? ArcDirection.CW : ArcDirection.CCW;
 			arc.U = U;
 			arc.V = V;
+			arc.LineNumber = lineNumber;
 			arc.Plane = State.Plane;
 
 			Commands.Add(arc);

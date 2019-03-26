@@ -44,7 +44,7 @@ namespace OpenCNCPilot.GCode
 
 					if (m.Start == m.End)
 					{
-						Warnings.Add($"ignoring empty move at position {i} (not equal to line number)");
+						Warnings.Add($"ignoring zero-length move from line number {m.LineNumber}");
 						toolpath.RemoveAt(i--);
 					}
 				}

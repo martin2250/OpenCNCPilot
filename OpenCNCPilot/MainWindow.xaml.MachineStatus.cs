@@ -234,10 +234,12 @@ namespace OpenCNCPilot
 
 			if (ToolPath.Warnings.Count > 0)
 			{
-				MessageBox.Show(@"Warning! There were some errors while parsing this file!
+				WarningWindow ww = new WarningWindow(@"Warning! Parsing this file resulted in some warnings!
 Do not use OpenCNCPilot's edit functions unless you are sure that these warnings can be ignored!
 If you use edit functions, check the output file for errors before running the gcode!
-Be aware that the affected lines will likely move when using edit functions" + "\n\n >" + string.Join("\n >", ToolPath.Warnings));
+Be aware that the affected lines will likely move when using edit functions." + "\n\n", ToolPath.Warnings);
+
+				ww.ShowDialog();
 			}
 
 			if (Properties.Settings.Default.EnableCodePreview)
