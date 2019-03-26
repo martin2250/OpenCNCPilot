@@ -1093,7 +1093,7 @@ namespace OpenCNCPilot.Communication
 				StatusReceived.Invoke(line);
 		}
 
-		private static Regex ProbeEx = new Regex(@"\[PRB:(?'Pos'[-0-9\.]*,[-0-9\.]*,[-0-9\.]*):(?'Success'0|1)\]", RegexOptions.Compiled);
+		private static Regex ProbeEx = new Regex(@"\[PRB:(?'Pos'\-?[0-9\.]*(?:,\-?[0-9\.]*)+):(?'Success'0|1)\]", RegexOptions.Compiled);
 
 		/// <summary>
 		/// Parses a recevied probe report
