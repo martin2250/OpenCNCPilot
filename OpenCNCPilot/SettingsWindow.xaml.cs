@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO.Ports;
 using System.Management;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +23,8 @@ namespace OpenCNCPilot
 		{
 			ComboBoxSerialPort.Items.Clear();
 
+			Dictionary<string, string> ports = new Dictionary<string, string>();
+
 			try
 			{
 				ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_SerialPort");
@@ -29,12 +33,26 @@ namespace OpenCNCPilot
 					string id = queryObj["DeviceID"] as string;
 					string name = queryObj["Name"] as string;
 
-					ComboBoxSerialPort.Items.Add(new ComboBoxItem() { Content = name, Tag = id });
+					ports.Add(id, name);
 				}
 			}
 			catch (ManagementException ex)
 			{
 				MessageBox.Show("An error occurred while querying for WMI data: " + ex.Message);
+			}
+
+			// fix error of some boards not being listed properly
+			foreach (string port in SerialPort.GetPortNames())
+			{
+				if (!ports.ContainsKey(port))
+				{
+					ports.Add(port, port);
+				}
+			}
+
+			foreach (var port in ports)
+			{
+				ComboBoxSerialPort.Items.Add(new ComboBoxItem() { Content = port.Value, Tag = port.Key });
 			}
 		}
 
