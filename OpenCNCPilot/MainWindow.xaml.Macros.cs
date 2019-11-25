@@ -1,6 +1,9 @@
-﻿using OpenCNCPilot.Communication;
+﻿using Newtonsoft.Json;
+using OpenCNCPilot.Communication;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -102,26 +105,52 @@ namespace OpenCNCPilot
 			}
 
 			Properties.Settings.Default.Macros = b.ToString();
-		}
+            string json = JsonConvert.SerializeObject(Macros.ToArray());
+            //write string to file
+            System.IO.File.WriteAllText(@"macros.txt", json);
+        }
 
 		private void LoadMacros()
 		{
 			Macros.Clear();
+            if (File.Exists(@"macros.txt"))
+            {
+                Debug.WriteLine("FILE FOUND");
+                //load macros from file to make them transportable
+                using (StreamReader r = new StreamReader(@"macros.txt"))
+                {
+                    string json = r.ReadToEnd();
+                    Debug.WriteLine(json);
+                    List<Tuple<string, string, bool>> items = JsonConvert.DeserializeObject<List<Tuple<string, string, bool>>>(json);
+                    foreach( Tuple<string, string,bool> item in items)
+                    {
+                        Macros.Add(new Tuple<string, string, bool>(item.Item1, item.Item2, item.Item3));
+                    }
+                }
+            } else
+            {
+                Debug.WriteLine("FILE CLEAN");
+                var regexMacro = new Regex("([^:;]+):([^:;]+)(:E)?;");
 
-			var regexMacro = new Regex("([^:;]+):([^:;]+)(:E)?;");
+                foreach (System.Text.RegularExpressions.Match m in regexMacro.Matches(Properties.Settings.Default.Macros))
+                {
+                    Macros.Add(new Tuple<string, string, bool>(m.Groups[1].Value, m.Groups[2].Value, m.Groups[3].Success));
+                }
+                string json = JsonConvert.SerializeObject(Macros.ToArray());
+                //write string to file
+                System.IO.File.WriteAllText(@"macros.txt", json);
+            }
+            RefreshMacroButtons();
 
-			foreach (System.Text.RegularExpressions.Match m in regexMacro.Matches(Properties.Settings.Default.Macros))
-			{
-				Macros.Add(new Tuple<string, string, bool>(m.Groups[1].Value, m.Groups[2].Value, m.Groups[3].Success));
-			}
-
-			RefreshMacroButtons();
-		}
+        }
 
 		private void ButtonAddMacro_Click(object sender, RoutedEventArgs e)
 		{
 			Macros.Add(new Tuple<string, string, bool>("New Macro", "", false));
-			RefreshMacroButtons();
+            string json = JsonConvert.SerializeObject(Macros.ToArray());
+            //write string to file
+            System.IO.File.WriteAllText(@"macros.txt", json);
+            RefreshMacroButtons();
 		}
 	}
 }
