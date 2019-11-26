@@ -105,9 +105,7 @@ namespace OpenCNCPilot
 			}
 
 			Properties.Settings.Default.Macros = b.ToString();
-            string json = JsonConvert.SerializeObject(Macros.ToArray());
-            //write string to file
-            System.IO.File.WriteAllText(@"macros.txt", json);
+            this.SaveMacros();
         }
 
 		private void LoadMacros()
@@ -115,12 +113,10 @@ namespace OpenCNCPilot
 			Macros.Clear();
             if (File.Exists(@"macros.txt"))
             {
-                Debug.WriteLine("FILE FOUND");
                 //load macros from file to make them transportable
                 using (StreamReader r = new StreamReader(@"macros.txt"))
                 {
                     string json = r.ReadToEnd();
-                    Debug.WriteLine(json);
                     List<Tuple<string, string, bool>> items = JsonConvert.DeserializeObject<List<Tuple<string, string, bool>>>(json);
                     foreach( Tuple<string, string,bool> item in items)
                     {
@@ -129,16 +125,13 @@ namespace OpenCNCPilot
                 }
             } else
             {
-                Debug.WriteLine("FILE CLEAN");
                 var regexMacro = new Regex("([^:;]+):([^:;]+)(:E)?;");
 
                 foreach (System.Text.RegularExpressions.Match m in regexMacro.Matches(Properties.Settings.Default.Macros))
                 {
                     Macros.Add(new Tuple<string, string, bool>(m.Groups[1].Value, m.Groups[2].Value, m.Groups[3].Success));
                 }
-                string json = JsonConvert.SerializeObject(Macros.ToArray());
-                //write string to file
-                System.IO.File.WriteAllText(@"macros.txt", json);
+                this.SaveMacros();
             }
             RefreshMacroButtons();
 
@@ -151,6 +144,12 @@ namespace OpenCNCPilot
             //write string to file
             System.IO.File.WriteAllText(@"macros.txt", json);
             RefreshMacroButtons();
+		}
+
+		private void SaveMacros(){
+			string json = JsonConvert.SerializeObject(Macros.ToArray());
+			//write string to file
+			System.IO.File.WriteAllText(@"macros.txt", json);
 		}
 	}
 }
