@@ -17,7 +17,7 @@ namespace OpenCNCPilot
 		Machine.OperatingMode lastMode = Machine.OperatingMode.Disconnected;
 		TimeSpan FileRunTime = TimeSpan.Zero;
 		DateTime LastFileStart = DateTime.Now;
-		DispatcherTimer FileRuntimeTimer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1) };
+        DispatcherTimer FileRuntimeTimer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1) };
 
 		bool StopRuntimeOnIdle = false;
 
@@ -397,7 +397,7 @@ Be aware that the affected lines will likely move when using edit functions." + 
 			ButtonFeedRateOvr.Content = $"Feed: {machine.FeedOverride}%";
 			RunFeedOvr.Text = $"{machine.FeedOverride}%";
 			RunRapidOvr.Text = $"{machine.RapidOverride}%";
-			RunSpindleOvr.Text = $"{machine.SpindleOverride}%";
+			RunSpindleOvr.Text = $"{machine.SpindleOverride} RPM {machine.SpindleSpeedRealtime}%";
 		}
 
 		private void Machine_PinStateChanged()

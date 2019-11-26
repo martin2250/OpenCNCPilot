@@ -80,9 +80,9 @@ namespace OpenCNCPilot
 			ButtonRestoreViewport_Click(null, null);
 
 			UpdateCheck.CheckForUpdate();
-		}
+        }
 
-		public Vector3 LastProbePosMachine { get; set; }
+        public Vector3 LastProbePosMachine { get; set; }
 		public Vector3 LastProbePosWork { get; set; }
 
 		private void Machine_ProbeFinished_UserOutput(Vector3 position, bool success)
@@ -194,7 +194,7 @@ namespace OpenCNCPilot
 						try
 						{
 							machine.SetFile(System.IO.File.ReadAllLines(file));
-						}
+                        }
 						catch (Exception ex)
 						{
 							MessageBox.Show(ex.Message);
@@ -318,7 +318,7 @@ namespace OpenCNCPilot
 					machine.SendControl(0x9D);
 					break;
 			}
-		}
+        }
 
 		private void ButtonResetViewport_Click(object sender, RoutedEventArgs e)
 		{

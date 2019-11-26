@@ -80,13 +80,19 @@ namespace OpenCNCPilot
 
 		private void ButtonFileStart_Click(object sender, RoutedEventArgs e)
 		{
-			machine.FileStart();
+            //recover spindle if it was running before
+            machine.SendLine("M3");
+            //pause thread for 2 seconds to allow the spindle kickstart
+            System.Threading.Thread.Sleep(2000);
+            machine.FileStart();
 		}
 
 		private void ButtonFilePause_Click(object sender, RoutedEventArgs e)
 		{
 			machine.FilePause();
-		}
+            //pauses machine spindle
+            machine.SendLine("M5");
+        }
 
 		private void ButtonFileGoto_Click(object sender, RoutedEventArgs e)
 		{

@@ -15,7 +15,7 @@ namespace OpenCNCPilot.Util
 			}
 		}
 
-		public static string FileFilterGCode = "GCode|*.tap;*.nc;*.ngc|All Files|*.*";
+		public static string FileFilterGCode = "GCode|*.tap;*.nc;*.ngc;*.gcode|All Files|*.*";
 		public static string FileFilterHeightMap = "Height Maps|*.hmap|All Files|*.*";
 
 		public static string LogFile = "log.txt";
