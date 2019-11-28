@@ -3,10 +3,10 @@
 This repo contains some changes added on top of the original OpenCNCPilot
 These are the changes I plan to introduce
 
-- Save macros to a local file for easy transportation (done)
-- When pressing "Pause" or "Hold" the spindle is also stopped (done)
+- Save macros to a local file for easy transportation ✔(done)
+- When pressing "Pause" or "Hold" the spindle is also stopped ✔(done)
 - Ability to select a region of the GCODE to be able to rework that area
-- Implement web server to be able to have an external Pendant (I will create a small WIFI pendant)
+- Implement web server to be able to have an external Pendant (I will create a small WIFI pendant) in progress
 - Tooling support, I will create a small module to be able to send commands to this module for things like tooling and so on, in the first part I will add an automated "Probe" and maybe possible a "tool change"
 
 # OpenCNCPilot
