@@ -324,7 +324,7 @@
 			<Label Name="LabelStateLimitY" Content="LimitY" FontWeight="ExtraBold" FontSize="40" Foreground="Red" Visibility="Collapsed"/>
 			<Label Name="LabelStateLimitZ" Content="LimitZ" FontWeight="ExtraBold" FontSize="40" Foreground="Red" Visibility="Collapsed"/>
 		</StackPanel>
-		<h:HelixViewport3D Name="viewport" ShowViewCube="False" Panel.ZIndex="0" PreviewKeyDown="viewport_PreviewKeyDown" Grid.ColumnSpan="2">
+		<h:HelixViewport3D Name="viewport" ShowViewCube="False" Panel.ZIndex="0" PreviewKeyDown="viewport_PreviewKeyDown" Grid.ColumnSpan="2" ZoomAroundMouseDownPoint="true">
 			<h:HelixViewport3D.Camera>
 				<PerspectiveCamera
 					Position="50, -150, 250"
