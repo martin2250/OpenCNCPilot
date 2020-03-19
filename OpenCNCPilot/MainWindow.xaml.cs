@@ -5,9 +5,12 @@ using OpenCNCPilot.Util;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Interop;
 
 namespace OpenCNCPilot
 {
@@ -80,6 +83,15 @@ namespace OpenCNCPilot
 			ButtonRestoreViewport_Click(null, null);
 
 			UpdateCheck.CheckForUpdate();
+
+			if (App.Args.Length > 0)
+			{
+				if (File.Exists(App.Args[0]))
+				{
+					openFileDialogGCode.FileName = App.Args[0];
+					OpenFileDialogGCode_FileOk(null, null);
+				}
+			}
 		}
 
 		public Vector3 LastProbePosMachine { get; set; }
@@ -385,6 +397,27 @@ namespace OpenCNCPilot
 			machine.SendLine("G49");
 		}
 
+		protected override void OnSourceInitialized(EventArgs e)
+		{
+			base.OnSourceInitialized(e);
+			HwndSource source = PresentationSource.FromVisual(this) as HwndSource;
+			source.AddHook(WndProc);
+		}
 
+		private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+		{
+			if (msg == App.WM_COPYDATA)
+			{
+				App.COPYDATASTRUCT _dataStruct = Marshal.PtrToStructure<App.COPYDATASTRUCT>(lParam);
+				string _strMsg = Marshal.PtrToStringUni(_dataStruct.lpData, _dataStruct.cbData / 2);
+				if (File.Exists(_strMsg))
+				{
+					openFileDialogGCode.FileName = _strMsg;
+					OpenFileDialogGCode_FileOk(null, null);
+				}
+			}
+
+			return IntPtr.Zero;
+		}
 	}
 }
