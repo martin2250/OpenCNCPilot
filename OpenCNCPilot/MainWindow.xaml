@@ -369,6 +369,16 @@
 			<h:PointsVisual3D x:Name="ModelFileBoundaryPoints" Color="Green" Size="8"/>
 			<h:TextVisual3D x:Name="ModelTextMinPoint" UpDirection="0,1,0" Height="7" VerticalAlignment="Top" HorizontalAlignment="Left"/>
 			<h:TextVisual3D x:Name="ModelTextMaxPoint" UpDirection="0,1,0" Height="7" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+			<h:QuadVisual3D Point1="-1000,-1000,0" Point2="1000,-1000,0" Point3="1000,1000,0"  Point4="-1000,1000,0">
+				<h:QuadVisual3D.Material>
+					<DiffuseMaterial Brush="Transparent">
+					</DiffuseMaterial>
+				</h:QuadVisual3D.Material>
+				<h:QuadVisual3D.BackMaterial>
+					<DiffuseMaterial Brush="Transparent">
+					</DiffuseMaterial>
+				</h:QuadVisual3D.BackMaterial>
+			</h:QuadVisual3D>
 		</h:HelixViewport3D>
 	</Grid>
 </Window>
