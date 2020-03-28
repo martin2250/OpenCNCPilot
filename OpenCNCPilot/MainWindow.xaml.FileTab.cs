@@ -27,6 +27,8 @@ namespace OpenCNCPilot
 			CurrentFileName = "";
 			ToolPath = GCodeFile.Empty;
 
+			openFileDialogGCode.InitialDirectory = System.IO.Path.GetDirectoryName(openFileDialogGCode.FileName);
+
 			try
 			{
 				machine.SetFile(System.IO.File.ReadAllLines(openFileDialogGCode.FileName));
@@ -58,6 +60,11 @@ namespace OpenCNCPilot
 			if (machine.Mode == Machine.OperatingMode.SendFile)
 				return;
 
+			// prevent exception when the drive letter doesn't exist
+			if (!System.IO.Directory.Exists(openFileDialogGCode.InitialDirectory))
+			{
+				openFileDialogGCode.InitialDirectory = "";
+			}
 			openFileDialogGCode.ShowDialog();
 		}
 
