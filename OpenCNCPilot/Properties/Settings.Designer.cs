@@ -646,5 +646,17 @@ namespace OpenCNCPilot.Properties {
                 this["ViewPortPos"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PassthroughTriggers {
+            get {
+                return ((string)(this["PassthroughTriggers"]));
+            }
+            set {
+                this["PassthroughTriggers"] = value;
+            }
+        }
     }
 }

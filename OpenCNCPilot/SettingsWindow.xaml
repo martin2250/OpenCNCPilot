@@ -84,6 +84,16 @@
 				<CheckBox Content="Include Spindle 'S' Commands" HorizontalAlignment="Left" Margin="116,10,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding GCodeIncludeSpindle}" ToolTip="Strip S[XX] from file before sending to machine if not checked"/>
 				<CheckBox Content="Include Dwell 'G4' Commands" HorizontalAlignment="Left" Margin="116,30,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding GCodeIncludeDwell}" ToolTip="Strip G4 P[XX] from file before sending to machine if not checked"/>
 				<CheckBox Content="Include Program End (M2, M30)" HorizontalAlignment="Left" Margin="116,50,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding GCodeIncludeMEnd}" ToolTip="Strip M2/M30 from file before sending to machine if not checked. Default is off since these commands reset offsets from G92."/>
+				<Label Content="Passthrough triggers (dangerous, read hover tooltip!!):" HorizontalAlignment="Left" Margin="10,173,0,0" VerticalAlignment="Top"/>
+				<TextBox HorizontalAlignment="Left" Margin="10,199,0,0" TextWrapping="Wrap" Text="{util:SettingBinding PassthroughTriggers}" VerticalAlignment="Top" Width="346" VerticalContentAlignment="Center">
+					<TextBox.ToolTip>
+						<TextBlock>
+							Comma separated list of text fragments.
+							<LineBreak/>
+							If a line of G-code contains any of these fragments, it is not parsed by OpenCNCPilot. This can lead to fatal erros, use at your own risk!
+						</TextBlock>
+					</TextBox.ToolTip>
+				</TextBox>
 			</Grid>
 		</TabItem>
 	</TabControl>

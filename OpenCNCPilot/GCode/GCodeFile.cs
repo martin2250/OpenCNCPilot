@@ -34,22 +34,6 @@ namespace OpenCNCPilot.GCode
 
 		private GCodeFile(List<Command> toolpath)
 		{
-			for (int i = 0; i < toolpath.Count; i++)
-			{
-				Command c = toolpath[i];
-
-				if (c is Motion)
-				{
-					Motion m = (Motion)c;
-
-					if (m.Start == m.End)
-					{
-						Warnings.Add($"ignoring zero-length move from line number {m.LineNumber}");
-						toolpath.RemoveAt(i--);
-					}
-				}
-			}
-
 			Toolpath = new ReadOnlyCollection<Command>(toolpath);
 
 			Vector3 min = Vector3.MaxValue, max = Vector3.MinValue;
@@ -78,11 +62,17 @@ namespace OpenCNCPilot.GCode
 					min = Vector3.ElementwiseMin(min, m.End);
 					max = Vector3.ElementwiseMax(max, m.End);
 
+					min = Vector3.ElementwiseMin(min, m.Start);
+					max = Vector3.ElementwiseMax(max, m.Start);
+
 					if (m is Line && (m as Line).Rapid)
 						continue;
 
 					minfeed = Vector3.ElementwiseMin(minfeed, m.End);
 					maxfeed = Vector3.ElementwiseMax(maxfeed, m.End);
+
+					minfeed = Vector3.ElementwiseMin(minfeed, m.Start);
+					maxfeed = Vector3.ElementwiseMax(maxfeed, m.Start);
 				}
 			}
 
@@ -309,6 +299,13 @@ namespace OpenCNCPilot.GCode
 						continue;
 
 					GCode.Add(string.Format(nfi, "G4 P{0}", ((Dwell)c).Seconds));
+
+					continue;
+				}
+
+				if (c is Verbatim)
+				{
+					GCode.Add(((Verbatim)c).Line);
 
 					continue;
 				}

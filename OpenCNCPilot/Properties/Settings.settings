@@ -159,5 +159,8 @@ G92Z0;</Value>
     <Setting Name="ViewPortPos" Type="System.String" Scope="User">
       <Value Profile="(Default)">50;-150;250;-50;150;-250</Value>
     </Setting>
+    <Setting Name="PassthroughTriggers" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

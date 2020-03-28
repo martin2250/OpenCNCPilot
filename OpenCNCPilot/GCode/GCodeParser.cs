@@ -53,6 +53,34 @@ namespace OpenCNCPilot.GCode
 		{
 			return $"{Command}{Parameter}";
 		}
+
+		public static bool operator ==(Word w1, Word w2)
+		{
+			return w1.Command == w2.Command && Math.Abs(w1.Parameter - w2.Parameter) <= double.Epsilon;
+		}
+
+		public static bool operator !=(Word w1, Word w2)
+		{
+			return !(w1 == w2);
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (obj is Word)
+			{
+				Word w = (Word)obj;
+				return w == this;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		public static Word Parse(string s)
+		{
+			return new Word() { Command = s[0], Parameter = double.Parse(s.Substring(1), Constants.DecimalParseFormat) };
+		}
 	}
 
 	static class GCodeParser
@@ -63,14 +91,40 @@ namespace OpenCNCPilot.GCode
 		private static double[] MotionCommands = new double[] { 0, 1, 2, 3 };
 		private static string ValidWords = "GMXYZIJKFRSP";
 		private static string IgnoreAxes = "ABC";
+		private static string Axes = "XYZ";
 		public static List<Command> Commands;
 		public static List<string> Warnings;
+
+		static Word[] PassThroughMotionReset = new string[] { "G0", "G1", "G38", "G2", "G3", "G5", "G43" }.Select(s => Word.Parse(s)).ToArray();
+		static Word[] PassThroughError = new string[] { "G90", "G91", "G17", "G18", "G19" }.Select(s => Word.Parse(s)).ToArray();
+		static List<Word> PassThroughTriggers;
 
 		public static void Reset()
 		{
 			State = new ParserState();
 			Commands = new List<Command>(); //don't reuse, might be used elsewhere
 			Warnings = new List<string>();
+
+			PassThroughTriggers = new List<Word>();
+
+			foreach (string s in Properties.Settings.Default.PassthroughTriggers.Split(','))
+			{
+				string t = s.Trim();
+				if (t.Length < 0)
+					continue;
+				try
+				{
+					Word w = Word.Parse(t);
+					PassThroughTriggers.Add(w);
+				}
+				catch
+				{
+					Warnings.Add("------------------------------------------");
+					Warnings.Add($"could not parse passthrough trigger {t}");
+					Warnings.Add("must be of format [LETTER][NUMBER]");
+					Warnings.Add("------------------------------------------");
+				}
+			}
 		}
 
 		static GCodeParser()
@@ -136,6 +190,40 @@ namespace OpenCNCPilot.GCode
 			foreach (Match match in matches)
 			{
 				Words.Add(new Word() { Command = match.Groups[1].Value[0], Parameter = double.Parse(match.Groups[2].Value, Constants.DecimalParseFormat) });
+			}
+
+			foreach (Word t in PassThroughTriggers)
+			{
+				if (Words.Contains(t))
+				{
+					Commands.Add(new Verbatim() { Line = line, LineNumber = lineNumber });
+					Warnings.Add($"passing through line {lineNumber} as verbatim: \"{line}\"");
+
+					foreach (Word rt in PassThroughMotionReset)
+					{
+						if (Words.Contains(rt))
+						{
+							for (int i = 0; i < Axes.Length; i++)
+							{
+								if (Words.Any(w => w.Command == Axes[i]))
+								{
+									State.PositionValid[i] = false;
+									Warnings.Add($"-> resetting {Axes[i]} position, as line contains motion {rt}");
+								}
+							}
+						}
+					}
+
+					foreach (Word et in PassThroughError)
+					{
+						if (Words.Contains(et))
+						{
+							throw new ParseException($"{et} cannot be passed though the parser verbatim!", lineNumber);
+						}
+					}
+
+					return;
+				}
 			}
 
 			for (int i = 0; i < Words.Count; i++)
@@ -317,6 +405,16 @@ namespace OpenCNCPilot.GCode
 				throw new ParseException("arcs (G2/G3) are only allowed after an absolute position has been established (eg. with \"G90 G0 X0 Y0 Z5\")", lineNumber);
 			}
 
+			if (MotionMode != 0 && State.Feed <= 0)
+			{
+				throw new ParseException("feed rate undefined", lineNumber);
+			}
+
+			if (MotionMode == 1 && State.PositionValid.Any(isValid => !isValid))
+			{
+				Warnings.Add($"a feed move is used before an absolute position is established, height maps will not be applied to this motion. (line {lineNumber})");
+			}
+
 			#region FindEndPos
 			{
 				int Incremental = (State.DistanceMode == ParseDistanceMode.Incremental) ? 1 : 0;
@@ -352,16 +450,6 @@ namespace OpenCNCPilot.GCode
 				}
 			}
 			#endregion
-
-			if (MotionMode != 0 && State.Feed <= 0)
-			{
-				throw new ParseException("feed rate undefined", lineNumber);
-			}
-
-			if (MotionMode == 1 && State.PositionValid.Any(isValid => !isValid))
-			{
-				Warnings.Add($"a feed move is used before an absolute position is established, height maps will not be applied to this motion. (line {lineNumber})");
-			}
 
 			if (MotionMode <= 1)
 			{
