@@ -412,6 +412,7 @@ namespace OpenCNCPilot
 				string _strMsg = Marshal.PtrToStringUni(_dataStruct.lpData, _dataStruct.cbData / 2);
 				if (File.Exists(_strMsg))
 				{
+					Activate();
 					openFileDialogGCode.FileName = _strMsg;
 					OpenFileDialogGCode_FileOk(null, null);
 				}
