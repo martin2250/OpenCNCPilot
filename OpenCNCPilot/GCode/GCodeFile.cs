@@ -194,7 +194,7 @@ namespace OpenCNCPilot.GCode
 
 		public List<string> GetGCode()
 		{
-			List<string> GCode = new List<string>(Toolpath.Count + 1) { "G90 G91.1 G21 G17" };
+			List<string> GCode = new List<string>(Toolpath.Count + 1) { Settings.Default.GCodeStart }; // Start GCode
 
 			NumberFormatInfo nfi = new NumberFormatInfo();
 			nfi.NumberDecimalSeparator = ".";   //prevent problems with international versions of windows (eg Germany would write 25.4 as 25,4 which is not compatible with standard GCode)
@@ -314,7 +314,9 @@ namespace OpenCNCPilot.GCode
 				}
 			}
 
-			return GCode;
+            GCode.Add(Settings.Default.GCodeEnd); // End GCode
+
+            return GCode;
 		}
 
 		public GCodeFile Split(double length)

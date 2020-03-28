@@ -646,5 +646,29 @@ namespace OpenCNCPilot.Properties {
                 this["ViewPortPos"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("G90 G91.1 G21 G17")]
+        public string GCodeStart {
+            get {
+                return ((string)(this["GCodeStart"]));
+            }
+            set {
+                this["GCodeStart"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string GCodeEnd {
+            get {
+                return ((string)(this["GCodeEnd"]));
+            }
+            set {
+                this["GCodeEnd"] = value;
+            }
+        }
     }
 }

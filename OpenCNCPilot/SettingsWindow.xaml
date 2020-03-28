@@ -84,6 +84,10 @@
 				<CheckBox Content="Include Spindle 'S' Commands" HorizontalAlignment="Left" Margin="116,10,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding GCodeIncludeSpindle}" ToolTip="Strip S[XX] from file before sending to machine if not checked"/>
 				<CheckBox Content="Include Dwell 'G4' Commands" HorizontalAlignment="Left" Margin="116,30,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding GCodeIncludeDwell}" ToolTip="Strip G4 P[XX] from file before sending to machine if not checked"/>
 				<CheckBox Content="Include Program End (M2, M30)" HorizontalAlignment="Left" Margin="116,50,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding GCodeIncludeMEnd}" ToolTip="Strip M2/M30 from file before sending to machine if not checked. Default is off since these commands reset offsets from G92."/>
+				<TextBox Margin="116,77,0,0" Text="{util:SettingBinding GCodeStart}" VerticalScrollBarVisibility="Visible" Height="65" Width="229" VerticalContentAlignment="Top" AcceptsReturn="True" HorizontalContentAlignment="Left"/>
+				<Label Content="Start GCode" HorizontalAlignment="Left" Margin="10,75,0,0" VerticalAlignment="Top" Width="101" HorizontalContentAlignment="Right"/>
+				<TextBox Margin="116,152,0,0" Text="{util:SettingBinding GCodeEnd}" VerticalScrollBarVisibility="Visible" Height="65" Width="229" VerticalContentAlignment="Top" AcceptsReturn="True" HorizontalContentAlignment="Left"/>
+				<Label Content="End GCode" HorizontalAlignment="Left" Margin="10,150,0,0" VerticalAlignment="Top" Width="101" HorizontalContentAlignment="Right"/>
 			</Grid>
 		</TabItem>
 	</TabControl>
