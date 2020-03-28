@@ -374,7 +374,9 @@ Be aware that the affected lines will likely move when using edit functions." + 
 			lastMode = machine.Mode;
 
 			groupBoxTLO.IsEnabled = machine.Mode == Machine.OperatingMode.Manual;
+			stackPanelMacros.IsEnabled = machine.Mode == Machine.OperatingMode.Manual || machine.Mode == Machine.OperatingMode.Disconnected;
 
+			ButtonDisconnect.IsEnabled = machine.Mode == Machine.OperatingMode.Manual;
 			ButtonGrblSettings.IsEnabled = machine.Mode == Machine.OperatingMode.Manual;
 			ButtonMachineHome.IsEnabled = machine.Mode == Machine.OperatingMode.Manual;
 		}

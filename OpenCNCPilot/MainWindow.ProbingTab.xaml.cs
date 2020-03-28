@@ -17,7 +17,7 @@ namespace OpenCNCPilot
 
 			GridProbingControls.Visibility = Map != null ? Visibility.Visible : Visibility.Collapsed;
 
-			ButtonHeightMapStart.IsEnabled = machine.Mode != Machine.OperatingMode.Probe && Map != null && Map.NotProbed.Count > 0;
+			ButtonHeightMapStart.IsEnabled = machine.Mode == Machine.OperatingMode.Manual && Map != null && Map.NotProbed.Count > 0;
 			ButtonHeightMapPause.IsEnabled = machine.Mode == Machine.OperatingMode.Probe;
 
 			ButtonEditApplyHeightMap.IsEnabled = machine.Mode != Machine.OperatingMode.SendFile && Map != null && Map.NotProbed.Count == 0;

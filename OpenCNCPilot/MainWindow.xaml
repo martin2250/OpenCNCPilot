@@ -245,7 +245,7 @@
 				</Border>
 				<Border Style="{StaticResource stylePanelOut}">
 					<Expander Header="Macros" IsExpanded="{util:SettingBinding MacroExpanderOpen}">
-						<StackPanel>
+						<StackPanel Name="stackPanelMacros">
 							<Button Content="Add Macro" Name="ButtonAddMacro" Click="ButtonAddMacro_Click" Margin="2"/>
 							<StackPanel MinWidth="120" Name="StackPanelMacros">
 
