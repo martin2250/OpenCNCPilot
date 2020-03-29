@@ -194,7 +194,7 @@ namespace OpenCNCPilot.GCode
 
 		public List<string> GetGCode()
 		{
-			List<string> GCode = new List<string>(Toolpath.Count + 1) { Settings.Default.GCodeStart }; // Start GCode
+			List<string> GCode = new List<string>(Toolpath.Count + 1) { Settings.Default.GCodeStart.Trim() }; // Start GCode
 
 			NumberFormatInfo nfi = new NumberFormatInfo();
 			nfi.NumberDecimalSeparator = ".";   //prevent problems with international versions of windows (eg Germany would write 25.4 as 25,4 which is not compatible with standard GCode)
@@ -314,7 +314,7 @@ namespace OpenCNCPilot.GCode
 				}
 			}
 
-            GCode.Add(Settings.Default.GCodeEnd); // End GCode
+            GCode.Add(Settings.Default.GCodeEnd.Trim()); // End GCode
 
             return GCode;
 		}
