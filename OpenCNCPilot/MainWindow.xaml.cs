@@ -79,6 +79,8 @@ namespace OpenCNCPilot
 
 			settingsWindow.SendLine += machine.SendLine;
 
+			machine.Calculator.GetGCode += () => ToolPath;
+
 			CheckBoxUseExpressions_Changed(null, null);
 			ButtonRestoreViewport_Click(null, null);
 

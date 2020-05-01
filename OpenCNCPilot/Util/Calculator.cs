@@ -10,6 +10,7 @@ namespace OpenCNCPilot.Util
 	class Calculator
 	{
 		private Machine machine;
+		public Func<GCode.GCodeFile> GetGCode;
 		private bool Success = true;
 
 		public Calculator(Machine machine)
@@ -29,6 +30,26 @@ namespace OpenCNCPilot.Util
 					variables.Add("W" + Axes[i], machine.WorkPosition[i]);
 					variables.Add("PM" + Axes[i], machine.LastProbePosMachine[i]);
 					variables.Add("PW" + Axes[i], machine.LastProbePosWork[i]);
+				}
+				if (GetGCode != null)
+				{
+					try
+					{
+						var file = GetGCode();
+						var min = file.MinFeed;
+						var max = file.MaxFeed;
+						if (!file.ContainsMotion)
+						{
+							min = new Vector3(0, 0, 0);
+							max = new Vector3(0, 0, 0);
+						}
+						for (int i = 0; i < 3; i++)
+						{
+							variables.Add("MAX" + Axes[i], max[i]);
+							variables.Add("MIN" + Axes[i], min[i]);
+						}
+					}
+					catch { }
 				}
 
 				variables.Add("TLO", machine.CurrentTLO);
