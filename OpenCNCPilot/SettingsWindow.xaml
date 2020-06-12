@@ -37,7 +37,7 @@
 				<CheckBox Content="Log traffic to file" HorizontalAlignment="Left" Margin="116,144,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding LogTraffic}" ToolTip="Restart required to take effect"/>
 				<CheckBox Content="Ignore Additional Axes in Status Messages" HorizontalAlignment="Left" Margin="116,164,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding IgnoreAdditionalAxes}" ToolTip="Compatibility with custom GRBL versions which report 4+ axes in status reports"/>
 
-			</Grid>
+            </Grid>
 		</TabItem>
 
 		<TabItem Header="Viewport">
@@ -84,7 +84,9 @@
 				<CheckBox Content="Include Spindle 'S' Commands" HorizontalAlignment="Left" Margin="116,10,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding GCodeIncludeSpindle}" ToolTip="Strip S[XX] from file before sending to machine if not checked"/>
 				<CheckBox Content="Include Dwell 'G4' Commands" HorizontalAlignment="Left" Margin="116,30,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding GCodeIncludeDwell}" ToolTip="Strip G4 P[XX] from file before sending to machine if not checked"/>
 				<CheckBox Content="Include Program End (M2, M30)" HorizontalAlignment="Left" Margin="116,50,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding GCodeIncludeMEnd}" ToolTip="Strip M2/M30 from file before sending to machine if not checked. Default is off since these commands reset offsets from G92."/>
-			</Grid>
+                <CheckBox Content="Do not generate a jog command" HorizontalAlignment="Left" Margin="116,71,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding GCodeNoGenerateJog}" ToolTip="Do not generate JOG command '$J=', (some versions of GRBL do not accept command '$J=')"/>
+                <CheckBox Content="Repeat the wrong code" HorizontalAlignment="Left" Margin="116,92,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding GCodeRepeatWrongCode}" ToolTip="Repeat the incorrect code when sending a line from the file"/>
+            </Grid>
 		</TabItem>
 	</TabControl>
 </Window>

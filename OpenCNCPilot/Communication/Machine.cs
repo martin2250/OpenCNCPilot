@@ -67,7 +67,6 @@ namespace OpenCNCPilot.Communication
 
 		public double FeedRateRealtime { get; private set; } = 0;
 		public double SpindleSpeedRealtime { get; private set; } = 0;
-
 		public double CurrentTLO { get; private set; } = 0;
 
 		private Calculator _calculator;
@@ -209,7 +208,6 @@ namespace OpenCNCPilot.Communication
 		#endregion Status
 
 		public bool SyncBuffer { get; set; }
-
 		private Stream Connection;
 		private Thread WorkerThread;
 
@@ -258,6 +256,9 @@ namespace OpenCNCPilot.Communication
 
 				bool SendMacroStatusReceived = false;
 
+				bool RepeatWrongCode = Properties.Settings.Default.GCodeRepeatWrongCode;
+				bool HasFileLineError = false;
+
 				writer.Write("\n$G\n");
 				writer.Write("\n$#\n");
 				writer.Flush();
@@ -265,6 +266,7 @@ namespace OpenCNCPilot.Communication
 				while (true)
 				{
 					Task<string> lineTask = reader.ReadLineAsync();
+					
 
 					while (!lineTask.IsCompleted)
 					{
@@ -292,7 +294,8 @@ namespace OpenCNCPilot.Communication
 
 								RaiseEvent(UpdateStatus, send_line);
 								RaiseEvent(LineSent, send_line);
-
+								int index = FilePosition + 1;
+								send_line += " Line: " + index.ToString();
 								BufferState += send_line.Length + 1;
 
 								Sent.Enqueue(send_line);
@@ -419,12 +422,16 @@ namespace OpenCNCPilot.Communication
 					{
 						if (line.StartsWith("error:"))
 						{
+							int fileErrorLine = 0;
 							if (Sent.Count != 0)
 							{
 								string errorline = (string)Sent.Dequeue();
 
 								RaiseEvent(ReportError, $"{line}: {errorline}");
+								RecordLog(errorline);
 								BufferState -= errorline.Length + 1;
+								if (int.TryParse(errorline.Substring(errorline.IndexOf(":") + 1), out int index))
+									fileErrorLine = index;
 							}
 							else
 							{
@@ -435,6 +442,14 @@ namespace OpenCNCPilot.Communication
 							}
 
 							Mode = OperatingMode.Manual;
+							if (fileErrorLine > 0)
+							{	FileGoto(fileErrorLine - 1);
+								if (RepeatWrongCode && !HasFileLineError)
+								{
+									HasFileLineError = true;
+									FileStart();
+								}
+							}
 						}
 						else if (line.StartsWith("<"))
 						{
