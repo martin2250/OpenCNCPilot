@@ -1,4 +1,5 @@
 ﻿using OpenCNCPilot.Communication;
+using OpenCNCPilot.Properties;
 using OpenCNCPilot.Util;
 using System.Collections.Generic;
 using System.Windows;
@@ -194,6 +195,7 @@ namespace OpenCNCPilot
 
 			double feed = Properties.Settings.Default.JogFeed;
 			double distance = Properties.Settings.Default.JogDistance;
+			bool noGenerateJog = Properties.Settings.Default.GCodeNoGenerateJog;
 
 			if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
 			{
@@ -203,7 +205,11 @@ namespace OpenCNCPilot
 
 			if (direction != null)
 			{
-				machine.SendLine(string.Format(Constants.DecimalOutputFormat, "$J=G91F{0:0.#}{1}{2:0.###}", feed, direction, distance));
+				if (noGenerateJog)
+					machine.SendLine(string.Format(Constants.DecimalOutputFormat,  "G91F{0:0.#}{1}{2:0.###}", feed, direction, distance));
+				else
+					machine.SendLine(string.Format(Constants.DecimalOutputFormat, "$J=G91F{0:0.#}{1}{2:0.###}", feed, direction, distance));
+				machine.RunningJog = true;
 			}
 		}
 

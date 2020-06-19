@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.IO.Ports;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -69,6 +70,9 @@ namespace OpenCNCPilot.Communication
 		public double SpindleSpeedRealtime { get; private set; } = 0;
 		public double CurrentTLO { get; private set; } = 0;
 
+		public bool RunningJog { get; set; } = false;
+		private bool FileError = false;
+		private int FileErrorLastPosition = 0;
 		private Calculator _calculator;
 		public Calculator Calculator { get { return _calculator; } }
 
@@ -257,7 +261,7 @@ namespace OpenCNCPilot.Communication
 				bool SendMacroStatusReceived = false;
 
 				bool RepeatWrongCode = Properties.Settings.Default.GCodeRepeatWrongCode;
-				bool HasFileLineError = false;
+				
 
 				writer.Write("\n$G\n");
 				writer.Write("\n$#\n");
@@ -398,7 +402,7 @@ namespace OpenCNCPilot.Communication
 							LastFilePosUpdate = Now;
 							filePosChanged = false;
 						}
-
+						
 						Thread.Sleep(WaitTime);
 					}
 
@@ -442,14 +446,14 @@ namespace OpenCNCPilot.Communication
 							}
 
 							Mode = OperatingMode.Manual;
+
+							// always returns the position on the error line
 							if (fileErrorLine > 0)
-							{	FileGoto(fileErrorLine - 1);
-								if (RepeatWrongCode && !HasFileLineError)
-								{
-									HasFileLineError = true;
-									FileStart();
-								}
+							{
+								FileGoto(fileErrorLine - 1);
+								FileError = true;
 							}
+
 						}
 						else if (line.StartsWith("<"))
 						{
@@ -480,6 +484,15 @@ namespace OpenCNCPilot.Communication
 						}
 						else if (line.Length > 0)
 							RaiseEvent(LineReceived, line);
+						if (FileError && FileErrorLastPosition != FilePosition && Status == "Idle")
+						{
+							FileError = false;
+							FileErrorLastPosition = FilePosition;
+							Sent.Clear();
+							BufferState = 0;
+							if (RepeatWrongCode)
+								FileStart();
+						}
 					}
 				}
 			}
@@ -853,8 +866,11 @@ namespace OpenCNCPilot.Communication
 			if (!Connected)
 				return;
 
-			if (line.Contains("$J="))
+			if (line.Contains("$J=") || RunningJog) {
+				RunningJog = false;
 				return;
+			}
+				
 
 			if (line.StartsWith("[TLO:"))
 			{
