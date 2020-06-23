@@ -670,5 +670,101 @@ namespace OpenCNCPilot.Properties {
                 this["GCodeRepeatWrongCode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility DebugExpanderCollapset {
+            get {
+                return ((global::System.Windows.Visibility)(this["DebugExpanderCollapset"]));
+            }
+            set {
+                this["DebugExpanderCollapset"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility AboutExpanderCollapset {
+            get {
+                return ((global::System.Windows.Visibility)(this["AboutExpanderCollapset"]));
+            }
+            set {
+                this["AboutExpanderCollapset"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility MacrosExpanderCollapset {
+            get {
+                return ((global::System.Windows.Visibility)(this["MacrosExpanderCollapset"]));
+            }
+            set {
+                this["MacrosExpanderCollapset"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility ManualProbingExpanderCollapset {
+            get {
+                return ((global::System.Windows.Visibility)(this["ManualProbingExpanderCollapset"]));
+            }
+            set {
+                this["ManualProbingExpanderCollapset"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility ManualExpanderCollapset {
+            get {
+                return ((global::System.Windows.Visibility)(this["ManualExpanderCollapset"]));
+            }
+            set {
+                this["ManualExpanderCollapset"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility ProbingExpanderCollapsed {
+            get {
+                return ((global::System.Windows.Visibility)(this["ProbingExpanderCollapsed"]));
+            }
+            set {
+                this["ProbingExpanderCollapsed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility OverrideExpanderCollapset {
+            get {
+                return ((global::System.Windows.Visibility)(this["OverrideExpanderCollapset"]));
+            }
+            set {
+                this["OverrideExpanderCollapset"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility EditExpanderCollapset {
+            get {
+                return ((global::System.Windows.Visibility)(this["EditExpanderCollapset"]));
+            }
+            set {
+                this["EditExpanderCollapset"] = value;
+            }
+        }
     }
 }

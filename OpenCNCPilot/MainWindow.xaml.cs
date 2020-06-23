@@ -422,5 +422,18 @@ namespace OpenCNCPilot
 
 			return IntPtr.Zero;
 		}
+
+		private void Expander_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			Expander exp = (Expander)sender;
+			exp.Visibility = Visibility.Collapsed;
+		}
+
+		private void Border_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			Border bor = (Border)sender;
+			Expander expb = (Expander)bor.Child;
+			expb.Visibility = Visibility.Visible;
+		}
 	}
 }

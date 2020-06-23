@@ -78,8 +78,8 @@
 						</Grid>
 					</Expander>
 				</Border>
-				<Border Style="{StaticResource stylePanelOut}">
-					<Expander Header="Edit" IsExpanded="{util:SettingBinding EditExpanderOpen}">
+                <Border Style="{StaticResource stylePanelOut}" MouseLeftButtonDown="Border_MouseLeftButtonDown">
+                    <Expander Header="Edit" IsExpanded="{util:SettingBinding EditExpanderOpen}" MouseDoubleClick="Expander_MouseDoubleClick" Visibility="{util:SettingBinding EditExpanderCollapset}">
 						<WrapPanel Width="180">
 							<Button Name="ButtonEditSimplify" Click="ButtonEditSimplify_Click" Content="Simplify" Style="{StaticResource styleButton}" ToolTip="Simplifies GCode"/>
 							<Button Name="ButtonEditApplyHeightMap" Click="ButtonEditApplyHeightMap_Click" Content="Apply HeightMap" Style="{StaticResource styleButton}"/>
@@ -89,8 +89,8 @@
 						</WrapPanel>
 					</Expander>
 				</Border>
-				<Border Style="{StaticResource stylePanelOut}">
-					<Expander Header="Overrides" IsExpanded="{util:SettingBinding OverrideExpanderOpen}">
+                <Border Style="{StaticResource stylePanelOut}" MouseLeftButtonDown="Border_MouseLeftButtonDown">
+                    <Expander Header="Overrides" IsExpanded="{util:SettingBinding OverrideExpanderOpen}" MouseDoubleClick="Expander_MouseDoubleClick" Visibility="{util:SettingBinding OverrideExpanderCollapset}">
 						<StackPanel Name="StackPanelOverrides">
 							<TextBlock>
                                 <Run Text="Rapid:"/>
@@ -126,8 +126,8 @@
 						</StackPanel>
 					</Expander>
 				</Border>
-				<Border Style="{StaticResource stylePanelOut}">
-					<Expander Header="Probing" IsExpanded="{util:SettingBinding ProbingExpanderOpen}">
+                <Border Style="{StaticResource stylePanelOut}" MouseLeftButtonDown="Border_MouseLeftButtonDown">
+                    <Expander Header="Probing" IsExpanded="{util:SettingBinding ProbingExpanderOpen}" MouseDoubleClick="Expander_MouseDoubleClick" Visibility="{util:SettingBinding ProbingExpanderCollapsed}">
 						<Grid Width="200" Margin="0,0,0,5">
 							<Button Name="ButtonHeightMapCreateNew" Click="ButtonHeightmapCreateNew_Click" Content="Create New" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top"/>
 							<Button Name="ButtonHeightMapLoad" Click="ButtonHeightmapLoad_Click" Content="Load" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="81,5,0,0" VerticalAlignment="Top" Height="24"/>
@@ -149,8 +149,8 @@
 						</Grid>
 					</Expander>
 				</Border>
-				<Border Style="{StaticResource stylePanelOut}">
-					<Expander Header="Manual" IsExpanded="{util:SettingBinding ManualExpanderOpen}">
+                <Border Style="{StaticResource stylePanelOut}" MouseLeftButtonDown="Border_MouseLeftButtonDown">
+                    <Expander Header="Manual" IsExpanded="{util:SettingBinding ManualExpanderOpen}" MouseDoubleClick="Expander_MouseDoubleClick" Visibility="{util:SettingBinding ManualExpanderCollapset}">
 						<StackPanel>
 							<Grid Margin="3,0,3,0">
 								<TextBox Name="TextBoxManual" Height="23" HorizontalAlignment="Stretch" PreviewKeyDown="TextBoxManual_PreviewKeyDown" TextChanged="TextBoxManual_TextChanged" Margin="0,5,41,5"/>
@@ -196,8 +196,8 @@
 						</StackPanel>
 					</Expander>
 				</Border>
-				<Border Style="{StaticResource stylePanelOut}">
-					<Expander Header="Manual Probing" IsExpanded="{util:SettingBinding ManualProbingExpanderOpen}">
+                <Border Style="{StaticResource stylePanelOut}" MouseLeftButtonDown="Border_MouseLeftButtonDown">
+                    <Expander Header="Manual Probing" IsExpanded="{util:SettingBinding ManualProbingExpanderOpen}" MouseDoubleClick="Expander_MouseDoubleClick" Visibility="{util:SettingBinding ManualProbingExpanderCollapset}">
 						<StackPanel>
 							<GroupBox Header="Last Probe Position">
 								<StackPanel>
@@ -243,8 +243,8 @@
 						</StackPanel>
 					</Expander>
 				</Border>
-				<Border Style="{StaticResource stylePanelOut}">
-					<Expander Header="Macros" IsExpanded="{util:SettingBinding MacroExpanderOpen}">
+                <Border Style="{StaticResource stylePanelOut}" MouseLeftButtonDown="Border_MouseLeftButtonDown">
+                    <Expander Header="Macros" IsExpanded="{util:SettingBinding MacroExpanderOpen}" MouseDoubleClick="Expander_MouseDoubleClick" Visibility="{util:SettingBinding MacrosExpanderCollapset}">
 						<StackPanel Name="stackPanelMacros">
 							<Button Content="Add Macro" Name="ButtonAddMacro" Click="ButtonAddMacro_Click" Margin="2"/>
 							<StackPanel MinWidth="120" Name="StackPanelMacros">
@@ -283,8 +283,8 @@
 						</StackPanel>
 					</Expander>
 				</Border>
-				<Border Style="{StaticResource stylePanelOut}">
-					<Expander Header="About" IsExpanded="{util:SettingBinding AboutExpanderOpen}">
+                <Border Style="{StaticResource stylePanelOut}" MouseLeftButtonDown="Border_MouseLeftButtonDown">
+                    <Expander Header="About" IsExpanded="{util:SettingBinding AboutExpanderOpen}" MouseDoubleClick="Expander_MouseDoubleClick" Visibility="{util:SettingBinding AboutExpanderCollapset}">
 						<StackPanel>
 							<TextBlock TextAlignment="Center" FontSize="14" Padding="5">
 								<Span FontWeight="Bold" FontSize="15">OpenCNCPilot <Run Text="{Binding Version,Mode=OneWay}"/> by martin2250</Span><LineBreak/>
@@ -294,8 +294,8 @@
 						</StackPanel>
 					</Expander>
 				</Border>
-				<Border Style="{StaticResource stylePanelOut}">
-					<Expander Header="Debug" IsExpanded="{util:SettingBinding DebugExpanderOpen}">
+				<Border Style="{StaticResource stylePanelOut}" MouseLeftButtonDown="Border_MouseLeftButtonDown">
+                    <Expander Header="Debug" IsExpanded="{util:SettingBinding DebugExpanderOpen}" MouseDoubleClick="Expander_MouseDoubleClick" Visibility="{util:SettingBinding DebugExpanderCollapset}">
 						<StackPanel HorizontalAlignment="Left" Margin="0,0,0,5">
 							<CheckBox Content="Show Status Messages" IsChecked="{util:SettingBinding ShowStatusLines}" Margin="10,0,0,0"/>
 							<StackPanel Orientation="Horizontal">
