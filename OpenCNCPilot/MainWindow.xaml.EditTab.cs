@@ -29,6 +29,7 @@ namespace OpenCNCPilot
 			{
 				machine.SetFile(ToolPath.ApplyHeightMap(Map).GetGCode());
 				Machine_OperatingMode_Changed();
+				ButtonEditApplyHeightMap.IsEnabled = false;
 			}
 			catch (IndexOutOfRangeException)
 			{
