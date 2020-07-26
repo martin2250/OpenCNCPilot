@@ -60,7 +60,8 @@ namespace OpenCNCPilot.GCode
 				if (c is Line)
 				{
 					Line l = (Line)c;
-					if (l.PositionValid.Any(isValid => !isValid))
+					// StartValid should be sufficient, keep PositionValid just to be sure
+					if (!l.StartValid || l.PositionValid.Any(isValid => !isValid))
 						continue;
 				}
 
@@ -77,12 +78,16 @@ namespace OpenCNCPilot.GCode
 
 					min = Vector3.ElementwiseMin(min, m.End);
 					max = Vector3.ElementwiseMax(max, m.End);
+					min = Vector3.ElementwiseMin(min, m.Start);
+					max = Vector3.ElementwiseMax(max, m.Start);
 
 					if (m is Line && (m as Line).Rapid)
 						continue;
 
 					minfeed = Vector3.ElementwiseMin(minfeed, m.End);
 					maxfeed = Vector3.ElementwiseMax(maxfeed, m.End);
+					minfeed = Vector3.ElementwiseMin(minfeed, m.Start);
+					maxfeed = Vector3.ElementwiseMax(maxfeed, m.Start);
 				}
 			}
 
@@ -158,6 +163,9 @@ namespace OpenCNCPilot.GCode
 
 				if (l != null)
 				{
+					if (!l.StartValid)
+						continue;
+
 					if (l.Rapid)
 					{
 						rapidPoints.Add(l.Start.ToPoint3D());
@@ -200,6 +208,7 @@ namespace OpenCNCPilot.GCode
 			nfi.NumberDecimalSeparator = ".";   //prevent problems with international versions of windows (eg Germany would write 25.4 as 25,4 which is not compatible with standard GCode)
 
 			ParserState State = new ParserState();
+			var xyz = "XYZ";
 
 			foreach (Command c in Toolpath)
 			{
@@ -221,12 +230,13 @@ namespace OpenCNCPilot.GCode
 
 					string code = l.Rapid ? "G0" : "G1";
 
-					if (State.Position.X != l.End.X && l.PositionValid[0])
-						code += string.Format(nfi, " X{0:0.###}", l.End.X);
-					if (State.Position.Y != l.End.Y && l.PositionValid[1])
-						code += string.Format(nfi, " Y{0:0.###}", l.End.Y);
-					if (State.Position.Z != l.End.Z && l.PositionValid[2])
-						code += string.Format(nfi, " Z{0:0.###}", l.End.Z);
+					for (int i = 0; i < 3; i++)
+					{
+						if (!l.PositionValid[i])
+							continue;
+						if (!l.StartValid || State.Position[i] != l.End[i])
+							code += string.Format(nfi, " {0}{1:0.###}", xyz[i], l.End[i]);
+					}
 
 					GCode.Add(code);
 
@@ -352,6 +362,7 @@ namespace OpenCNCPilot.GCode
 						l.Feed = segment.Feed;
 						l.Rapid = false;
 						l.PositionValid = new bool[] { true, true, true };
+						l.StartValid = true;
 						newFile.Add(l);
 					}
 				}
@@ -388,7 +399,7 @@ namespace OpenCNCPilot.GCode
 						Line l = (Line)m;
 
 						// do not split up or modify any lines that are rapid or not fully defined
-						if (l.PositionValid.Any(isValid => !isValid) || l.Rapid)
+						if (!l.StartValid || l.PositionValid.Any(isValid => !isValid) || l.Rapid)
 						{
 							newToolPath.Add(l);
 							continue;
@@ -444,7 +455,10 @@ namespace OpenCNCPilot.GCode
 						Line oldLine = (Line)oldMotion;
 						Line newLine = new Line();
 						newLine.Rapid = oldLine.Rapid;
-						newLine.PositionValid = oldLine.PositionValid;
+						newLine.PositionValid[0] = oldLine.PositionValid[1];
+						newLine.PositionValid[1] = oldLine.PositionValid[0];
+						newLine.PositionValid[2] = oldLine.PositionValid[2];
+						newLine.StartValid = oldLine.StartValid;
 						newMotion = newLine;
 					}
 					else

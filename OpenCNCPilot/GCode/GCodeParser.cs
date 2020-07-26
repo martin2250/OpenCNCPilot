@@ -307,15 +307,18 @@ namespace OpenCNCPilot.GCode
 
 			Vector3 EndPos = State.Position;
 
-			if (State.DistanceMode == ParseDistanceMode.Incremental && State.PositionValid.Any(isValid => !isValid))
+			var StartValid = State.PositionValid.All(isValid => isValid);
+
+			if (State.DistanceMode == ParseDistanceMode.Incremental && !StartValid)
 			{
 				throw new ParseException("incremental motion is only allowed after an absolute position has been established (eg. with \"G90 G0 X0 Y0 Z5\")", lineNumber);
 			}
 
-			if ((MotionMode == 2 || MotionMode == 3) && State.PositionValid.Any(isValid => !isValid))
+			if ((MotionMode == 2 || MotionMode == 3) && !StartValid)
 			{
 				throw new ParseException("arcs (G2/G3) are only allowed after an absolute position has been established (eg. with \"G90 G0 X0 Y0 Z5\")", lineNumber);
 			}
+
 
 			#region FindEndPos
 			{
@@ -358,7 +361,7 @@ namespace OpenCNCPilot.GCode
 				throw new ParseException("feed rate undefined", lineNumber);
 			}
 
-			if (MotionMode == 1 && State.PositionValid.Any(isValid => !isValid))
+			if (MotionMode == 1 && !StartValid)
 			{
 				Warnings.Add($"a feed move is used before an absolute position is established, height maps will not be applied to this motion. (line {lineNumber})");
 			}
@@ -374,6 +377,7 @@ namespace OpenCNCPilot.GCode
 				motion.Feed = State.Feed;
 				motion.Rapid = MotionMode == 0;
 				motion.LineNumber = lineNumber;
+				motion.StartValid = StartValid;
 				State.PositionValid.CopyTo(motion.PositionValid, 0);
 
 				Commands.Add(motion);
