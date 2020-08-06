@@ -7,7 +7,7 @@
         mc:Ignorable="d"
 		DataContext="{Binding RelativeSource={RelativeSource Self}}"
 		ResizeMode="NoResize"
-        Title="New HeightMap" Height="237" Width="197"
+        Title="New HeightMap" Height="315" Width="197"
 		FocusManager.FocusedElement="{Binding ElementName=FirstTextBox}">
 	<Grid>
 		<Label Content="X:" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top"/>
@@ -28,7 +28,13 @@
 			<TextBox Margin="5" Text="{Binding TestPattern}" IsEnabled="{Binding ElementName=checkBoxGenTest, Path=IsChecked}" VerticalContentAlignment="Center"/>
 		</GroupBox>
 
-		<Button Content="Size From GCode" Click="ButtonSizeFromCode_Click" Margin="10,0,75,10" VerticalContentAlignment="Center" Height="23" VerticalAlignment="Bottom"/>
 		<Button Content="Ok" Click="ButtonOK_Click" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalContentAlignment="Center" Width="60" Height="23" VerticalAlignment="Bottom"/>
+		<GroupBox Header="Size from Gcode" HorizontalAlignment="Left" Height="80" Margin="10,163,0,0" VerticalAlignment="Top" Width="171">
+			<Grid>
+				<Label Content="Margin (mm):" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+				<TextBox VerticalContentAlignment="Center" Height="23" Margin="87,1,10,0" TextWrapping="Wrap" Text="{Binding GCodeMargin}" VerticalAlignment="Top"/>
+				<Button Content="Apply" Click="ButtonSizeFromCode_Click" Margin="109,0,10,6" VerticalContentAlignment="Center" Height="23" VerticalAlignment="Bottom"/>
+			</Grid>
+		</GroupBox>
 	</Grid>
 </Window>

@@ -26,6 +26,8 @@ namespace OpenCNCPilot
 		public Vector2 ToolPathMin = LastMin;
 		public Vector2 ToolPathMax = LastMax;
 
+		public double GCodeMargin { get; set; } = 0;
+
 		public bool Ok { get; set; } = false;
 		public bool GenerateTestPattern { get; set; } = LastGenTestPattern;
 		public string TestPattern { get; set; } = LastTestPattern;
@@ -169,11 +171,17 @@ namespace OpenCNCPilot
 
 		private void ButtonSizeFromCode_Click(object sender, RoutedEventArgs e)
 		{
-			MinX = Math.Floor(ToolPathMin.X * 100) / 100.0;
-			MinY = Math.Floor(ToolPathMin.Y * 100) / 100.0;
+			if (GCodeMargin < 0)
+			{
+				MessageBox.Show("Margin must be greater than or equal to zero");
+				return;
+			}
 
-			MaxX = Math.Ceiling(ToolPathMax.X * 100) / 100.0;
-			MaxY = Math.Ceiling(ToolPathMax.Y * 100) / 100.0;
+			MinX = Math.Floor((ToolPathMin.X - GCodeMargin) * 100) / 100.0;
+			MinY = Math.Floor((ToolPathMin.Y - GCodeMargin) * 100) / 100.0;
+
+			MaxX = Math.Ceiling((ToolPathMax.X + GCodeMargin) * 100) / 100.0;
+			MaxY = Math.Ceiling((ToolPathMax.Y + GCodeMargin) * 100) / 100.0;
 
 			UpdateTextboxes();
 		}
