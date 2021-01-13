@@ -11,12 +11,15 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Net.Sockets;
+
 
 namespace OpenCNCPilot.Communication
 {
 	enum ConnectionType
 	{
-		Serial
+		Serial,
+		Ethernet
 	}
 
 	class Machine
@@ -213,6 +216,8 @@ namespace OpenCNCPilot.Communication
 		private Stream Connection;
 		private Thread WorkerThread;
 
+		//elementos para Ethernet
+		TcpClient ClientEthernet;
 		private StreamWriter Log;
 
 		private void RecordLog(string message)
@@ -480,6 +485,7 @@ namespace OpenCNCPilot.Communication
 			if (Connected)
 				throw new Exception("Can't Connect: Already Connected");
 
+			
 			switch (Properties.Settings.Default.ConnectionType)
 			{
 				case ConnectionType.Serial:
@@ -487,10 +493,37 @@ namespace OpenCNCPilot.Communication
 					port.DtrEnable = Properties.Settings.Default.SerialPortDTR;
 					port.Open();
 					Connection = port.BaseStream;
+					Connected = true;
 					break;
+				case ConnectionType.Ethernet:
+					try
+					{
+					
+						RaiseEvent(Info, "Conectando a " + Properties.Settings.Default.IPEthernet + ":" + Properties.Settings.Default.PuertoEthernet);
+						ClientEthernet = new TcpClient(Properties.Settings.Default.IPEthernet, Properties.Settings.Default.PuertoEthernet);
+						Connected = true;
+						RaiseEvent(Info, "Conexion Exitosa");
+						Connection = ClientEthernet.GetStream();
+					}
+					catch (ArgumentNullException)
+					{
+						MessageBox.Show("Direccion o puerto invalido");
+						//RaiseEvent(Info, "ArgumentNullException: {0}" + e2);
+					}
+					catch (SocketException)
+					{
+						MessageBox.Show("Fallo de conexion");
+						//RaiseEvent(Info, "SocketException: {0}" + e1);
+					}
+					
+					break; 
 				default:
 					throw new Exception("Invalid Connection Type");
 			}
+            if(Connected == false)
+            {
+				return;
+            }
 
 			if (Properties.Settings.Default.LogTraffic)
 			{
@@ -504,7 +537,7 @@ namespace OpenCNCPilot.Communication
 				}
 			}
 
-			Connected = true;
+			
 
 			ToSend.Clear();
 			ToSendPriority.Clear();
@@ -530,16 +563,28 @@ namespace OpenCNCPilot.Communication
 			Connected = false;
 
 			WorkerThread.Join();
-
-			try
+			switch (Properties.Settings.Default.ConnectionType)
 			{
-				Connection.Close();
+				case ConnectionType.Serial:
+					try
+					{
+						Connection.Close();
+					}
+					catch { }
+					Connection.Dispose();
+					Connection = null;
+					break;
+				case ConnectionType.Ethernet:
+                    if (Connection != null)
+                    {
+						Connection.Close();
+						ClientEthernet.Close();
+					}
+					Connection = null;
+					break;
+				default:
+					throw new Exception("Invalid Connection Type");
 			}
-			catch { }
-
-			Connection.Dispose();
-			Connection = null;
-
 			Mode = OperatingMode.Disconnected;
 
 			MachinePosition = new Vector3();
