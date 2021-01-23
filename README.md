@@ -1,3 +1,5 @@
+Modificado para soportar conexion Ethernet TCP
+
 # OpenCNCPilot
 
 OpenCNCPilot is a GRBL compatible G-Code Sender.
