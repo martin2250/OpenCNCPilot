@@ -21,14 +21,14 @@ namespace OpenCNCPilot
 			ComboBoxSerialPort_DropDownOpened(null, null);
 			if(Properties.Settings.Default.ConnectionType == OpenCNCPilot.Communication.ConnectionType.Serial){
 				TipoSerial.IsChecked = true;
-				ConfEthernet.Visibility = Visibility.Hidden;
-				ConfSerial.Visibility = Visibility.Visible;
+				EthernetSettings.Visibility = Visibility.Hidden;
+				SerialSettings.Visibility = Visibility.Visible;
 			}
 			if (Properties.Settings.Default.ConnectionType == OpenCNCPilot.Communication.ConnectionType.Ethernet)
 			{
-				TipoEthernet.IsChecked = true; 
-				ConfEthernet.Visibility = Visibility.Visible;
-				ConfSerial.Visibility = Visibility.Hidden;
+				TipoEthernet.IsChecked = true;
+				EthernetSettings.Visibility = Visibility.Visible;
+				SerialSettings.Visibility = Visibility.Hidden;
 			}
 		}
 
@@ -77,15 +77,15 @@ namespace OpenCNCPilot
         private void TipoSerial_Checked(object sender, RoutedEventArgs e)
         {
 			Properties.Settings.Default.ConnectionType = OpenCNCPilot.Communication.ConnectionType.Serial;
-			ConfEthernet.Visibility = Visibility.Hidden;
-			ConfSerial.Visibility = Visibility.Visible;
+			EthernetSettings.Visibility = Visibility.Hidden;
+			SerialSettings.Visibility = Visibility.Visible;
 		}
 
         private void TipoEthernet_Checked(object sender, RoutedEventArgs e)
         {
 			Properties.Settings.Default.ConnectionType = OpenCNCPilot.Communication.ConnectionType.Ethernet;
-			ConfEthernet.Visibility = Visibility.Visible;
-			ConfSerial.Visibility = Visibility.Hidden;
+			EthernetSettings.Visibility = Visibility.Visible;
+			SerialSettings.Visibility = Visibility.Hidden;
 		}
 
     }

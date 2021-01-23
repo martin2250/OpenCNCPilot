@@ -216,8 +216,9 @@ namespace OpenCNCPilot.Communication
 		private Stream Connection;
 		private Thread WorkerThread;
 
-		//elementos para Ethernet
+		//ethernet client
 		TcpClient ClientEthernet;
+
 		private StreamWriter Log;
 
 		private void RecordLog(string message)
@@ -499,21 +500,19 @@ namespace OpenCNCPilot.Communication
 					try
 					{
 					
-						RaiseEvent(Info, "Conectando a " + Properties.Settings.Default.IPEthernet + ":" + Properties.Settings.Default.PuertoEthernet);
-						ClientEthernet = new TcpClient(Properties.Settings.Default.IPEthernet, Properties.Settings.Default.PuertoEthernet);
+						RaiseEvent(Info, "Connecting to " + Properties.Settings.Default.EthernetIP + ":" + Properties.Settings.Default.EthernetPort);
+						ClientEthernet = new TcpClient(Properties.Settings.Default.EthernetIP, Properties.Settings.Default.EthernetPort);
 						Connected = true;
-						RaiseEvent(Info, "Conexion Exitosa");
+						RaiseEvent(Info, "Successful Connection");
 						Connection = ClientEthernet.GetStream();
 					}
 					catch (ArgumentNullException)
 					{
-						MessageBox.Show("Direccion o puerto invalido");
-						//RaiseEvent(Info, "ArgumentNullException: {0}" + e2);
+						MessageBox.Show("Invalid address or port");
 					}
 					catch (SocketException)
 					{
-						MessageBox.Show("Fallo de conexion");
-						//RaiseEvent(Info, "SocketException: {0}" + e1);
+						MessageBox.Show("Connection failure");
 					}
 					
 					break; 

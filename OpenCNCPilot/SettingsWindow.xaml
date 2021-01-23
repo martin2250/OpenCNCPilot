@@ -61,10 +61,10 @@
 
                 <CheckBox Content="Log traffic to file" HorizontalAlignment="Left" Margin="116,200,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding LogTraffic}" ToolTip="Restart required to take effect"/>
                 <CheckBox Content="Ignore Additional Axes in Status Messages" HorizontalAlignment="Left" Margin="116,220,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding IgnoreAdditionalAxes}" ToolTip="Compatibility with custom GRBL versions which report 4+ axes in status reports"/>
-                <RadioButton x:Name="TipoSerial" Content="Serial" HorizontalAlignment="Left" Margin="85,28,0,0" VerticalAlignment="Top" Checked="TipoSerial_Checked"/>
-                <Label Content="Tipo Conexion" HorizontalAlignment="Left" Margin="92,4,0,0" VerticalAlignment="Top"/>
-                <RadioButton x:Name="TipoEthernet" Content="Ethernet" HorizontalAlignment="Left" Margin="150,28,0,0" VerticalAlignment="Top" Checked="TipoEthernet_Checked"/>
-                <Grid x:Name="ConfSerial" HorizontalAlignment="Left" Height="58" Margin="0,58,0,0" VerticalAlignment="Top" Width="374">
+                <RadioButton x:Name="TipoSerial" Content="Serial" HorizontalAlignment="Left" Margin="85,35,0,0" VerticalAlignment="Top" Checked="TipoSerial_Checked"/>
+                <Label Content="Connection Type" HorizontalAlignment="Left" Margin="85,4,0,0" VerticalAlignment="Top"/>
+                <RadioButton x:Name="TipoEthernet" Content="Ethernet" HorizontalAlignment="Left" Margin="150,35,0,0" VerticalAlignment="Top" Checked="TipoEthernet_Checked"/>
+                <Grid x:Name="SerialSettings" HorizontalAlignment="Left" Height="58" Margin="0,58,0,0" VerticalAlignment="Top" Width="374">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="54*"/>
                         <ColumnDefinition Width="133*"/>
@@ -75,16 +75,16 @@
                     <TextBox Margin="10,32,0,0" Text="{util:SettingBinding SerialPortBaud}" Grid.ColumnSpan="2"/>
                     <Label Content="BaudRate" HorizontalAlignment="Left" Margin="27,31,0,0" VerticalAlignment="Top" Grid.Column="1"/>
                 </Grid>
-                <Grid x:Name="ConfEthernet" HorizontalAlignment="Left" Height="58" Margin="0,58,0,0" VerticalAlignment="Top" Width="374">
+                <Grid x:Name="EthernetSettings" HorizontalAlignment="Left" Height="58" Margin="0,56,0,0" VerticalAlignment="Top" Width="374">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="54*"/>
                         <ColumnDefinition Width="133*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Content="IP&#xD;&#xA;" HorizontalAlignment="Left" Margin="27,5,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                    <Label Content="IP&#xD;&#xA;" HorizontalAlignment="Left" Margin="27,6,0,0" VerticalAlignment="Top" Grid.Column="1" Height="23"/>
 
-                    <TextBox Margin="10,32,0,0" Text="{util:SettingBinding PuertoEthernet}" Grid.ColumnSpan="2"/>
-                    <Label Content="Puerto&#xD;&#xA;" HorizontalAlignment="Left" Margin="27,31,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-                    <TextBox Margin="10,6,0,0" Text="{util:SettingBinding IPEthernet}" Grid.ColumnSpan="2"/>
+                    <TextBox Margin="10,32,0,0" Text="{util:SettingBinding EthernetPort}" Grid.ColumnSpan="2"/>
+                    <Label Content="Port&#xA;" HorizontalAlignment="Left" Margin="27,32,0,0" VerticalAlignment="Top" Grid.Column="1" Height="23"/>
+                    <TextBox Margin="10,6,0,0" Text="{util:SettingBinding EthernetIP}" Grid.ColumnSpan="2"/>
                 </Grid>
 
             </Grid>

@@ -650,24 +650,24 @@ namespace OpenCNCPilot.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.101")]
-        public string IPEthernet {
+        public string EthernetIP {
             get {
-                return ((string)(this["IPEthernet"]));
+                return ((string)(this["EthernetIP"]));
             }
             set {
-                this["IPEthernet"] = value;
+                this["EthernetIP"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("34000")]
-        public int PuertoEthernet {
+        public int EthernetPort {
             get {
-                return ((int)(this["PuertoEthernet"]));
+                return ((int)(this["EthernetPort"]));
             }
             set {
-                this["PuertoEthernet"] = value;
+                this["EthernetPort"] = value;
             }
         }
     }
