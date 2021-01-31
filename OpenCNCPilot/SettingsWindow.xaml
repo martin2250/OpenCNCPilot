@@ -6,136 +6,117 @@
         xmlns:local="clr-namespace:OpenCNCPilot"
         xmlns:util="clr-namespace:OpenCNCPilot.Util"
         mc:Ignorable="d"
-        Title="SettingsWindow" Height="311.334" Width="390" Closed="Window_Closed" ResizeMode="NoResize">
-    <Window.Resources>
-        <Style TargetType="TextBox">
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="HorizontalContentAlignment" Value="Right"/>
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="Height" Value="23"/>
-            <Setter Property="Width" Value="120"/>
-        </Style>
-        <Style x:Key="styleButton" TargetType="{x:Type Button}">
-            <Setter Property="Margin" Value="5, 5, 0, 5"/>
-            <Setter Property="Height" Value="23"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="BorderBrush" Value="Black" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="border" CornerRadius="3" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1.5" Background="{TemplateBinding Background}" Padding="3, 0, 3, 0">
-                            <ContentPresenter x:Name="content" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="BorderBrush" Value="#FF4788c8" />
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="content" Property="RenderTransform" >
-                                    <Setter.Value>
-                                        <TranslateTransform Y="1.0" X="1.0"/>
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="content" Property="TextBlock.Foreground" Value="Gray" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Window.Resources>
-    <TabControl>
-        <TabItem Header="Connection">
-            <Grid>
+        Title="SettingsWindow" Height="300" Width="390" Closed="Window_Closed" ResizeMode="NoResize">
+	<Window.Resources>
+		<Style TargetType="TextBox">
+			<Setter Property="VerticalContentAlignment" Value="Center"/>
+			<Setter Property="HorizontalContentAlignment" Value="Right"/>
+			<Setter Property="HorizontalAlignment" Value="Left"/>
+			<Setter Property="VerticalAlignment" Value="Top"/>
+			<Setter Property="Height" Value="23"/>
+			<Setter Property="Width" Value="120"/>
+		</Style>
+	</Window.Resources>
+	<TabControl>
+		<TabItem Header="Connection">
+			<Grid>
+				<Label Content="Connection Type" HorizontalAlignment="Left" Margin="134,3,0,0" VerticalAlignment="Top"/>
+				<ComboBox x:Name="comboBoxConnectionType" Margin="10,4,0,0" Width="120" VerticalAlignment="Top" HorizontalAlignment="Left" SelectedValue="{util:SettingBinding ConnectionType}"/>
 
-                <CheckBox Content="Reset grbl when connecting" HorizontalAlignment="Left" Margin="116,121,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding SerialPortDTR}" ToolTip="the DTR signal is used to reset grbl when the connection is established, set by default on many other gcode senders"/>
+				<Grid HorizontalAlignment="Left" Height="58" Margin="0,34,0,0" VerticalAlignment="Top" Width="374">
+					<Grid.Style>
+						<Style TargetType="Grid">
+							<Setter Property="Visibility" Value="Hidden"/>
+							<Style.Triggers>
+								<DataTrigger Binding="{util:SettingBinding ConnectionType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="Serial">
+									<Setter Property="Visibility" Value="Visible"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</Grid.Style>
+					<ComboBox x:Name="ComboBoxSerialPort" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,5,0,0" Width="120" SelectedValuePath="Tag" SelectedValue="{util:SettingBinding SerialPortName}" DropDownOpened="ComboBoxSerialPort_DropDownOpened"/>
+					<Label Content="Serial Port" HorizontalAlignment="Left" Margin="135,4,0,0" VerticalAlignment="Top"/>
 
-                <TextBox Margin="10,144,0,0" Text="{util:SettingBinding ControllerBufferSize}"/>
-                <Label Content="Controller Buffer" HorizontalAlignment="Left" Margin="135,143,0,0" VerticalAlignment="Top"/>
+					<TextBox Margin="10,32,0,0" Text="{util:SettingBinding SerialPortBaud}"/>
+					<Label Content="BaudRate" HorizontalAlignment="Left" Margin="135,31,0,0" VerticalAlignment="Top"/>
+				</Grid>
 
-                <TextBox Margin="10,172,0,0" Text="{util:SettingBinding StatusPollInterval}"/>
-                <Label Content="Status Poll Interval (ms)" HorizontalAlignment="Left" Margin="135,171,0,0" VerticalAlignment="Top"/>
+				<Grid HorizontalAlignment="Left" Height="58" Margin="0,34,0,0" VerticalAlignment="Top" Width="374">
+					<Grid.Style>
+						<Style TargetType="Grid">
+							<Setter Property="Visibility" Value="Hidden"/>
+							<Style.Triggers>
+								<DataTrigger Binding="{util:SettingBinding ConnectionType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="Ethernet">
+									<Setter Property="Visibility" Value="Visible"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</Grid.Style>
+					<Label Content="IP" HorizontalAlignment="Left" Margin="135,5,0,0" VerticalAlignment="Top" Height="23"/>
+					<TextBox Margin="10,32,0,0" Text="{util:SettingBinding EthernetPort}"/>
 
-                <CheckBox Content="Log traffic to file" HorizontalAlignment="Left" Margin="116,200,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding LogTraffic}" ToolTip="Restart required to take effect"/>
-                <CheckBox Content="Ignore Additional Axes in Status Messages" HorizontalAlignment="Left" Margin="116,220,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding IgnoreAdditionalAxes}" ToolTip="Compatibility with custom GRBL versions which report 4+ axes in status reports"/>
-                <RadioButton x:Name="SerialType" Content="Serial" HorizontalAlignment="Left" Margin="85,35,0,0" VerticalAlignment="Top" Checked="SerialType_Checked"/>
-                <Label Content="Connection Type" HorizontalAlignment="Left" Margin="85,4,0,0" VerticalAlignment="Top"/>
-                <RadioButton x:Name="EthernetType" Content="Ethernet" HorizontalAlignment="Left" Margin="150,35,0,0" VerticalAlignment="Top" Checked="EthernetType_Checked"/>
-                <Grid x:Name="SerialSettings" HorizontalAlignment="Left" Height="58" Margin="0,58,0,0" VerticalAlignment="Top" Width="374">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="54*"/>
-                        <ColumnDefinition Width="133*"/>
-                    </Grid.ColumnDefinitions>
-                    <ComboBox x:Name="ComboBoxSerialPort" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,5,0,0" Width="120" SelectedValuePath="Tag" SelectedValue="{util:SettingBinding SerialPortName}" DropDownOpened="ComboBoxSerialPort_DropDownOpened" Grid.ColumnSpan="2"/>
-                    <Label Content="Serial Port" HorizontalAlignment="Left" Margin="27,5,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+					<Label Content="Port" HorizontalAlignment="Left" Margin="135,31,0,0" VerticalAlignment="Top" Height="23"/>
+					<TextBox Margin="10,6,0,0" Text="{util:SettingBinding EthernetIP}"/>
+				</Grid>
 
-                    <TextBox Margin="10,32,0,0" Text="{util:SettingBinding SerialPortBaud}" Grid.ColumnSpan="2"/>
-                    <Label Content="BaudRate" HorizontalAlignment="Left" Margin="27,31,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-                </Grid>
-                <Grid x:Name="EthernetSettings" HorizontalAlignment="Left" Height="58" Margin="0,56,0,0" VerticalAlignment="Top" Width="374">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="108*"/>
-                        <ColumnDefinition Width="61*"/>
-                        <ColumnDefinition Width="205*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Content="IP&#xD;&#xA;" HorizontalAlignment="Left" Margin="27,6,0,0" VerticalAlignment="Top" Grid.Column="1" Height="23"/>
+				<CheckBox Content="Reset grbl when connecting" HorizontalAlignment="Left" Margin="116,97,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding SerialPortDTR}" ToolTip="the DTR signal is used to reset grbl when the connection is established, set by default on many other gcode senders"/>
 
-                    <TextBox Margin="10,32,0,0" Text="{util:SettingBinding EthernetPort}" Grid.ColumnSpan="2"/>
-                    <Label Content="Port&#xA;" HorizontalAlignment="Left" Margin="27,32,0,0" VerticalAlignment="Top" Grid.Column="1" Height="23"/>
-                    <TextBox Margin="10,6,0,0" Text="{util:SettingBinding EthernetIP}" Grid.ColumnSpan="2"/>
-                </Grid>
+				<TextBox Margin="10,118,0,0" Text="{util:SettingBinding ControllerBufferSize}"/>
+				<Label Content="Controller Buffer" HorizontalAlignment="Left" Margin="135,117,0,0" VerticalAlignment="Top"/>
 
-            </Grid>
-        </TabItem>
+				<TextBox Margin="10,146,0,0" Text="{util:SettingBinding StatusPollInterval}"/>
+				<Label Content="Status Poll Interval (ms)" HorizontalAlignment="Left" Margin="135,145,0,0" VerticalAlignment="Top"/>
 
-        <TabItem Header="Viewport">
-            <Grid>
-                <TextBox Margin="10,10,0,0" Text="{util:SettingBinding ViewportArcSplit}"/>
-                <Label Content="preview arc segment length (mm)" HorizontalAlignment="Left" Margin="135,9,0,0" VerticalAlignment="Top" Height="26" Width="188"/>
+				<CheckBox Content="Log traffic to file" HorizontalAlignment="Left" Margin="116,174,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding LogTraffic}" ToolTip="Restart required to take effect"/>
+				<CheckBox Content="Ignore Additional Axes in Status Messages" HorizontalAlignment="Left" Margin="116,194,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding IgnoreAdditionalAxes}" ToolTip="Compatibility with custom GRBL versions which report 4+ axes in status reports"/>
+			</Grid>
+		</TabItem>
 
-                <TextBox Margin="10,38,0,0" Text="{util:SettingBinding HeightMapOpacity}"/>
-                <Label Content="height map opacity (0.0 - 1.0)" HorizontalAlignment="Left" Margin="135,37,0,0" VerticalAlignment="Top" Height="26" Width="165"/>
+		<TabItem Header="Viewport">
+			<Grid>
+				<TextBox Margin="10,10,0,0" Text="{util:SettingBinding ViewportArcSplit}"/>
+				<Label Content="preview arc segment length (mm)" HorizontalAlignment="Left" Margin="135,9,0,0" VerticalAlignment="Top" Height="26" Width="188"/>
 
-                <TextBox Margin="10,66,0,0" Text="{util:SettingBinding GridThickness}"/>
-                <Label Content="grid thickness (0.1 default)" HorizontalAlignment="Left" Margin="135,65,0,0" VerticalAlignment="Top" Height="26" Width="165"/>
+				<TextBox Margin="10,38,0,0" Text="{util:SettingBinding HeightMapOpacity}"/>
+				<Label Content="height map opacity (0.0 - 1.0)" HorizontalAlignment="Left" Margin="135,37,0,0" VerticalAlignment="Top" Height="26" Width="165"/>
 
-                <CheckBox Content="Preview Toolpath" HorizontalAlignment="Left" Margin="116,107,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding EnableCodePreview}" Height="15" Width="110"/>
-                <CheckBox Content="Send Soft Reset on Escape Key press" HorizontalAlignment="Left" Margin="116,127,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding EnableEscapeSoftReset}" Height="15" Width="213"/>
-            </Grid>
-        </TabItem>
+				<TextBox Margin="10,66,0,0" Text="{util:SettingBinding GridThickness}"/>
+				<Label Content="grid thickness (0.1 default)" HorizontalAlignment="Left" Margin="135,65,0,0" VerticalAlignment="Top" Height="26" Width="165"/>
 
-        <TabItem Header="Probing">
-            <Grid>
-                <TextBox Margin="10,10,0,0" Text="{util:SettingBinding ProbeFeed}"/>
-                <Label Content="Probe Plunge Feedrate (mm/min)" HorizontalAlignment="Left" Margin="135,9,0,0" VerticalAlignment="Top"/>
+				<CheckBox Content="Preview Toolpath" HorizontalAlignment="Left" Margin="116,107,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding EnableCodePreview}" Height="15" Width="110"/>
+				<CheckBox Content="Send Soft Reset on Escape Key press" HorizontalAlignment="Left" Margin="116,127,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding EnableEscapeSoftReset}" Height="15" Width="213"/>
+			</Grid>
+		</TabItem>
 
-                <CheckBox Content="Abort on Probe Fail" HorizontalAlignment="Left" Margin="116,40,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding AbortOnProbeFail}"/>
+		<TabItem Header="Probing">
+			<Grid>
+				<TextBox Margin="10,10,0,0" Text="{util:SettingBinding ProbeFeed}"/>
+				<Label Content="Probe Plunge Feedrate (mm/min)" HorizontalAlignment="Left" Margin="135,9,0,0" VerticalAlignment="Top"/>
 
-                <TextBox Margin="10,61,0,0" Text="{util:SettingBinding ProbeSafeHeight}"/>
-                <Label Content="Safe Height (mm)" HorizontalAlignment="Left" Margin="135,60,0,0" VerticalAlignment="Top"/>
+				<CheckBox Content="Abort on Probe Fail" HorizontalAlignment="Left" Margin="116,40,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding AbortOnProbeFail}"/>
 
-                <TextBox Margin="10,89,0,0" Text="{util:SettingBinding ProbeMinimumHeight}" ToolTip="This height will be added to the height of the last probe point to prevent crashes on highly tilted surfaces"/>
-                <Label Content="Minimum Height (mm)" HorizontalAlignment="Left" Margin="135,88,0,0" VerticalAlignment="Top"/>
+				<TextBox Margin="10,61,0,0" Text="{util:SettingBinding ProbeSafeHeight}"/>
+				<Label Content="Safe Height (mm)" HorizontalAlignment="Left" Margin="135,60,0,0" VerticalAlignment="Top"/>
 
-                <TextBox Margin="10,117,0,0" Text="{util:SettingBinding ProbeMaxDepth}"/>
-                <Label Content="Max Depth (mm)" HorizontalAlignment="Left" Margin="135,116,0,0" VerticalAlignment="Top"/>
+				<TextBox Margin="10,89,0,0" Text="{util:SettingBinding ProbeMinimumHeight}" ToolTip="This height will be added to the height of the last probe point to prevent crashes on highly tilted surfaces"/>
+				<Label Content="Minimum Height (mm)" HorizontalAlignment="Left" Margin="135,88,0,0" VerticalAlignment="Top"/>
 
-                <TextBox Margin="10,145,0,0" Text="{util:SettingBinding ProbeXAxisWeight}"/>
-                <Label Content="Probe X-Axis Weight" HorizontalAlignment="Left" Margin="135,144,0,0" VerticalAlignment="Top" ToolTip="Use this value to tell OpenCNCPilot to prefer to move X or Y preferably when probing. This is useful if one of both axes is lighter or faster than the other. Values smaller or greater than 1.0 change the preferred axis, 1.0 means no preferred axis."/>
+				<TextBox Margin="10,117,0,0" Text="{util:SettingBinding ProbeMaxDepth}"/>
+				<Label Content="Max Depth (mm)" HorizontalAlignment="Left" Margin="135,116,0,0" VerticalAlignment="Top"/>
 
-                <CheckBox Content="Auto-Backup HeightMap when complete" HorizontalAlignment="Left" Margin="116,175,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding BackupHeightMap}" ToolTip="Backups are stored in the same folder as OpenCNCPilot.exe"/>
-            </Grid>
-        </TabItem>
+				<TextBox Margin="10,145,0,0" Text="{util:SettingBinding ProbeXAxisWeight}"/>
+				<Label Content="Probe X-Axis Weight" HorizontalAlignment="Left" Margin="135,144,0,0" VerticalAlignment="Top" ToolTip="Use this value to tell OpenCNCPilot to prefer to move X or Y preferably when probing. This is useful if one of both axes is lighter or faster than the other. Values smaller or greater than 1.0 change the preferred axis, 1.0 means no preferred axis."/>
 
-        <TabItem Header="GCode">
-            <Grid>
-                <CheckBox Content="Include Spindle 'S' Commands" HorizontalAlignment="Left" Margin="116,10,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding GCodeIncludeSpindle}" ToolTip="Strip S[XX] from file before sending to machine if not checked"/>
-                <CheckBox Content="Include Dwell 'G4' Commands" HorizontalAlignment="Left" Margin="116,30,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding GCodeIncludeDwell}" ToolTip="Strip G4 P[XX] from file before sending to machine if not checked"/>
-                <CheckBox Content="Include Program End (M2, M30)" HorizontalAlignment="Left" Margin="116,50,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding GCodeIncludeMEnd}" ToolTip="Strip M2/M30 from file before sending to machine if not checked. Default is off since these commands reset offsets from G92."/>
-            </Grid>
-        </TabItem>
-    </TabControl>
+				<CheckBox Content="Auto-Backup HeightMap when complete" HorizontalAlignment="Left" Margin="116,175,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding BackupHeightMap}" ToolTip="Backups are stored in the same folder as OpenCNCPilot.exe"/>
+			</Grid>
+		</TabItem>
+
+		<TabItem Header="GCode">
+			<Grid>
+				<CheckBox Content="Include Spindle 'S' Commands" HorizontalAlignment="Left" Margin="116,10,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding GCodeIncludeSpindle}" ToolTip="Strip S[XX] from file before sending to machine if not checked"/>
+				<CheckBox Content="Include Dwell 'G4' Commands" HorizontalAlignment="Left" Margin="116,30,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding GCodeIncludeDwell}" ToolTip="Strip G4 P[XX] from file before sending to machine if not checked"/>
+				<CheckBox Content="Include Program End (M2, M30)" HorizontalAlignment="Left" Margin="116,50,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding GCodeIncludeMEnd}" ToolTip="Strip M2/M30 from file before sending to machine if not checked. Default is off since these commands reset offsets from G92."/>
+			</Grid>
+		</TabItem>
+	</TabControl>
 </Window>

@@ -7,11 +7,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.IO.Ports;
+using System.Net.Sockets;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Net.Sockets;
 
 
 namespace OpenCNCPilot.Communication
@@ -486,7 +486,7 @@ namespace OpenCNCPilot.Communication
 			if (Connected)
 				throw new Exception("Can't Connect: Already Connected");
 
-			
+
 			switch (Properties.Settings.Default.ConnectionType)
 			{
 				case ConnectionType.Serial:
@@ -499,7 +499,7 @@ namespace OpenCNCPilot.Communication
 				case ConnectionType.Ethernet:
 					try
 					{
-					
+
 						RaiseEvent(Info, "Connecting to " + Properties.Settings.Default.EthernetIP + ":" + Properties.Settings.Default.EthernetPort);
 						ClientEthernet = new TcpClient(Properties.Settings.Default.EthernetIP, Properties.Settings.Default.EthernetPort);
 						Connected = true;
@@ -514,15 +514,16 @@ namespace OpenCNCPilot.Communication
 					{
 						MessageBox.Show("Connection failure");
 					}
-					
-					break; 
+
+					break;
 				default:
 					throw new Exception("Invalid Connection Type");
 			}
-            if(Connected == false)
-            {
+
+			if (!Connected)
+			{
 				return;
-            }
+			}
 
 			if (Properties.Settings.Default.LogTraffic)
 			{
@@ -536,7 +537,7 @@ namespace OpenCNCPilot.Communication
 				}
 			}
 
-			
+
 
 			ToSend.Clear();
 			ToSendPriority.Clear();
@@ -574,8 +575,8 @@ namespace OpenCNCPilot.Communication
 					Connection = null;
 					break;
 				case ConnectionType.Ethernet:
-                    if (Connection != null)
-                    {
+					if (Connection != null)
+					{
 						Connection.Close();
 						ClientEthernet.Close();
 					}

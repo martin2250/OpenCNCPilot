@@ -1,7 +1,8 @@
-﻿using System;
+﻿using OpenCNCPilot.Communication;
+using System;
 using System.Collections.Generic;
 using System.IO.Ports;
-using System.IO;
+using System.Linq;
 using System.Management;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,17 +20,8 @@ namespace OpenCNCPilot
 			InitializeComponent();
 
 			ComboBoxSerialPort_DropDownOpened(null, null);
-			if(Properties.Settings.Default.ConnectionType == OpenCNCPilot.Communication.ConnectionType.Serial){
-				SerialType.IsChecked = true;
-				EthernetSettings.Visibility = Visibility.Hidden;
-				SerialSettings.Visibility = Visibility.Visible;
-			}
-			if (Properties.Settings.Default.ConnectionType == OpenCNCPilot.Communication.ConnectionType.Ethernet)
-			{
-				EthernetType.IsChecked = true;
-				EthernetSettings.Visibility = Visibility.Visible;
-				SerialSettings.Visibility = Visibility.Hidden;
-			}
+
+			comboBoxConnectionType.ItemsSource = Enum.GetValues(typeof(ConnectionType)).Cast<ConnectionType>();
 		}
 
 		private void ComboBoxSerialPort_DropDownOpened(object sender, EventArgs e)
@@ -73,20 +65,5 @@ namespace OpenCNCPilot
 		{
 			Properties.Settings.Default.Save();
 		}
-
-        private void SerialType_Checked(object sender, RoutedEventArgs e)
-        {
-			Properties.Settings.Default.ConnectionType = OpenCNCPilot.Communication.ConnectionType.Serial;
-			EthernetSettings.Visibility = Visibility.Hidden;
-			SerialSettings.Visibility = Visibility.Visible;
-		}
-
-        private void EthernetType_Checked(object sender, RoutedEventArgs e)
-        {
-			Properties.Settings.Default.ConnectionType = OpenCNCPilot.Communication.ConnectionType.Ethernet;
-			EthernetSettings.Visibility = Visibility.Visible;
-			SerialSettings.Visibility = Visibility.Hidden;
-		}
-
-    }
+	}
 }
