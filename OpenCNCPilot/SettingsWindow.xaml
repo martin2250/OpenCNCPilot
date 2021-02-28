@@ -1,4 +1,4 @@
-﻿<Window x:Class="OpenCNCPilot.SettingsWindow"
+<Window x:Class="OpenCNCPilot.SettingsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -20,23 +20,55 @@
 	<TabControl>
 		<TabItem Header="Connection">
 			<Grid>
-				<ComboBox Name="ComboBoxSerialPort" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0" Width="120" SelectedValuePath="Tag" SelectedValue="{util:SettingBinding SerialPortName}" DropDownOpened="ComboBoxSerialPort_DropDownOpened"/>
-				<Label Content="Serial Port" HorizontalAlignment="Left" Margin="135,10,0,0" VerticalAlignment="Top"/>
+				<Label Content="Connection Type" HorizontalAlignment="Left" Margin="134,3,0,0" VerticalAlignment="Top"/>
+				<ComboBox x:Name="comboBoxConnectionType" Margin="10,4,0,0" Width="120" VerticalAlignment="Top" HorizontalAlignment="Left" SelectedValue="{util:SettingBinding ConnectionType}"/>
 
-				<TextBox Margin="10,37,0,0" Text="{util:SettingBinding SerialPortBaud}"/>
-				<Label Content="BaudRate" HorizontalAlignment="Left" Margin="135,36,0,0" VerticalAlignment="Top"/>
+				<Grid HorizontalAlignment="Left" Height="58" Margin="0,34,0,0" VerticalAlignment="Top" Width="374">
+					<Grid.Style>
+						<Style TargetType="Grid">
+							<Setter Property="Visibility" Value="Hidden"/>
+							<Style.Triggers>
+								<DataTrigger Binding="{util:SettingBinding ConnectionType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="Serial">
+									<Setter Property="Visibility" Value="Visible"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</Grid.Style>
+					<ComboBox x:Name="ComboBoxSerialPort" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,5,0,0" Width="120" SelectedValuePath="Tag" SelectedValue="{util:SettingBinding SerialPortName}" DropDownOpened="ComboBoxSerialPort_DropDownOpened"/>
+					<Label Content="Serial Port" HorizontalAlignment="Left" Margin="135,4,0,0" VerticalAlignment="Top"/>
 
-				<CheckBox Content="Reset grbl when connecting" HorizontalAlignment="Left" Margin="116,65,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding SerialPortDTR}" ToolTip="the DTR signal is used to reset grbl when the connection is established, set by default on many other gcode senders"/>
+					<TextBox Margin="10,32,0,0" Text="{util:SettingBinding SerialPortBaud}"/>
+					<Label Content="BaudRate" HorizontalAlignment="Left" Margin="135,31,0,0" VerticalAlignment="Top"/>
+				</Grid>
 
-				<TextBox Margin="10,88,0,0" Text="{util:SettingBinding ControllerBufferSize}"/>
-				<Label Content="Controller Buffer" HorizontalAlignment="Left" Margin="135,87,0,0" VerticalAlignment="Top"/>
+				<Grid HorizontalAlignment="Left" Height="58" Margin="0,34,0,0" VerticalAlignment="Top" Width="374">
+					<Grid.Style>
+						<Style TargetType="Grid">
+							<Setter Property="Visibility" Value="Hidden"/>
+							<Style.Triggers>
+								<DataTrigger Binding="{util:SettingBinding ConnectionType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="Ethernet">
+									<Setter Property="Visibility" Value="Visible"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</Grid.Style>
+					<Label Content="IP" HorizontalAlignment="Left" Margin="135,5,0,0" VerticalAlignment="Top" Height="23"/>
+					<TextBox Margin="10,32,0,0" Text="{util:SettingBinding EthernetPort}"/>
 
-				<TextBox Margin="10,116,0,0" Text="{util:SettingBinding StatusPollInterval}"/>
-				<Label Content="Status Poll Interval (ms)" HorizontalAlignment="Left" Margin="135,115,0,0" VerticalAlignment="Top"/>
+					<Label Content="Port" HorizontalAlignment="Left" Margin="135,31,0,0" VerticalAlignment="Top" Height="23"/>
+					<TextBox Margin="10,6,0,0" Text="{util:SettingBinding EthernetIP}"/>
+				</Grid>
 
-				<CheckBox Content="Log traffic to file" HorizontalAlignment="Left" Margin="116,144,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding LogTraffic}" ToolTip="Restart required to take effect"/>
-				<CheckBox Content="Ignore Additional Axes in Status Messages" HorizontalAlignment="Left" Margin="116,164,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding IgnoreAdditionalAxes}" ToolTip="Compatibility with custom GRBL versions which report 4+ axes in status reports"/>
+				<CheckBox Content="Reset grbl when connecting" HorizontalAlignment="Left" Margin="116,97,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding SerialPortDTR}" ToolTip="the DTR signal is used to reset grbl when the connection is established, set by default on many other gcode senders"/>
 
+				<TextBox Margin="10,118,0,0" Text="{util:SettingBinding ControllerBufferSize}"/>
+				<Label Content="Controller Buffer" HorizontalAlignment="Left" Margin="135,117,0,0" VerticalAlignment="Top"/>
+
+				<TextBox Margin="10,146,0,0" Text="{util:SettingBinding StatusPollInterval}"/>
+				<Label Content="Status Poll Interval (ms)" HorizontalAlignment="Left" Margin="135,145,0,0" VerticalAlignment="Top"/>
+
+				<CheckBox Content="Log traffic to file" HorizontalAlignment="Left" Margin="116,174,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding LogTraffic}" ToolTip="Restart required to take effect"/>
+				<CheckBox Content="Ignore Additional Axes in Status Messages" HorizontalAlignment="Left" Margin="116,194,0,0" VerticalAlignment="Top" IsChecked="{util:SettingBinding IgnoreAdditionalAxes}" ToolTip="Compatibility with custom GRBL versions which report 4+ axes in status reports"/>
 			</Grid>
 		</TabItem>
 

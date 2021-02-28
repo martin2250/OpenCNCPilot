@@ -1,6 +1,8 @@
-﻿using System;
+using OpenCNCPilot.Communication;
+using System;
 using System.Collections.Generic;
 using System.IO.Ports;
+using System.Linq;
 using System.Management;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,9 +16,12 @@ namespace OpenCNCPilot
 	{
 		public SettingsWindow()
 		{
+
 			InitializeComponent();
 
 			ComboBoxSerialPort_DropDownOpened(null, null);
+
+			comboBoxConnectionType.ItemsSource = Enum.GetValues(typeof(ConnectionType)).Cast<ConnectionType>();
 		}
 
 		private void ComboBoxSerialPort_DropDownOpened(object sender, EventArgs e)
