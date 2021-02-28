@@ -26,6 +26,8 @@ namespace OpenCNCPilot
 		GCodeFile ToolPath { get; set; } = GCodeFile.Empty;
 		HeightMap Map { get; set; }
 
+		bool HeightMapApplied { get; set; } = false;
+
 		GrblSettingsWindow settingsWindow = new GrblSettingsWindow();
 
 		public event PropertyChangedEventHandler PropertyChanged;

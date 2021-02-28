@@ -19,6 +19,14 @@ namespace OpenCNCPilot
 			if (machine.Mode == Machine.OperatingMode.SendFile)
 				return;
 
+			if (
+				HeightMapApplied &&
+				MessageBox.Show("Height Map was already applied once - apply again?", "Height Map was already applied", MessageBoxButton.YesNo) != MessageBoxResult.Yes
+				)
+			{
+				return;
+			}
+
 			if (Map == null || Map.NotProbed.Count > 0)
 			{
 				MessageBox.Show("HeightMap is not ready");
@@ -38,6 +46,8 @@ namespace OpenCNCPilot
 			{
 				MessageBox.Show(ex.Message);
 			}
+
+			HeightMapApplied = true;
 		}
 
 		private void ButtonEditArcToLines_Click(object sender, RoutedEventArgs e)

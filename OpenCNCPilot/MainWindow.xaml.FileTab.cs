@@ -38,6 +38,8 @@ namespace OpenCNCPilot
 			{
 				MessageBox.Show(ex.Message);
 			}
+
+			HeightMapApplied = false;
 		}
 
 		private void SaveFileDialogGCode_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
