@@ -15,6 +15,7 @@ namespace OpenCNCPilot
         SaveFileDialog saveFileDialogSettings = new SaveFileDialog() { Filter = Constants.FileFilterSettings };
         Dictionary<int, double> CurrentSettings = new Dictionary<int, double>();
 		Dictionary<int, TextBox> SettingsBoxes = new Dictionary<int, TextBox>();
+		private bool noupdate = false;
 
 		public event Action<string> SendLine;
 
@@ -85,13 +86,18 @@ namespace OpenCNCPilot
 						valBox.ToolTip = $"{labels.Item1} ({labels.Item2}):\n{labels.Item3}";
 					}
 
-					CurrentSettings.Add(number, value);
+					if (!noupdate) {
+						CurrentSettings.Add(number, value);
+					}
 					SettingsBoxes.Add(number, valBox);
 				}
 				else
 				{
 					SettingsBoxes[number].Text = value.ToString(Util.Constants.DecimalOutputFormat);
-					CurrentSettings[number] = value;
+					if (!noupdate)
+					{
+						CurrentSettings[number] = value;
+					}
 				}
 			}
 			catch { }
@@ -144,7 +150,9 @@ namespace OpenCNCPilot
 
 				foreach (string setting in settings)
                 {
+					this.noupdate = true;
 					LineReceived(setting);
+					this.noupdate = false;
 				}
 			}
 
