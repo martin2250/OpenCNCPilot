@@ -8,3 +8,5 @@
 "7","Homing fail","Homing fail. Safety door was opened during homing cycle."
 "8","Homing fail","Homing fail. Pull off travel failed to clear limit switch. Try increasing pull-off setting or check wiring."
 "9","Homing fail","Homing fail. Could not find limit switch within search distances. Try increasing max travel, decreasing pull-off distance, or check wiring."
+"10","Homing fail","Homing fail. Could not find limit dual switch within search distances. Try increasing max travel, decreasing pull-off distance, or check wiring."
+"11","Homing fail","Homing fail. Limit switch is already active. Try reposition the machine, or check wiring."
