@@ -639,6 +639,24 @@ namespace OpenCNCPilot.Communication
 			ToSend.Enqueue(line);
 		}
 
+        public void Kill()
+        {
+            if (!Connected)
+            {
+                RaiseEvent(Info, "Not Connected");
+                return;
+            }
+
+            Mode = OperatingMode.Manual;
+
+            ToSend.Clear();
+            ToSendPriority.Clear();
+            Sent.Clear();
+            ToSendMacro.Clear();
+            ToSendPriority.Enqueue((char)0x18);
+            RaiseEvent(ReportError, $"Emergency stop pressed");
+        }
+
 		public void SoftReset()
 		{
 			if (!Connected)

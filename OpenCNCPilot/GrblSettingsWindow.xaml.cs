@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using OpenCNCPilot.Util;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -9,7 +11,9 @@ namespace OpenCNCPilot
 {
 	public partial class GrblSettingsWindow : Window
 	{
-		Dictionary<int, double> CurrentSettings = new Dictionary<int, double>();
+        OpenFileDialog openFileDialogSettings = new OpenFileDialog() { Filter = Constants.FileFilterSettings };
+        SaveFileDialog saveFileDialogSettings = new SaveFileDialog() { Filter = Constants.FileFilterSettings };
+        Dictionary<int, double> CurrentSettings = new Dictionary<int, double>();
 		Dictionary<int, TextBox> SettingsBoxes = new Dictionary<int, TextBox>();
 
 		public event Action<string> SendLine;
@@ -129,5 +133,45 @@ namespace OpenCNCPilot
 			e.Cancel = true;
 			Hide();
 		}
-	}
+
+        private void ButtonImport_Click(object sender, RoutedEventArgs e)
+        {
+			if((bool)openFileDialogSettings.ShowDialog())
+            {
+				string fileName = openFileDialogSettings.FileName;
+
+				string[] settings = System.IO.File.ReadAllLines(fileName);
+
+				foreach (string setting in settings)
+                {
+					LineReceived(setting);
+				}
+			}
+
+		}
+
+        private void ButtonExport_Click(object sender, RoutedEventArgs e)
+        {
+			List<Tuple<int, double>> ToSend = new List<Tuple<int, double>>();
+			string fileOutput = "";
+
+			foreach (KeyValuePair<int, double> kvp in CurrentSettings)
+			{
+				double newval;
+
+				if (!double.TryParse(SettingsBoxes[kvp.Key].Text, System.Globalization.NumberStyles.Float, Util.Constants.DecimalParseFormat, out newval))
+				{
+					MessageBox.Show($"Value \"{SettingsBoxes[kvp.Key].Text}\" is invalid for Setting \"{Util.GrblCodeTranslator.Settings[kvp.Key].Item1}\"");
+					return;
+				}
+
+				fileOutput += "$" + kvp.Key.ToString() + "=" + newval.ToString() + Environment.NewLine;
+			}
+
+			if((bool)saveFileDialogSettings.ShowDialog())
+            {
+				System.IO.File.WriteAllText(saveFileDialogSettings.FileName, fileOutput);
+			}
+		}
+    }
 }

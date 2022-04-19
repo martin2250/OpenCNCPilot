@@ -23,7 +23,7 @@ namespace OpenCNCPilot
 		OpenFileDialog openFileDialogHeightMap = new OpenFileDialog() { Filter = Constants.FileFilterHeightMap };
 		SaveFileDialog saveFileDialogHeightMap = new SaveFileDialog() { Filter = Constants.FileFilterHeightMap };
 
-		GCodeFile ToolPath { get; set; } = GCodeFile.Empty;
+        GCodeFile ToolPath { get; set; } = GCodeFile.Empty;
 		HeightMap Map { get; set; }
 
 		bool HeightMapApplied { get; set; } = false;
@@ -424,5 +424,10 @@ namespace OpenCNCPilot
 
 			return IntPtr.Zero;
 		}
-	}
+
+        private void ButtonEmergencyStop_Click(object sender, RoutedEventArgs e)
+        {
+            machine.Kill();
+        }
+    }
 }
