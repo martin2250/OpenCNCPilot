@@ -145,6 +145,12 @@
 									<Label Content="MaxZ:" Width="43"/>
 									<Label Content="0" Width="50" Name="LabelHeightMapMaxZ"/>
 								</StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,58,0,0" VerticalAlignment="Top">
+                                    <Label Content="Offset X:" Width="58"/>
+                                    <TextBox Width="34" VerticalContentAlignment="Center" Text="{util:SettingBinding ProbeOffsetX}"/>
+                                    <Label Content="Offset Y:" Width="58"/>
+                                    <TextBox Width="34" VerticalContentAlignment="Center" Text="{util:SettingBinding ProbeOffsetY}"/>
+                                </StackPanel>
 							</Grid>
 						</Grid>
 					</Expander>
