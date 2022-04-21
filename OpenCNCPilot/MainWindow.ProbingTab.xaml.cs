@@ -210,7 +210,7 @@ namespace OpenCNCPilot
 
 			Vector2 nextPoint = Map.GetCoordinates(Map.NotProbed[0].Item1, Map.NotProbed[0].Item2);
 
-			machine.SendLine($"G0X{nextPoint.X.ToString("0.###", Constants.DecimalOutputFormat)}Y{nextPoint.Y.ToString("0.###", Constants.DecimalOutputFormat)}");
+			machine.SendLine($"G0X{(nextPoint.X - Properties.Settings.Default.ProbeOffsetX).ToString("0.###", Constants.DecimalOutputFormat)}Y{(nextPoint.Y - Properties.Settings.Default.ProbeOffsetY).ToString("0.###", Constants.DecimalOutputFormat)}");
 
 			machine.SendLine($"G38.3Z-{Properties.Settings.Default.ProbeMaxDepth.ToString("0.###", Constants.DecimalOutputFormat)}F{Properties.Settings.Default.ProbeFeed.ToString("0.#", Constants.DecimalOutputFormat)}");
 

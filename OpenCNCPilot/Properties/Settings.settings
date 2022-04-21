@@ -165,5 +165,11 @@ G92Z0;</Value>
     <Setting Name="EthernetPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">34000</Value>
     </Setting>
+    <Setting Name="ProbeOffsetX" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="ProbeOffsetY" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
