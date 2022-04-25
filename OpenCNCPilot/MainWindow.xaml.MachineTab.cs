@@ -11,6 +11,7 @@ namespace OpenCNCPilot
 				return;
 
 			new SettingsWindow().ShowDialog();
+			this.settingsWindow.ResetAll();
 		}
 
 		private void ButtonConnect_Click(object sender, RoutedEventArgs e)
