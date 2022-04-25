@@ -165,5 +165,8 @@ G92Z0;</Value>
     <Setting Name="EthernetPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">34000</Value>
     </Setting>
+    <Setting Name="FirmwareType" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Grbl</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
