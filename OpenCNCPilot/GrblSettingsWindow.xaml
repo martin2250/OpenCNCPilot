@@ -23,5 +23,7 @@
             </Grid>
         </ScrollViewer>
         <Button Content="Apply" Click="ButtonApply_Click" Height="20" Width="50" Margin="0,10,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="1"/>
+        <Button Content="Import" HorizontalAlignment="Right" Margin="0,0,65,10" Grid.Row="1" Width="50" Height="20" VerticalAlignment="Bottom" Click="ButtonImport_Click"/>
+        <Button Content="Export" HorizontalAlignment="Right" Margin="0,0,120,10" Grid.Row="1" VerticalAlignment="Bottom" Width="50" Click="ButtonExport_Click"/>
     </Grid>
 </Window>

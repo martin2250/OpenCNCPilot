@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using OpenCNCPilot.Util;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -9,6 +11,8 @@ namespace OpenCNCPilot
 {
 	public partial class GrblSettingsWindow : Window
 	{
+		OpenFileDialog openFileDialogSettings = new OpenFileDialog() { Filter = Constants.FileFilterSettings };
+		SaveFileDialog saveFileDialogSettings = new SaveFileDialog() { Filter = Constants.FileFilterSettings };
 		Dictionary<int, double> CurrentSettings = new Dictionary<int, double>();
 		Dictionary<int, TextBox> SettingsBoxes = new Dictionary<int, TextBox>();
 
@@ -121,6 +125,48 @@ namespace OpenCNCPilot
 				SendLine.Invoke($"${setting.Item1}={setting.Item2.ToString(Util.Constants.DecimalOutputFormat)}");
 				CurrentSettings[setting.Item1] = setting.Item2;
 				await Task.Delay(Properties.Settings.Default.SettingsSendDelay);
+			}
+		}
+
+		private void ButtonImport_Click(object sender, RoutedEventArgs e)
+		{
+			if ((bool)openFileDialogSettings.ShowDialog())
+			{
+				string fileName = this.openFileDialogSettings.FileName;
+				string[] settings = System.IO.File.ReadAllLines(fileName);
+				//stores current settings
+				Dictionary<int, double> previousSettings = new Dictionary<int, double>(this.CurrentSettings);
+
+				foreach (string setting in settings)
+				{
+					LineReceived(setting);
+				}
+				//restores current settings to enable settings apply to detect changes
+				this.CurrentSettings = new Dictionary<int, double>(previousSettings);
+			}
+		}
+
+		private void ButtonExport_Click(object sender, RoutedEventArgs e)
+		{
+			List<Tuple<int, double>> ToSend = new List<Tuple<int, double>>();
+			string fileOutput = "";
+
+			foreach (KeyValuePair<int, double> kvp in this.CurrentSettings)
+			{
+				double newval;
+
+				if (!double.TryParse(this.SettingsBoxes[kvp.Key].Text, System.Globalization.NumberStyles.Float, Util.Constants.DecimalParseFormat, out newval))
+				{
+					MessageBox.Show($"Value \"{this.SettingsBoxes[kvp.Key].Text}\" is invalid for Setting \"{Util.GrblCodeTranslator.Settings[kvp.Key].Item1}\"");
+					return;
+				}
+
+				fileOutput += "$" + kvp.Key.ToString() + "=" + newval.ToString() + Environment.NewLine;
+			}
+
+			if ((bool)this.saveFileDialogSettings.ShowDialog())
+			{
+				System.IO.File.WriteAllText(this.saveFileDialogSettings.FileName, fileOutput);
 			}
 		}
 
