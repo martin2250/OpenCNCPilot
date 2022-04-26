@@ -673,6 +673,18 @@ namespace OpenCNCPilot.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Grbl")]
+        public string FirmwareType {
+            get {
+                return ((string)(this["FirmwareType"]));
+            }
+            set {
+                this["FirmwareType"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public double ProbeOffsetX {
             get {

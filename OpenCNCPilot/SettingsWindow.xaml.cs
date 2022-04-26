@@ -1,4 +1,5 @@
 using OpenCNCPilot.Communication;
+using OpenCNCPilot.Util;
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
@@ -65,5 +66,10 @@ namespace OpenCNCPilot
 		{
 			Properties.Settings.Default.Save();
 		}
-	}
+
+        private void FirmwareType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+			Util.GrblCodeTranslator.Reload();
+        }
+    }
 }

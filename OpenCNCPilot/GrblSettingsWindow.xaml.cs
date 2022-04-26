@@ -23,6 +23,14 @@ namespace OpenCNCPilot
 			InitializeComponent();
 		}
 
+		public void ResetAll()
+		{
+			this.CurrentSettings = new Dictionary<int, double>();
+			this.SettingsBoxes = new Dictionary<int, TextBox>();
+			gridMain.Children.Clear();
+			gridMain.RowDefinitions.Clear();
+		}
+
 		static Regex settingParser = new Regex(@"\$([0-9]+)=([0-9\.]+)");
 		public void LineReceived(string line)
 		{
