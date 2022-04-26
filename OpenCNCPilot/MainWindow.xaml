@@ -1,18 +1,18 @@
 ﻿<Window x:Class="OpenCNCPilot.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:h="http://helix-toolkit.org/wpf"
-        xmlns:local="clr-namespace:OpenCNCPilot"
+		xmlns:local="clr-namespace:OpenCNCPilot"
 		xmlns:util="clr-namespace:OpenCNCPilot.Util"
-        mc:Ignorable="d"
+		mc:Ignorable="d"
 		AllowDrop="True"
 		Drop="Window_Drop"
 		DragEnter="Window_DragEnter"
 		DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        PreviewKeyDown="Window_PreviewKeyDown"
-        Title="{Binding WindowTitle,Mode=OneWay}" Height="{util:SettingBinding WindowHeight}" Width="{util:SettingBinding WindowWidth}" Closing="Window_Closing">
+		PreviewKeyDown="Window_PreviewKeyDown"
+		Title="{Binding WindowTitle,Mode=OneWay}" Height="{util:SettingBinding WindowHeight}" Width="{util:SettingBinding WindowWidth}" Closing="Window_Closing">
 	<Window.Resources>
 		<ResourceDictionary Source="MainWindow.Resources.xaml"/>
 	</Window.Resources>
@@ -57,9 +57,9 @@
 							<Button Name="ButtonFileSave" Click="ButtonSave_Click" Content="Save" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="48,5,0,0" VerticalAlignment="Top"/>
 							<Button Name="ButtonFileClear" Click="ButtonClear_Click" Content="Clear" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="87,5,0,0" VerticalAlignment="Top"/>
 							<TextBlock  VerticalAlignment="Top" Margin="128,9,0,0">
-                                <Run Name="RunFilePosition" Text="0"/>
-                                <Run Text="/"/>
-                                <Run Name="RunFileLength"  Text="0"/>
+								<Run Name="RunFilePosition" Text="0"/>
+								<Run Text="/"/>
+								<Run Name="RunFileLength"  Text="0"/>
 							</TextBlock>
 
 							<ListView Name="ListViewFile"  Margin="0,53" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent"/>
@@ -70,10 +70,10 @@
 							<CheckBox Name="CheckBoxPauseOnM0" Content="Pause" ToolTip="Pause the Program on M0/M1/M30" IsChecked="{util:SettingBinding PauseFileOnHold}" HorizontalAlignment="Left" Margin="138,0,-24,20" Height="23" VerticalAlignment="Bottom"/>
 
 							<TextBlock  VerticalAlignment="Bottom" Margin="10,0,0,4" HorizontalAlignment="Left">
-                                <Run Text="Runtime:"/>
-                                <Run Name="RunFileRunTime" Text="00:00:00"/>
-                                <Run Text="/"/>
-                                <Run Name="RunFileDuration" Text="00:00:00"/>
+								<Run Text="Runtime:"/>
+								<Run Name="RunFileRunTime" Text="00:00:00"/>
+								<Run Text="/"/>
+								<Run Name="RunFileDuration" Text="00:00:00"/>
 							</TextBlock>
 						</Grid>
 					</Expander>
@@ -93,8 +93,8 @@
 					<Expander Header="Overrides" IsExpanded="{util:SettingBinding OverrideExpanderOpen}">
 						<StackPanel Name="StackPanelOverrides">
 							<TextBlock>
-                                <Run Text="Rapid:"/>
-                                <Run Name="RunRapidOvr"/>
+								<Run Text="Rapid:"/>
+								<Run Name="RunRapidOvr"/>
 							</TextBlock>
 							<StackPanel Orientation="Horizontal">
 								<Button Click="ButtonRapidOverride_Click" Content="100%" Style="{StaticResource styleButton}" Tag="100"/>
@@ -102,8 +102,8 @@
 								<Button Click="ButtonRapidOverride_Click" Content="25%" Style="{StaticResource styleButton}" Tag="25"/>
 							</StackPanel>
 							<TextBlock>
-                                <Run Text="Feed:"/>
-                                <Run Name="RunFeedOvr"/>
+								<Run Text="Feed:"/>
+								<Run Name="RunFeedOvr"/>
 							</TextBlock>
 							<StackPanel Orientation="Horizontal">
 								<Button Click="ButtonFeedOverride_Click" Content="+10%" Style="{StaticResource styleButton}" Tag="+10%"/>
@@ -113,8 +113,8 @@
 								<Button Click="ButtonFeedOverride_Click" Content="-10%" Style="{StaticResource styleButton}" Tag="-10%"/>
 							</StackPanel>
 							<TextBlock>
-                                <Run Text="Spindle:"/>
-                                <Run Name="RunSpindleOvr"/>
+								<Run Text="Spindle:"/>
+								<Run Name="RunSpindleOvr"/>
 							</TextBlock>
 							<StackPanel Orientation="Horizontal">
 								<Button Click="ButtonSpindleOverride_Click" Content="+10%" Style="{StaticResource styleButton}" Tag="+10%"/>
@@ -240,6 +240,16 @@
 									<TextBox Name="TextBoxCurrentTLO" Text="0.000" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="138,53,0,0" Width="52" Height="23" VerticalContentAlignment="Center" IsReadOnly="True" ToolTip="Current TLO (Z)"/>
 								</Grid>
 							</GroupBox>
+							<GroupBox Header="Probe Offset" Name="groupBoxProbeOffset">
+								<Grid>
+									<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top">
+										<Label Content="X:" Width="25"/>
+										<TextBox Height="23" Width="60" VerticalContentAlignment="Center" Text="{util:SettingBinding ProbeOffsetX}"/>
+										<Label Content="Y:" Width="25"/>
+										<TextBox Height="23" Width="60" VerticalContentAlignment="Center" Text="{util:SettingBinding ProbeOffsetY}"/>
+									</StackPanel>
+								</Grid>
+							</GroupBox>
 						</StackPanel>
 					</Expander>
 				</Border>
@@ -341,7 +351,7 @@
 			<h:GridLinesVisual3D 
 				x:Name="ModelGrid"
 				Width="500" Length="500"
-                Thickness="{util:SettingBinding GridThickness}"/>
+				Thickness="{util:SettingBinding GridThickness}"/>
 			<h:MeshGeometryVisual3D
 				x:Name="ModelHeightMap">
 				<h:MeshGeometryVisual3D.Material>

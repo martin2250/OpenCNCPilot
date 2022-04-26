@@ -682,5 +682,29 @@ namespace OpenCNCPilot.Properties {
                 this["FirmwareType"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double ProbeOffsetX {
+            get {
+                return ((double)(this["ProbeOffsetX"]));
+            }
+            set {
+                this["ProbeOffsetX"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double ProbeOffsetY {
+            get {
+                return ((double)(this["ProbeOffsetY"]));
+            }
+            set {
+                this["ProbeOffsetY"] = value;
+            }
+        }
     }
 }
