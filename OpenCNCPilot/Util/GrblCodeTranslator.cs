@@ -14,7 +14,7 @@ namespace OpenCNCPilot.Util
 		/// setting name, unit, description
 		/// </summary>
 		public static Dictionary<int, Tuple<string, string, string>> Settings = new Dictionary<int, Tuple<string, string, string>>();
-		public static string Firmware = "Grbl";
+		public static string Firmware = "not loaded";
 
 		private static void LoadErr(Dictionary<int, string> dict, string path)
 		{
@@ -92,21 +92,7 @@ namespace OpenCNCPilot.Util
 		{
 			Console.WriteLine("Loading GRBL Code Database");
 
-			Util.GrblCodeTranslator.Firmware = Properties.Settings.Default.FirmwareType;
-
-			switch (Properties.Settings.Default.FirmwareType)
-			{
-				case "Grbl":
-					LoadErr(Errors, "Resources\\grbl_error_codes_en_US.csv");
-					LoadErr(Alarms, "Resources\\grbl_alarm_codes_en_US.csv");
-					LoadSettings(Settings, "Resources\\grbl_setting_codes_en_US.csv");
-					break;
-				case "uCNC":
-					LoadErr(Errors, "Resources\\ucnc_error_codes_en_US.csv");
-					LoadErr(Alarms, "Resources\\ucnc_alarm_codes_en_US.csv");
-					LoadSettings(Settings, "Resources\\ucnc_setting_codes_en_US.csv");
-					break;
-			}
+			Reload();
 
 			Console.WriteLine("Loaded GRBL Code Database");
 		}
@@ -118,14 +104,15 @@ namespace OpenCNCPilot.Util
 				return;
 			}
 
-			Util.GrblCodeTranslator.Errors = new Dictionary<int, string>();
-			Util.GrblCodeTranslator.Alarms = new Dictionary<int, string>();
-			Util.GrblCodeTranslator.Settings = new Dictionary<int, Tuple<string, string, string>>();
+			Util.GrblCodeTranslator.Errors.Clear();
+			Util.GrblCodeTranslator.Alarms.Clear();
+			Util.GrblCodeTranslator.Settings.Clear();
 			Util.GrblCodeTranslator.Firmware = Properties.Settings.Default.FirmwareType;
 
 			switch (Properties.Settings.Default.FirmwareType)
 			{
 				case "Grbl":
+				default:
 					LoadErr(Util.GrblCodeTranslator.Errors, "Resources\\grbl_error_codes_en_US.csv");
 					LoadErr(Util.GrblCodeTranslator.Alarms, "Resources\\grbl_alarm_codes_en_US.csv");
 					LoadSettings(Util.GrblCodeTranslator.Settings, "Resources\\grbl_setting_codes_en_US.csv");
