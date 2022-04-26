@@ -20,7 +20,7 @@ namespace OpenCNCPilot
 		}
 
 		public void ResetAll()
-        {
+		{
 			this.CurrentSettings = new Dictionary<int, double>();
 			this.SettingsBoxes = new Dictionary<int, TextBox>();
 			gridMain.Children.Clear();
