@@ -161,7 +161,7 @@ namespace OpenCNCPilot
 					return;
 				}
 
-				fileOutput += "$" + kvp.Key.ToString() + "=" + newval.ToString() + Environment.NewLine;
+				fileOutput += $"${kvp.Key}={newval.ToString(Util.Constants.DecimalOutputFormat)}" + Environment.NewLine;
 			}
 
 			if ((bool)this.saveFileDialogSettings.ShowDialog())
