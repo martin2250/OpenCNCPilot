@@ -444,7 +444,7 @@ namespace OpenCNCPilot.GCode
 
 
 				State.Position = EndPos;
-
+				State.NonModalMotion = -1;
 				return;
 			}
 
