@@ -2,6 +2,7 @@
 using OpenCNCPilot.GCode.GCodeCommands;
 using OpenCNCPilot.Properties;
 using OpenCNCPilot.Util;
+using OpenCNCPilot.Communication;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -116,20 +117,20 @@ namespace OpenCNCPilot.GCode
 			SizeFeed = sizefeed;
 		}
 
-		public static GCodeFile Load(string path)
+		public static GCodeFile Load(string path, Machine machine)
 		{
 			GCodeParser.Reset();
-			GCodeParser.ParseFile(path);
+			GCodeParser.ParseFile(path, machine);
 
 			GCodeFile gcodeFile = new GCodeFile(GCodeParser.Commands) { FileName = path.Substring(path.LastIndexOf('\\') + 1) };
 			gcodeFile.Warnings.InsertRange(0, GCodeParser.Warnings);
 			return gcodeFile;
 		}
 
-		public static GCodeFile FromList(IEnumerable<string> file)
+		public static GCodeFile FromList(IEnumerable<string> file, Machine machine)
 		{
 			GCodeParser.Reset();
-			GCodeParser.Parse(file);
+			GCodeParser.Parse(file, machine);
 
 			GCodeFile gcodeFile = new GCodeFile(GCodeParser.Commands) { FileName = "output.nc" };
 			gcodeFile.Warnings.InsertRange(0, GCodeParser.Warnings);

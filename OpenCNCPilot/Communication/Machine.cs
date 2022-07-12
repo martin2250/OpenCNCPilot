@@ -56,6 +56,11 @@ namespace OpenCNCPilot.Communication
 		public Vector3 WorkOffset { get; private set; } = new Vector3();
 		public Vector3 WorkPosition { get { return MachinePosition - WorkOffset; } }
 
+		public Vector3 G28Position { get; private set; } = new Vector3();
+		public Vector3 G30Position { get; private set; } = new Vector3();
+
+		public Vector3[] CoordinateSystemOffset { get; private set; } = { new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3() };
+
 		public Vector3 LastProbePosMachine { get; private set; }
 		public Vector3 LastProbePosWork { get; private set; }
 
@@ -873,6 +878,7 @@ namespace OpenCNCPilot.Communication
 		}
 
 		private static Regex GCodeSplitter = new Regex(@"([GZ])\s*(\-?\d+\.?\d*)", RegexOptions.Compiled);
+		private static Regex GCodePosSplitter = new Regex(@"([:,])\s*(\-?\d+\.?\d*)", RegexOptions.Compiled);
 
 		/// <summary>
 		/// Updates Status info from each line sent
@@ -910,42 +916,114 @@ namespace OpenCNCPilot.Communication
 
 					double code = double.Parse(m.Groups[2].Value, Constants.DecimalParseFormat);
 
-					if (code == 17)
-						Plane = ArcPlane.XY;
-					if (code == 18)
-						Plane = ArcPlane.YZ;
-					if (code == 19)
-						Plane = ArcPlane.ZX;
-
-					if (code == 20)
-						Unit = ParseUnit.Imperial;
-					if (code == 21)
-						Unit = ParseUnit.Metric;
-
-					if (code == 90)
-						DistanceMode = ParseDistanceMode.Absolute;
-					if (code == 91)
-						DistanceMode = ParseDistanceMode.Incremental;
-
-					if (code == 49)
-						CurrentTLO = 0;
-
-					if (code == 43.1)
+					switch (code)
 					{
-						if (mc.Count > (i + 1))
-						{
-							if (mc[i + 1].Groups[1].Value == "Z")
-							{
-								CurrentTLO = double.Parse(mc[i + 1].Groups[2].Value, Constants.DecimalParseFormat);
-								RaiseEvent(PositionUpdateReceived);
-							}
+						case 17:
+							Plane = ArcPlane.XY;
+							break;
+						case 18:
 
-							i += 1;
-						}
+							Plane = ArcPlane.YZ;
+							break;
+						case 19:
+							Plane = ArcPlane.ZX;
+							break;
+						case 20:
+							Unit = ParseUnit.Imperial;
+							break;
+						case 21:
+							Unit = ParseUnit.Metric;
+							break;
+						case 90:
+							DistanceMode = ParseDistanceMode.Absolute;
+							break;
+						case 91:
+							DistanceMode = ParseDistanceMode.Incremental;
+							break;
+						case 49:
+							CurrentTLO = 0;
+							break;
+						case 43.1:
+							if (mc.Count > (i + 1))
+							{
+								if (mc[i + 1].Groups[1].Value == "Z")
+								{
+									CurrentTLO = double.Parse(mc[i + 1].Groups[2].Value, Constants.DecimalParseFormat);
+									RaiseEvent(PositionUpdateReceived);
+								}
+
+								i += 1;
+							}
+							break;
+						case 54:
+						case 55:
+						case 56:
+						case 57:
+						case 58:
+						case 59.1:
+						case 59.2:
+						case 59.3:
+							if (mc.Count == 1)
+							{
+								int offset = (int)code;
+								if (code > 59)
+								{
+									offset += (int)(((code - 59) * 10) - 1);
+								}
+								MatchCollection mcoords = GCodePosSplitter.Matches(line);
+								string coords = "";
+								foreach (Match c in mcoords)
+								{
+									coords += c.Value;
+								}
+								coords = coords.Trim(':');
+								this.CoordinateSystemOffset[offset - 54] = Vector3.Parse(coords);
+							}
+							break;
+						case 28:
+							if (mc.Count == 1)
+							{
+								int offset = (int)code;
+								if (code > 59)
+								{
+									offset += (int)(((code - 59) * 10) - 1);
+								}
+								MatchCollection mcoords = GCodePosSplitter.Matches(line);
+								string coords = "";
+								foreach (Match c in mcoords)
+								{
+									coords += c.Value;
+								}
+								coords = coords.Trim(':');
+								this.G28Position = Vector3.Parse(coords);
+							}
+							break;
+						case 30:
+							if (mc.Count == 1)
+							{
+								int offset = (int)code;
+								if (code > 59)
+								{
+									offset += (int)(((code - 59) * 10) - 1);
+								}
+								MatchCollection mcoords = GCodePosSplitter.Matches(line);
+								string coords = "";
+								foreach (Match c in mcoords)
+								{
+									coords += c.Value;
+								}
+								coords = coords.Trim(':');
+								this.G28Position = Vector3.Parse(coords);
+							}
+							break;
 					}
 				}
+
 			}
-			catch { RaiseEvent(NonFatalException, "Error while Parsing Status Message"); }
+			catch
+			{
+				RaiseEvent(NonFatalException, "Error while Parsing Status Message");
+			}
 		}
 
 		private static Regex StatusEx = new Regex(@"(?<=[<|])(\w+):?([^|>]*)?(?=[|>])", RegexOptions.Compiled);

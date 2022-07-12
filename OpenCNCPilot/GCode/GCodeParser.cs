@@ -1,5 +1,6 @@
 ﻿using OpenCNCPilot.GCode.GCodeCommands;
 using OpenCNCPilot.Util;
+using OpenCNCPilot.Communication;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,6 +31,8 @@ namespace OpenCNCPilot.GCode
 		public ParseDistanceMode ArcDistanceMode;
 		public ParseUnit Unit;
 		public int LastMotionMode;
+		public Vector3 WorkCoordinates;
+		public int NonModalMotion;
 
 		public ParserState()
 		{
@@ -41,6 +44,8 @@ namespace OpenCNCPilot.GCode
 			ArcDistanceMode = ParseDistanceMode.Incremental;
 			Unit = ParseUnit.Metric;
 			LastMotionMode = -1;
+			WorkCoordinates = new Vector3();
+			NonModalMotion = -1;
 		}
 	}
 
@@ -78,12 +83,12 @@ namespace OpenCNCPilot.GCode
 			Reset();
 		}
 
-		public static void ParseFile(string path)
+		public static void ParseFile(string path, Machine machine)
 		{
-			Parse(File.ReadLines(path));
+			Parse(File.ReadLines(path), machine);
 		}
 
-		public static void Parse(IEnumerable<string> file)
+		public static void Parse(IEnumerable<string> file, Machine machine)
 		{
 			int i = 0;
 
@@ -97,7 +102,7 @@ namespace OpenCNCPilot.GCode
 				if (string.IsNullOrWhiteSpace(line))
 					continue;
 
-				Parse(line.ToUpper(), i);
+				Parse(line.ToUpper(), i, machine);
 			}
 
 			sw.Stop();
@@ -127,7 +132,7 @@ namespace OpenCNCPilot.GCode
 			return line;
 		}
 
-		static void Parse(string line, int lineNumber)
+		static void Parse(string line, int lineNumber, Machine machine)
 		{
 			MatchCollection matches = GCodeSplitter.Matches(line);
 
@@ -281,6 +286,19 @@ namespace OpenCNCPilot.GCode
 							continue;
 						}
 					}
+					if (param >= 54 && param <= 59.3)
+					{
+						Words.RemoveAt(i);
+						i--;
+						continue;
+					}
+					if (param == 28 || param == 30)
+					{
+						State.NonModalMotion = (int)param;
+						Words.RemoveAt(i);
+						i--;
+						continue;
+					}
 
 					Warnings.Add($"ignoring unknown command G{param}. (line {lineNumber})");
 					Words.RemoveAt(i--);
@@ -293,11 +311,19 @@ namespace OpenCNCPilot.GCode
 
 			int MotionMode = State.LastMotionMode;
 
-			if (Words.First().Command == 'G')
+			switch (State.NonModalMotion)
 			{
-				MotionMode = (int)Words.First().Parameter;
-				State.LastMotionMode = MotionMode;
-				Words.RemoveAt(0);
+				case 28:
+				case 30:
+					break;
+				default:
+					if (Words.First().Command == 'G')
+					{
+						MotionMode = (int)Words.First().Parameter;
+						State.LastMotionMode = MotionMode;
+						Words.RemoveAt(0);
+					}
+					break;
 			}
 
 			if (MotionMode < 0)
@@ -323,6 +349,14 @@ namespace OpenCNCPilot.GCode
 			#region FindEndPos
 			{
 				int Incremental = (State.DistanceMode == ParseDistanceMode.Incremental) ? 1 : 0;
+
+				switch (State.NonModalMotion)
+				{
+					case 28:
+					case 30:
+						Incremental = 0;
+						break;
+				}
 
 				for (int i = 0; i < Words.Count; i++)
 				{
@@ -375,13 +409,42 @@ namespace OpenCNCPilot.GCode
 				motion.Start = State.Position;
 				motion.End = EndPos;
 				motion.Feed = State.Feed;
-				motion.Rapid = MotionMode == 0;
+				switch (State.NonModalMotion)
+				{
+					case 28:
+					case 30:
+						motion.Rapid = true;
+						break;
+					default:
+						motion.Rapid = MotionMode == 0;
+						break;
+				}
+
 				motion.LineNumber = lineNumber;
 				motion.StartValid = StartValid;
 				State.PositionValid.CopyTo(motion.PositionValid, 0);
-
 				Commands.Add(motion);
+
+				switch (State.NonModalMotion)
+				{
+					case 28:
+					case 30:
+						Line homemotion = new Line();
+						homemotion.Start = EndPos;
+						EndPos = machine.G28Position;
+						homemotion.End = EndPos;
+						homemotion.Feed = State.Feed;
+						homemotion.Rapid = true;
+						homemotion.LineNumber = lineNumber;
+						homemotion.StartValid = StartValid;
+						State.PositionValid.CopyTo(homemotion.PositionValid, 0);
+						Commands.Add(homemotion);
+						break;
+				}
+
+
 				State.Position = EndPos;
+
 				return;
 			}
 

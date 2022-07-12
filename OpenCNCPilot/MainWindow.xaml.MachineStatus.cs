@@ -224,7 +224,7 @@ namespace OpenCNCPilot
 		{
 			try
 			{
-				ToolPath = GCodeFile.FromList(machine.File);
+				ToolPath = GCodeFile.FromList(machine.File, machine);
 				GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced); // prevents considerable increase in memory usage
 			}
 			catch (Exception ex)
