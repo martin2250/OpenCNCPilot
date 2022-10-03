@@ -1013,7 +1013,7 @@ namespace OpenCNCPilot.Communication
 									coords += c.Value;
 								}
 								coords = coords.Trim(':');
-								this.G28Position = Vector3.Parse(coords);
+								this.G30Position = Vector3.Parse(coords);
 							}
 							break;
 					}
