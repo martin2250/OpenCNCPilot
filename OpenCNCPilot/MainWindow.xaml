@@ -52,7 +52,7 @@
 			<StackPanel Orientation="Vertical" HorizontalAlignment="Left">
 				<Border Style="{StaticResource stylePanelOut}">
 					<Expander Header="File" Width="Auto" IsExpanded="{util:SettingBinding FileExpanderOpen}">
-						<Grid Width="210" Height="260">
+						<Grid Width="230" Height="260">     <!-- increased the listbox width in order to make long lines readable, deHarro, 2023-10-04 -->
 							<Button Name="ButtonFileOpen" Click="ButtonOpen_Click" Content="Open" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top"/>
 							<Button Name="ButtonFileSave" Click="ButtonSave_Click" Content="Save" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="48,5,0,0" VerticalAlignment="Top"/>
 							<Button Name="ButtonFileClear" Click="ButtonClear_Click" Content="Clear" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="87,5,0,0" VerticalAlignment="Top"/>
@@ -62,9 +62,9 @@
 								<Run Name="RunFileLength"  Text="0"/>
 							</TextBlock>
 
-							<ListView Name="ListViewFile"  Margin="0,53" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent"/>
+                            <ListView Name="ListViewFile"  Margin="0,53" ScrollViewer.HorizontalScrollBarVisibility="Auto" Background="Transparent"/> <!-- activate horizontal scrollbar in order to make long lines readable, deHarro, 2023-10-04 -->
 
-							<Button Name="ButtonFileStart" Click="ButtonFileStart_Click" Content="Start" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="5,0,0,25" Height="23" VerticalAlignment="Bottom"/>
+                            <Button Name="ButtonFileStart" Click="ButtonFileStart_Click" Content="Start" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="5,0,0,25" Height="23" VerticalAlignment="Bottom"/>
 							<Button Name="ButtonFilePause" Click="ButtonFilePause_Click" Content="Pause" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="48,0,0,25" Height="23" VerticalAlignment="Bottom"/>
 							<Button Name="ButtonFileGoto" Click="ButtonFileGoto_Click" Content="Go To" Style="{StaticResource styleButton}" HorizontalAlignment="Left" Margin="93,0,0,25" Height="23" VerticalAlignment="Bottom"/>
 							<CheckBox Name="CheckBoxPauseOnM0" Content="Pause" ToolTip="Pause the Program on M0/M1/M30" IsChecked="{util:SettingBinding PauseFileOnHold}" HorizontalAlignment="Left" Margin="138,0,-24,20" Height="23" VerticalAlignment="Bottom"/>
@@ -297,7 +297,7 @@
 					<Expander Header="About" IsExpanded="{util:SettingBinding AboutExpanderOpen}">
 						<StackPanel>
 							<TextBlock TextAlignment="Center" FontSize="14" Padding="5">
-								<Span FontWeight="Bold" FontSize="15">OpenCNCPilot <Run Text="{Binding Version,Mode=OneWay}"/> by martin2250</Span><LineBreak/>
+								<Span FontWeight="Bold" FontSize="15">OpenCNCPilot <Run Text="{Binding Version, Mode=OneWay}"/> by martin2250</Span><LineBreak/>
 								<Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="https://github.com/martin2250/OpenCNCPilot">Project Page</Hyperlink>
 								<Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="https://github.com/martin2250/OpenCNCPilot/issues">Help</Hyperlink>
 							</TextBlock>
@@ -348,9 +348,10 @@
 			<h:LinesVisual3D Thickness="1" Color="Black" x:Name="ModelLine"/>
 			<h:LinesVisual3D Thickness="1" Color="Blue" x:Name="ModelArc"/>
 			<h:ArrowVisual3D x:Name="ModelTool" Direction="0,0,-10"/>
-			<h:GridLinesVisual3D 
-				x:Name="ModelGrid"
-				Width="500" Length="500"
+            <!--increased the grid size from 500x500 to 800x800 to fix problem of thecuress (issue #183), deHarro, 2023-10-04 -->
+            <h:GridLinesVisual3D
+                x:Name="ModelGrid"
+				Width="800" Length="800" 
 				Thickness="{util:SettingBinding GridThickness}"/>
 			<h:MeshGeometryVisual3D
 				x:Name="ModelHeightMap">
