@@ -76,8 +76,14 @@ namespace OpenCNCPilot.GCode
 
 		public double InterpolateZ(double x, double y)
 		{
-			if (x > Max.X || x < Min.X || y > Max.Y || y < Min.Y)
-				return MaxHeight;
+			if (x < Min.X)
+				x = Min.X;
+			if (x > Max.X)
+				x = Max.X;
+			if (y > Max.Y)
+				y = Max.Y;
+			if (y < Min.Y)
+				y = Min.Y;
 
 			x -= Min.X;
 			y -= Min.Y;
