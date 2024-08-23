@@ -315,7 +315,8 @@
 							<Button Style="{StaticResource styleButton}" Content="Save Viewport Orientation" HorizontalAlignment="Left" Margin="10,3,0,0" Click="ButtonSaveViewport_Click" ToolTip="Save viewport orientation, persistent across restarts "/>
 							<Button Style="{StaticResource styleButton}" Content="Restore Viewport" HorizontalAlignment="Left" Margin="10,5,0,0" Click="ButtonRestoreViewport_Click" ToolTip="Restore viewport from settings"/>
 							<Button Style="{StaticResource styleButton}" Content="Reset 3D Viewport" HorizontalAlignment="Left" Margin="10,5,0,0" Click="ButtonResetViewport_Click" ToolTip="Restore viewport to factory default"/>
-						</StackPanel>
+                            <Button Style="{StaticResource styleButton}" Content="Lay flat 3D Viewport" HorizontalAlignment="Left" Margin="10,5,0,0" Click="ButtonLayFlatViewport_Click" ToolTip="Restore viewport to centered from top"/>      <!-- deHarro, 2024-08-23 -->
+                        </StackPanel>
 					</Expander>
 				</Border>
 			</StackPanel>

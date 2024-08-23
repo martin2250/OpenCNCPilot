@@ -343,6 +343,13 @@ namespace OpenCNCPilot
 			viewport.Camera.UpDirection = new System.Windows.Media.Media3D.Vector3D(0, 0, 1);
 		}
 
+		private void ButtonLayFlatViewport_Click(object sender, RoutedEventArgs e)                  // deHarro, 2024-08-23
+        {
+			viewport.Camera.Position = new System.Windows.Media.Media3D.Point3D(0, 10, 250);
+			viewport.Camera.LookDirection = new System.Windows.Media.Media3D.Vector3D(0, 1, -250);
+			viewport.Camera.UpDirection = new System.Windows.Media.Media3D.Vector3D(0, 0, 1);
+		}
+
 		private void ButtonRestoreViewport_Click(object sender, RoutedEventArgs e)
 		{
 			string[] scoords = Properties.Settings.Default.ViewPortPos.Split(';');
