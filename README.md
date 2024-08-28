@@ -1,5 +1,11 @@
 # OpenCNCPilot
 
+Additions in this fork:
+- Increased size of the grid, 800x800 instead of 500x500.
+- Width of the file listview adapting dynamically to line length (to see all of the gcode)
+- Button to place viewport centered flat, view orthogonal from top (button is located in Debug Panel)
+-----
+
 OpenCNCPilot is a GRBL compatible G-Code Sender.
 
 It's main feature is it's ability to **probe user-defined areas for warpage and wrap the toolpath around the curved surface**.
