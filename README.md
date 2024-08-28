@@ -1,9 +1,9 @@
 # OpenCNCPilot
 
 Additions in this fork:
-- Increased size of the grid, 800x800 instead of 500x500.
-- Width of the file listview adapting dynamically to line length (to see all of the gcode)
-- Button to place viewport centered flat, view orthogonal from top (button is located in Debug Panel)
+- Increased size of the grid, 800x800 instead of 500x500, resolving [https://github.com/martin2250/OpenCNCPilot/discussions/183#discussion-5693325]
+- Width of the file listview adapting dynamically to line length (to see all of the gcode), partly resolving [https://github.com/martin2250/OpenCNCPilot/issues/134#issue-611203299]
+- Button to place viewport centered flat, view vertically down (button is located in Debug Panel), resolving [https://github.com/martin2250/OpenCNCPilot/issues/177#issue-1705672291] 
   
 ![OCP_v1 5 15](https://github.com/user-attachments/assets/6aa39ba0-9929-4fd2-a0f2-f7576931e02c)
 
