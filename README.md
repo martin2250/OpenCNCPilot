@@ -4,6 +4,9 @@ Additions in this fork:
 - Increased size of the grid, 800x800 instead of 500x500.
 - Width of the file listview adapting dynamically to line length (to see all of the gcode)
 - Button to place viewport centered flat, view orthogonal from top (button is located in Debug Panel)
+  
+  ![OCP_v1 5 15](https://github.com/user-attachments/assets/6aa39ba0-9929-4fd2-a0f2-f7576931e02c)
+
 -----
 
 OpenCNCPilot is a GRBL compatible G-Code Sender.
