@@ -355,10 +355,9 @@
             <h:LinesVisual3D Thickness="1" Color="Black" x:Name="ModelLine"/>
             <h:LinesVisual3D Thickness="1" Color="Blue" x:Name="ModelArc"/>
             <h:ArrowVisual3D x:Name="ModelTool" Direction="0,0,-10"/>
-            <!--increased the grid size from 500x500 to 800x800 to fix problem of thecuress (issue #183), deHarro, 2023-10-04 -->
             <h:GridLinesVisual3D
                 x:Name="ModelGrid"
-				Width="800" Length="800" 
+				Width="500" Length="500" 
 				Thickness="{util:SettingBinding GridThickness}"/>
             <h:MeshGeometryVisual3D
 				x:Name="ModelHeightMap">
