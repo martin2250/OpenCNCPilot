@@ -338,16 +338,34 @@ namespace OpenCNCPilot
 
 		private void ButtonResetViewport_Click(object sender, RoutedEventArgs e)
 		{
-			viewport.Camera.Position = new System.Windows.Media.Media3D.Point3D(50, -150, 250);
-			viewport.Camera.LookDirection = new System.Windows.Media.Media3D.Vector3D(-50, 150, -250);
-			viewport.Camera.UpDirection = new System.Windows.Media.Media3D.Vector3D(0, 0, 1);
+			viewport.Camera.Position        = new System.Windows.Media.Media3D.Point3D(50, -150, 250);
+			viewport.Camera.LookDirection   = new System.Windows.Media.Media3D.Vector3D(-50, 150, -250);
+			viewport.Camera.UpDirection     = new System.Windows.Media.Media3D.Vector3D(0, 0, 1);
 		}
 
-		private void ButtonLayFlatViewport_Click(object sender, RoutedEventArgs e)                  // deHarro, 2024-08-23
+        // HowTo                                                                                            // deHarro, 2024-09-08, Viewport Horizontal/Vertikal ausrichten
+        // 1. rotate viewport with RM as wanted, 2. Save Viewport, 3. Lay flat -> viewport is aligned to the monitor orientation
+		private void ButtonLayFlatViewport_Click(object sender, RoutedEventArgs e)                          // deHarro, 2024-08-23
         {
+			string[] scoords = Properties.Settings.Default.ViewPortPos.Split(';');                          // deHarro, 2024-09-08
+
+			try
+			{
+				IEnumerable<double> coords = scoords.Select(s => double.Parse(s));
+
+                viewport.Camera.UpDirection = new Vector3(coords.Skip(6).Take(3).ToArray()).ToVector3D();   // deHarro, 2024-09-08, UpDirection aus Settings holen
+                viewport.Camera.UpDirection = new System.Windows.Media.Media3D.Vector3D(                    // deHarro, 2024-09-08, UpDirection Horizontal/Vertikal ausrichten
+                    Math.Round(viewport.Camera.UpDirection.X), 
+                    Math.Round(viewport.Camera.UpDirection.Y), 
+                    Math.Round(viewport.Camera.UpDirection.Z));                          
+            }
+            catch
+			{
+				ButtonResetViewport_Click(null, null);
+			}
+
 			viewport.Camera.Position = new System.Windows.Media.Media3D.Point3D(0, 10, 250);
 			viewport.Camera.LookDirection = new System.Windows.Media.Media3D.Vector3D(0, 1, -250);
-			viewport.Camera.UpDirection = new System.Windows.Media.Media3D.Vector3D(0, 0, 1);
 		}
 
 		private void ButtonRestoreViewport_Click(object sender, RoutedEventArgs e)
@@ -358,11 +376,11 @@ namespace OpenCNCPilot
 			{
 				IEnumerable<double> coords = scoords.Select(s => double.Parse(s));
 
-				viewport.Camera.Position = new Vector3(coords.Take(3).ToArray()).ToPoint3D();
-				viewport.Camera.LookDirection = new Vector3(coords.Skip(3).ToArray()).ToVector3D();
-				viewport.Camera.UpDirection = new System.Windows.Media.Media3D.Vector3D(0, 0, 1);
-			}
-			catch
+				viewport.Camera.Position        = new Vector3(coords.Take(3).ToArray()).ToPoint3D();
+                viewport.Camera.LookDirection   = new Vector3(coords.Skip(3).Take(3).ToArray()).ToVector3D();  // deHarro, 2024-09-08, nur 3 Werte für Vektor
+                viewport.Camera.UpDirection     = new Vector3(coords.Skip(6).Take(3).ToArray()).ToVector3D();  // deHarro, 2024-09-08, UpDirection aus Settings holen
+            }
+            catch
 			{
 				ButtonResetViewport_Click(null, null);
 			}
@@ -374,6 +392,7 @@ namespace OpenCNCPilot
 
 			coords.AddRange(new Vector3(viewport.Camera.Position).Array);
 			coords.AddRange(new Vector3(viewport.Camera.LookDirection).Array);
+			coords.AddRange(new Vector3(viewport.Camera.UpDirection).Array);                        // deHarro, 2024-09-08, UpDirection ebenfalls speichern
 
 			Properties.Settings.Default.ViewPortPos = string.Join(";", coords.Select(d => d.ToString()));
 		}
