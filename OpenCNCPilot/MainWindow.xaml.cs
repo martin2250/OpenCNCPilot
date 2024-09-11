@@ -343,32 +343,68 @@ namespace OpenCNCPilot
 			viewport.Camera.UpDirection     = new System.Windows.Media.Media3D.Vector3D(0, 0, 1);
 		}
 
-        // HowTo                                                                                            // deHarro, 2024-09-08, Viewport Horizontal/Vertikal ausrichten
-        // 1. rotate viewport with RM as wanted, 2. Save Viewport, 3. Lay flat -> viewport is aligned to the monitor orientation
-		private void ButtonLayFlatViewport_Click(object sender, RoutedEventArgs e)                          // deHarro, 2024-08-23
+
+        // ----- ButtonLayFlatViewport ---------------------------------------------------
+        private void ButtonLayFlatViewport_Click(object sender, RoutedEventArgs e)                  // deHarro, 2024-08-23, 2024-09-08, Viewport Horizontal/Vertikal auf dem Bildschirm ausrichten
         {
-			string[] scoords = Properties.Settings.Default.ViewPortPos.Split(';');                          // deHarro, 2024-09-08
+            // deHarro, 2024-09-09, unveränderten Bildausschnitt nur auf Ursprung zentrieren (Z-Pos bleibt unverändert, sonst springt der View nach Reset aus dem Bild)
+            viewport.Camera.Position = new System.Windows.Media.Media3D.Point3D(0, 0, viewport.Camera.Position.Z);
+            viewport.Camera.LookDirection = new System.Windows.Media.Media3D.Vector3D(0, 1, viewport.Camera.LookDirection.Z);
+        }
 
-			try
-			{
-				IEnumerable<double> coords = scoords.Select(s => double.Parse(s));
+        // ----- ButtonRotateOrigin ---------------------------------------------------
+        private void ButtonRotateOrigin_Click(object sender, RoutedEventArgs e)                     // deHarro, 2024-09-11, Origin im Viewport passend zur Fräse ausrichten
+        {
+            {   // do the rotating CCW
+                if (viewport.Camera.LookDirection.X == 0 && viewport.Camera.LookDirection.Y == 1 /*&& viewport.Camera.LookDirection.Z == 1*/)       // (0, 0, z) default
+                {
+                    viewport.Camera.LookDirection = new System.Windows.Media.Media3D.Vector3D(1, 0, viewport.Camera.LookDirection.Z);
+                }
+                else if (viewport.Camera.LookDirection.X == 1 && viewport.Camera.LookDirection.Y == 0 /*&& viewport.Camera.LookDirection.Z == 1*/)  // (1, 0, z) my default 
+                {
+                    viewport.Camera.LookDirection = new System.Windows.Media.Media3D.Vector3D(0, -1, viewport.Camera.LookDirection.Z);
+                }
+                else if (viewport.Camera.LookDirection.X == 0 && viewport.Camera.LookDirection.Y == -1 /*&& viewport.Camera.LookDirection.Z == 1*/) // (0, -1, z) other
+                {
+                    viewport.Camera.LookDirection = new System.Windows.Media.Media3D.Vector3D(-1, 0, viewport.Camera.LookDirection.Z);
+                }
+                else if (viewport.Camera.LookDirection.X == -1 && viewport.Camera.LookDirection.Y == 0 /*&& viewport.Camera.LookDirection.Z == 1*/) // (-1, 0, z) other       {
+                {
+                    viewport.Camera.LookDirection = new System.Windows.Media.Media3D.Vector3D(0, 1, viewport.Camera.LookDirection.Z);
+                }
+            }   // \do the rotating CCW
 
-                viewport.Camera.UpDirection = new Vector3(coords.Skip(6).Take(3).ToArray()).ToVector3D();   // deHarro, 2024-09-08, UpDirection aus Settings holen
-                viewport.Camera.UpDirection = new System.Windows.Media.Media3D.Vector3D(                    // deHarro, 2024-09-08, UpDirection Horizontal/Vertikal ausrichten
-                    Math.Round(viewport.Camera.UpDirection.X), 
-                    Math.Round(viewport.Camera.UpDirection.Y), 
-                    Math.Round(viewport.Camera.UpDirection.Z));                          
+            // temporarily save current viewport look direction and camera position
+            System.Windows.Media.Media3D.Vector3D LookDirSave = new System.Windows.Media.Media3D.Vector3D(viewport.Camera.LookDirection.X, viewport.Camera.LookDirection.Y, viewport.Camera.LookDirection.Z);
+            System.Windows.Media.Media3D.Vector3D CamPosSave = new System.Windows.Media.Media3D.Vector3D(viewport.Camera.Position.X, viewport.Camera.Position.Y, viewport.Camera.Position.Z);
+
+            // get currently stored viewport settings
+            string[] scoords = Properties.Settings.Default.ViewPortPos.Split(';');                  
+            try
+            {
+                IEnumerable<double> settingsCoords = scoords.Select(s => double.Parse(s));
+
+                viewport.Camera.Position = new Vector3(settingsCoords.Take(3).ToArray()).ToPoint3D();
+                viewport.Camera.LookDirection = new Vector3(settingsCoords.Skip(3).Take(3).ToArray()).ToVector3D();  // deHarro, 2024-09-08, nur 3 Werte für Vektor
             }
             catch
-			{
-				ButtonResetViewport_Click(null, null);
-			}
+            {
+                ButtonResetViewport_Click(null, null);
+            }
+            List<double> coords = new List<double>();
+            coords.AddRange(new Vector3(viewport.Camera.Position).Array);                           // with getting from above position is retained
+            coords.AddRange(new Vector3(viewport.Camera.LookDirection).Array);                      // with getting from above lookdir is retained
+            coords.AddRange(new Vector3(viewport.Camera.UpDirection).Array);                        // store new UpDirection
 
-			viewport.Camera.Position = new System.Windows.Media.Media3D.Point3D(0, 10, 250);
-			viewport.Camera.LookDirection = new System.Windows.Media.Media3D.Vector3D(0, 1, -250);
-		}
+            Properties.Settings.Default.ViewPortPos = string.Join(";", coords.Select(d => d.ToString()));
 
-		private void ButtonRestoreViewport_Click(object sender, RoutedEventArgs e)
+            // now restore temporarily saved viewport look direction and camera position
+            viewport.Camera.LookDirection = new System.Windows.Media.Media3D.Vector3D(LookDirSave.X, LookDirSave.Y, LookDirSave.Z);
+            viewport.Camera.Position = new System.Windows.Media.Media3D.Point3D(CamPosSave.X, CamPosSave.Y, CamPosSave.Z);
+        }
+
+        // ----- ButtonRestoreViewport ---------------------------------------------------
+        private void ButtonRestoreViewport_Click(object sender, RoutedEventArgs e)
 		{
 			string[] scoords = Properties.Settings.Default.ViewPortPos.Split(';');
 
@@ -378,7 +414,6 @@ namespace OpenCNCPilot
 
 				viewport.Camera.Position        = new Vector3(coords.Take(3).ToArray()).ToPoint3D();
                 viewport.Camera.LookDirection   = new Vector3(coords.Skip(3).Take(3).ToArray()).ToVector3D();  // deHarro, 2024-09-08, nur 3 Werte für Vektor
-                viewport.Camera.UpDirection     = new Vector3(coords.Skip(6).Take(3).ToArray()).ToVector3D();  // deHarro, 2024-09-08, UpDirection aus Settings holen
             }
             catch
 			{
@@ -386,13 +421,13 @@ namespace OpenCNCPilot
 			}
 		}
 
-		private void ButtonSaveViewport_Click(object sender, RoutedEventArgs e)
+        // ----- ButtonSaveViewport ---------------------------------------------------
+        private void ButtonSaveViewport_Click(object sender, RoutedEventArgs e)
 		{
 			List<double> coords = new List<double>();
 
 			coords.AddRange(new Vector3(viewport.Camera.Position).Array);
 			coords.AddRange(new Vector3(viewport.Camera.LookDirection).Array);
-			coords.AddRange(new Vector3(viewport.Camera.UpDirection).Array);                        // deHarro, 2024-09-08, UpDirection ebenfalls speichern
 
 			Properties.Settings.Default.ViewPortPos = string.Join(";", coords.Select(d => d.ToString()));
 		}
