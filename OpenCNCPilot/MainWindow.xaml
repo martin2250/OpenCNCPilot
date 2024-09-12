@@ -334,7 +334,7 @@
                                         <TextBlock FlowDirection="LeftToRight">
                                             Rotate origin to match orientation of mill.
                                             <LineBreak />
-                                            Issue Lay Flat first
+                                            Issue "Lay flat 3D Viewport" first
                                         </TextBlock>
                                     </Button.ToolTip>
                                 </Button>
