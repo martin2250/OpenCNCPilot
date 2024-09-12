@@ -312,8 +312,15 @@
                 <Border Style="{StaticResource stylePanelOut}">
                     <Expander Header="Debug" IsExpanded="{util:SettingBinding DebugExpanderOpen}">
                         <StackPanel HorizontalAlignment="Left" Margin="0,0,0,5">
-                            <CheckBox Content="Show Status Messages" IsChecked="{util:SettingBinding ShowStatusLines}" Margin="10,0,0,0"/>
-                            <StackPanel Orientation="Horizontal">
+                            <!--<CheckBox Content="Show Status Messages" IsChecked="{util:SettingBinding ShowStatusLines}" Margin="10,0,0,0"/>--> <!--deHarro, 2024-09-12-->
+                           <CheckBox Content="Show Status Messages" IsChecked="{util:SettingBinding ShowStatusLines}" FlowDirection="RightToLeft" Margin="10,0,0,0">
+                                <CheckBox.Resources>                                    
+                                    <Style TargetType="{x:Type Path}">
+                                        <Setter Property="FlowDirection" Value="LeftToRight" />
+                                    </Style>
+                                </CheckBox.Resources>
+                            </CheckBox>
+                             <StackPanel Orientation="Horizontal">
                                 <TextBox Text="{util:SettingBinding ConsoleFadeTime}" VerticalContentAlignment="Center" Width="40" Margin="10,3,0,3"/>
                                 <Label Content="Console Fade Time (s)" FlowDirection="LeftToRight"/>
                             </StackPanel>
