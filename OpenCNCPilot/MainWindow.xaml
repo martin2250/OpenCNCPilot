@@ -312,16 +312,47 @@
                 <Border Style="{StaticResource stylePanelOut}">
                     <Expander Header="Debug" IsExpanded="{util:SettingBinding DebugExpanderOpen}">
                         <StackPanel HorizontalAlignment="Left" Margin="0,0,0,5">
-                            <CheckBox Content="Show Status Messages" IsChecked="{util:SettingBinding ShowStatusLines}" Margin="10,0,0,0"/>
-                            <StackPanel Orientation="Horizontal">
+                            <!--<CheckBox Content="Show Status Messages" IsChecked="{util:SettingBinding ShowStatusLines}" Margin="10,0,0,0"/>--> <!--deHarro, 2024-09-12-->
+                           <CheckBox Content="Show Status Messages" IsChecked="{util:SettingBinding ShowStatusLines}" FlowDirection="RightToLeft" Margin="10,10,0,5">
+                                <CheckBox.Resources>                                    
+                                    <Style TargetType="{x:Type Path}">
+                                        <Setter Property="FlowDirection" Value="LeftToRight" />
+                                    </Style>
+                                </CheckBox.Resources>
+                            </CheckBox>
+                             <StackPanel Orientation="Horizontal">
                                 <TextBox Text="{util:SettingBinding ConsoleFadeTime}" VerticalContentAlignment="Center" Width="40" Margin="10,3,0,3"/>
                                 <Label Content="Console Fade Time (s)" FlowDirection="LeftToRight"/>
                             </StackPanel>
                             <Button Style="{StaticResource styleButton}" Content="Save Viewport Orientation" HorizontalAlignment="Left" Margin="10,3,0,0" Click="ButtonSaveViewport_Click" ToolTip="Save viewport orientation, persistent across restarts "/>
                             <Button Style="{StaticResource styleButton}" Content="Restore Viewport" HorizontalAlignment="Left" Margin="10,5,0,0" Click="ButtonRestoreViewport_Click" ToolTip="Restore viewport from settings"/>
                             <Button Style="{StaticResource styleButton}" Content="Reset 3D Viewport" HorizontalAlignment="Left" Margin="10,5,0,0" Click="ButtonResetViewport_Click" ToolTip="Restore viewport to factory default"/>
-                            <Button Style="{StaticResource styleButton}" Content="Lay flat 3D Viewport" HorizontalAlignment="Left" Margin="10,5,0,0" Click="ButtonLayFlatViewport_Click" ToolTip="Restore viewport to centered from top"/>
-                            <!-- deHarro, 2024-08-23 -->
+                            <StackPanel Orientation="Horizontal">
+                                <Button Style="{StaticResource styleButton}" Content="Lay flat 3D Viewport" HorizontalAlignment="Left" Margin="10,5,0,0" Click="ButtonLayFlatViewport_Click" ToolTip="Restore viewport to centered from top"/>    <!-- deHarro, 2024-08-23 -->
+                                <Button Style="{StaticResource styleButton}" Content="RO" HorizontalAlignment="Left" Margin="10,5,0,0" Click="ButtonRotateOrigin_Click">
+                                    <Button.ToolTip>
+                                        <TextBlock FlowDirection="LeftToRight">
+                                            Rotate origin to match orientation of mill.
+                                            <LineBreak />
+                                            Issue "Lay flat 3D Viewport" first
+                                        </TextBlock>
+                                    </Button.ToolTip>
+                                </Button>
+                            </StackPanel>
+                            <CheckBox Content="Show View Cube" IsChecked="{util:SettingBinding ShowViewCube}" FlowDirection="RightToLeft" Margin="10,10,0,0">
+                                <CheckBox.Resources>
+                                    <Style TargetType="{x:Type Path}">
+                                        <Setter Property="FlowDirection" Value="LeftToRight" />
+                                    </Style>
+                                </CheckBox.Resources>
+                            </CheckBox>
+                            <CheckBox Content="Show Camera Info" IsChecked="{util:SettingBinding ShowCameraInfo}" FlowDirection="RightToLeft" Margin="10,5,0,5">
+                                <CheckBox.Resources>
+                                    <Style TargetType="{x:Type Path}">
+                                        <Setter Property="FlowDirection" Value="LeftToRight" />
+                                    </Style>
+                                </CheckBox.Resources>
+                            </CheckBox>
                         </StackPanel>
                     </Expander>
                 </Border>
@@ -341,7 +372,7 @@
             <Label Name="LabelStateLimitY" Content="LimitY" FontWeight="ExtraBold" FontSize="40" Foreground="Red" Visibility="Collapsed"/>
             <Label Name="LabelStateLimitZ" Content="LimitZ" FontWeight="ExtraBold" FontSize="40" Foreground="Red" Visibility="Collapsed"/>
         </StackPanel>
-        <h:HelixViewport3D Name="viewport" ShowViewCube="False" Panel.ZIndex="0" PreviewKeyDown="viewport_PreviewKeyDown" Grid.ColumnSpan="2" ZoomAroundMouseDownPoint="true">
+        <h:HelixViewport3D Name="viewport" ShowCameraInfo="{util:SettingBinding ShowCameraInfo}" ShowViewCube="{util:SettingBinding ShowViewCube}" Panel.ZIndex="0" PreviewKeyDown="viewport_PreviewKeyDown" Grid.ColumnSpan="2" ZoomAroundMouseDownPoint="true">
             <h:HelixViewport3D.Camera>
                 <PerspectiveCamera
 					Position="50, -150, 250"

@@ -156,11 +156,8 @@ G92Z0;</Value>
     <Setting Name="SerialPortDTR" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="ViewPortPos" Type="System.String" Scope="User">
-      <Value Profile="(Default)">50;-150;250;-50;150;-250</Value>
-    </Setting>
     <Setting Name="EthernetIP" Type="System.String" Scope="User">
-      <Value Profile="(Default)">192.168.1.101</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="EthernetPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">34000</Value>
@@ -173,6 +170,15 @@ G92Z0;</Value>
     </Setting>
     <Setting Name="ProbeOffsetY" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="ViewPortPos" Type="System.String" Scope="User">
+      <Value Profile="(Default)">50;-150;250;-50;150;-250;0;0;1</Value>
+    </Setting>
+    <Setting Name="ShowCameraInfo" Type="System.String" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ShowViewCube" Type="System.String" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

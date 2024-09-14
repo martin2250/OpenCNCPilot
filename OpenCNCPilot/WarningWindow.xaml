@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OpenCNCPilot"
         mc:Ignorable="d"
+        ShowInTaskbar="False"
+        Topmost="True"
         Title="Warnings" Height="450" Width="800">
 	<Grid>
 		<TextBox Name="TextBlockWarnings" Margin="5,5,5,35" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" IsReadOnly="True"/>
