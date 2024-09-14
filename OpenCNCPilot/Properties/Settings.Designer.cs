@@ -706,5 +706,29 @@ namespace OpenCNCPilot.Properties {
                 this["ViewPortPos"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string ShowCameraInfo {
+            get {
+                return ((string)(this["ShowCameraInfo"]));
+            }
+            set {
+                this["ShowCameraInfo"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string ShowViewCube {
+            get {
+                return ((string)(this["ShowViewCube"]));
+            }
+            set {
+                this["ShowViewCube"] = value;
+            }
+        }
     }
 }

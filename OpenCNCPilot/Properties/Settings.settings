@@ -174,5 +174,11 @@ G92Z0;</Value>
     <Setting Name="ViewPortPos" Type="System.String" Scope="User">
       <Value Profile="(Default)">50;-150;250;-50;150;-250;0;0;1</Value>
     </Setting>
+    <Setting Name="ShowCameraInfo" Type="System.String" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ShowViewCube" Type="System.String" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
