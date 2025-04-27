@@ -2,7 +2,7 @@
 
 OpenCNCPilot is a GRBL compatible G-Code Sender.
 
-It's main feature is it's ability to **probe user-defined areas for warpage and wrap the toolpath around the curved surface**.
+Its main feature is its ability to **probe user-defined areas for warpage and wrap the toolpath around the curved surface**.
 This is especially useful for engraving metal surfaces with V-shaped cutters where any deviation in the Z-direction will result in wider or narrower traces, eg for **isolation milling PCBs** where warpage would result in broken or shorted traces.
 
 ![Screenshot](https://raw.githubusercontent.com/martin2250/OpenCNCPilot/master/img/Screenshot.png)
