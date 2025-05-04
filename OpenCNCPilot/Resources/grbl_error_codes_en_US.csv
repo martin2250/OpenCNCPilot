@@ -4,7 +4,7 @@
 "3","Invalid statement","Grbl '$' system command was not recognized or supported."
 "4","Value < 0","Negative value received for an expected positive value."
 "5","Setting disabled","Homing cycle failure. Homing is not enabled via settings."
-"6","Value < 3 usec","Minimum step pulse time must be greater than 3usec."
+"6","Value < 3 usec","Minimum step pulse time must be greater than 3 usec."
 "7","EEPROM read fail. Using defaults","An EEPROM read failed. Auto-restoring affected EEPROM to default values."
 "8","Not idle","Grbl '$' command cannot be used unless Grbl is IDLE. Ensures smooth operation during a job."
 "9","G-code lock","G-code commands are locked out during alarm or jog state."
